@@ -1,0 +1,29 @@
+{
+	"name": "woocommerce-grow-story-book",
+	"title": "WooCommerce Grow - Storybook Package",
+	"license": "GPL-3.0-or-later",
+	"version": "1.12.5",
+	"description": "It adds storybook capabilities to a project",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:woocommerce/grow.git"
+	},
+	"scripts": {
+		"storybook": "start-storybook  -c ./storybook -p 6006 --ci",
+		"storybook:build": "BABEL_ENV=development build-storybook  -c ./storybook -o ./storybook/dist",
+		"storybook:deploy": "npm run storybook:build && gh-pages -d ./storybook/dist"
+	},
+	"devDependencies": {
+		"@wordpress/components": "^12.0.8",
+		"@storybook/addon-actions": "^6.4.19",
+		"@storybook/addon-docs": "^6.5.0-alpha.51",
+		"@storybook/addon-essentials": "^6.4.19",
+		"@storybook/addon-interactions": "^6.4.19",
+		"@storybook/addon-links": "^6.4.19",
+		"@storybook/react": "^6.4.19",
+		"@storybook/testing-library": "0.0.9",
+		"@babel/core": "^7.17.8",
+		"babel-loader": "^8.2.4",
+		"gh-pages": "^3.2.3"
+	}
+}
