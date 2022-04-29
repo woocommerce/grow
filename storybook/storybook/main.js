@@ -26,10 +26,10 @@ module.exports = {
 		'../js/src/**/stories/*.@(js|jsx|ts|tsx)',
 	],
 	addons: [
+		'@storybook/addon-docs',
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
 		'@storybook/addon-interactions',
-		'@storybook/addon-docs',
 	],
 
 	webpackFinal: async ( config, {} ) => {
