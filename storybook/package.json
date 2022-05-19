@@ -9,9 +9,7 @@
 		"url": "git@github.com:woocommerce/grow.git"
 	},
 	"bin": {
-		"storybook": "bin/storybook.js",
-		"storybook:build": "bin/storybook-build.js",
-		"storybook:deploy": "bin/storybook-deploy.js"
+		"storybook": "bin/storybook.js"
 	},
 	"dependencies": {
 		"@babel/core": "^7.17.8",
@@ -22,8 +20,6 @@
 		"@storybook/addon-links": "^6.4.19",
 		"@storybook/react": "^6.4.19",
 		"@storybook/testing-library": "0.0.9",
-		"@wordpress/base-styles": "^4.4.0",
-		"@wordpress/components": "^12.0.8",
 		"babel-loader": "^8.2.4",
 		"gh-pages": "^3.2.3",
 		"process": "^0.11.10",
