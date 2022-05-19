@@ -26,6 +26,7 @@
 		"@wordpress/components": "^12.0.8",
 		"babel-loader": "^8.2.4",
 		"gh-pages": "^3.2.3",
+		"process": "^0.11.10",
 		"shelljs": "^0.8.5"
 	}
 }
