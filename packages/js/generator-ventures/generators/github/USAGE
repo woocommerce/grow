@@ -1,0 +1,3 @@
+Description:
+	Creates a bunch of `.github/` files:
+	Issue & PR templates, CODE_OF_CONDUCT, CONTRIBUTING and SECURITY.md.
