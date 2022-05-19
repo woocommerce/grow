@@ -1,6 +1,6 @@
-# Ventures Team Boilerplate Generator
+# Grow Team Boilerplate Generator
 
-Yeoman generator that helps to unify the repos maintained by the Ventures Team.
+Yeoman generator that helps to unify the repos maintained by the Grow Team.
 
 
 ## Prerequisites
@@ -11,15 +11,15 @@ Yeoman generator that helps to unify the repos maintained by the Ventures Team.
 	- Before the package is published you need to clone and link it manually:
 		1. clone this repo
 		2. run `npm link` from the cloned directory
-	- Once the package is published `npm i -g generator-ventures` would work.
+	- Once the package is published `npm i -g generator-grow` would work.
 
 
 ## Usage
 
-To generate everything, you can run `yo ventures` and follow the prompts.
+To generate everything, you can run `yo grow` and follow the prompts.
 Or call task separately:
-- `yo ventures:github` GitHub Issue templates & co.
-- `yo ventures:dotfiles`
+- `yo grow:github` GitHub Issue templates & co.
+- `yo grow:dotfiles`
 
 <p align="center">
 	<br/><br/>

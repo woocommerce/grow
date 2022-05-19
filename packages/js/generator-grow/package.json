@@ -1,8 +1,7 @@
 {
-  "name": "generator-ventures",
-  "title": "Ventures Generator",
+  "name": "generator-grow",
   "version": "0.0.1",
-  "description": "Generate the boilerplate for a WooCommerce plugin repo by Ventures Team.",
+  "description": "Generate the boilerplate for a WooCommerce plugin repo by Grow Team.",
   "main": "generators/app/index.js",
   "type": "module",
   "scripts": {

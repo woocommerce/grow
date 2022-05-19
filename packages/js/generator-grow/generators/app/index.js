@@ -2,9 +2,9 @@ import Generator from 'yeoman-generator';
 import DotFilesGenerator from '../dotfiles/index.js';
 import GitHubGenerator from '../github/index.js';
 
-export default class VenturesGenerator extends Generator {
+export default class GrowGenerator extends Generator {
 	usage(){
-		return 'yo ventures[:app] [options]';
+		return 'yo grow[:app] [options]';
 	}
 	initializing() {
 		const packageRoot = this.sourceRoot() + '/../';
