@@ -3,7 +3,7 @@
 	"title": "WooCommerce Grow - Storybook Package",
   	"type": "module",
 	"license": "GPL-3.0-or-later",
-	"version": "1.12.5",
+	"version": "0.0.1",
 	"description": "It adds storybook capabilities to a project",
 	"repository": {
 		"type": "git",
