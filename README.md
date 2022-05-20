@@ -6,7 +6,7 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 ## List of packages
 
 - [`/packages/js/generator-grow`](packages/js/generator-grow/README.md) - Yeoman Generator for extension repository boilerplate.
-
+- [`/packages/js/storybook`](packages/js/storybook/README.md) - Storybook dependencies and basic scripts
 
 <p align="center">
 	<br/><br/>
