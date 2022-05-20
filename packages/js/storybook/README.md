@@ -5,9 +5,8 @@ Storybook dependencies and basic scripts
 
 ## Prerequisites
 
-- You will the StoryBook config files as if you installed it in your ouw repository.
-- You will need to configure GH Pages s if you would do it in your own repository.
-- You will need to add the scripts in your repo calling the storybook binaries described in the usage section. 
+- Create StoryBook config files as if you installed it in your own repository.
+- Configure GH Pages as if you would do it in your own repository.
 
 Example of working implementation can be found in [GLA plugin storybook folder](https://github.com/woocommerce/google-listings-and-ads/tree/develop/storybook) and [GLA plugin package.json](https://github.com/woocommerce/google-listings-and-ads/blob/develop/package.json)
 
