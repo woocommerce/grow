@@ -2,14 +2,12 @@
 /**
  * External dependencies
  */
-import process from 'process';
+import { argv } from 'process';
 
 /**
  * Internal dependencies
  */
 import { shell } from '../utils.js'
-
-const argv = process.argv;
 
 switch (argv[argv.length - 1]) {
 	case 'build':
