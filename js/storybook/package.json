@@ -1,6 +1,7 @@
 {
 	"name": "woocommerce-grow-story-book",
 	"title": "WooCommerce Grow - Storybook Package",
+  	"type": "module",
 	"license": "GPL-3.0-or-later",
 	"version": "1.12.5",
 	"description": "It adds storybook capabilities to a project",

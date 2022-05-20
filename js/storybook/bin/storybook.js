@@ -1,10 +1,15 @@
 #! /usr/bin/env node
+/**
+ * External dependencies
+ */
+import process from 'process';
 
 /**
  * Internal dependencies
  */
-const { shell } = require( '../utils' );
-const argv = require('process').argv;
+import { shell } from '../utils';
+
+const argv = process.argv;
 
 switch (argv[argv.length - 1]) {
 	case 'build':
