@@ -4,19 +4,22 @@ JSDoc template to report Tracking events to markdown file.
 
 ## Usage
 
-```sh
-jsdoc -r your/source/files/ -t ./woo-tracking-jsdoc -c .jsdocrc.json
-```
+1. Install or link the package via npm
+2. Add your `/TRACKING.md` template
 
-Add your `/TRACKING.md` template
+   ```md
+   # Usage Tracking
+   
+   Some nice general description.
+   
+   <woo-tracking-jsdoc></woo-tracking-jsdoc>
+   ```
+3. Generate the docs
+   ```sh
+   jsdoc -r your/source/files/ -t ./node_modules/woo-tracking-jsdoc
+   ```
 
-```md
-# Usage Tracking
 
-Some nice general description.
-
-<woo-tracking-jsdoc></woo-tracking-jsdoc>
-```
 
 ## Config
 
@@ -32,6 +35,7 @@ You may add any of the following properties to your JSDoc config (`.jsdocrc.json
     }
   }
 ```
+Then make sure `jsdoc` uses it, by `jsdoc -r your/source/files/ -c .jsdocrc.json`.
 
 ## Emitters
 If you would like to add some descriptions to `@fires` or `@emmits` tags, for example to specify what data is attached to the event, add `fires-description` to your plugins list:
@@ -39,10 +43,10 @@ If you would like to add some descriptions to `@fires` or `@emmits` tags, for ex
 ```json
 {
   "plugins": [
-    // To be able to add descriptions to @event and 
-    "./node_modules/woocommerce-tracking-jsdoc/fires-description.js"
+    // To be able to add descriptions to `@fires` & `@emmits`
+    "woocommerce-tracking-jsdoc/fires-description"
   ],
-}
+  // …
 ```
 
 
@@ -62,6 +66,7 @@ To mitigate that use a `jsdoc-plugin-typescript` plugin to skip those. `npm inst
   "typescript": {
     "moduleRoot": "assets/source" // Path to your module's root directory.
   }
+  // …
 ```
 
 ## `~` Alias
@@ -71,9 +76,8 @@ If your codebase uses a `.~` or `~` alias for the root directory, you may use `t
 ```js
 {
   "plugins": [
-    "./node_modules/woocommerce-tracking-jsdoc/tilde-alias.js",
+    "woocommerce-tracking-jsdoc/tilde-alias",
     "jsdoc-plugin-typescript"
   ],
-  "typescript":
   // …
 ```
