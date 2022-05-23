@@ -33,6 +33,19 @@ You may add any of the following properties to your JSDoc config (`.jsdocrc.json
   }
 ```
 
+## Emitters
+If you would like to add some descriptions to `@fires` or `@emmits` tags, for example to specify what data is attached to the event, add `fires-description` to your plugins list:
+
+```json
+{
+  "plugins": [
+    // To be able to add descriptions to @event and 
+    "./node_modules/woocommerce-tracking-jsdoc/fires-description.js"
+  ],
+}
+```
+
+
 ## Imported types
 
 If your codebase uses TS-style of importing types `{import('foo').bar}`, you will most probably get an error, like:
@@ -58,7 +71,7 @@ If your codebase uses a `.~` or `~` alias for the root directory, you may use `t
 ```js
 {
   "plugins": [
-    "woo-tracking-jsdoc/tilde-alias.js",
+    "./node_modules/woocommerce-tracking-jsdoc/tilde-alias.js",
     "jsdoc-plugin-typescript"
   ],
   "typescript":
