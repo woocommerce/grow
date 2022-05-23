@@ -69,8 +69,8 @@ exports.publish = function ( data ) {
 			// Build properites table.
 			if ( symbol.properties ) {
 				mdResult += `#### Properties
-|   |   |   |
-|---|---|---|\n`;
+| name | type | description |
+| ---- | ---- | ----------- |\n`;
 				symbol.properties.forEach( ( property ) => {
 					// Escape `|` for markdown table.
 					const type = property.type.parsedType.typeExpression.replace(
