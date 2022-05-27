@@ -1,5 +1,5 @@
 {
-  "name": "woocommerce-tracking-jsdoc",
+  "name": "woocommerce-grow-tracking-jsdoc",
   "version": "0.0.1",
   "description": "JSDoc template to report Tracking events to markdown file",
   "repository": {

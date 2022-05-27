@@ -1,4 +1,4 @@
-# woo-tracking-jsdoc
+# woocommerce-grow-tracking-jsdoc
 
 JSDoc template to report Tracking events to markdown file.
 
@@ -12,11 +12,11 @@ JSDoc template to report Tracking events to markdown file.
    
    Some nice general description.
    
-   <woo-tracking-jsdoc></woo-tracking-jsdoc>
+   <woocommerce-grow-tracking-jsdoc></woocommerce-grow-tracking-jsdoc>
    ```
 3. Generate the docs
    ```sh
-   jsdoc -r your/source/files/ -t ./node_modules/woo-tracking-jsdoc
+   jsdoc -r your/source/files/ -t ./node_modules/woocommerce-grow-tracking-jsdoc
    ```
 
 
@@ -27,11 +27,11 @@ You may add any of the following properties to your JSDoc config (`.jsdocrc.json
 ```js
 {
   "templates": {
-    "woo-tracking-jsdoc": {
+    "woocommerce-grow-tracking-jsdoc": {
       // Path to the markdown file to which the tracking events' docs should be added
       "path": "TRACKING.md",
       // Pattern to be used to match the content to be replaced. The groups are respectively: start marker, replaceable content, end marker.
-      "replacement": "(<woo-tracking-jsdoc(?:\\s[^>]*)?>)([\\s\\S]*)(<\\/woo-tracking-jsdoc.*>)"
+      "replacement": "(<woocommerce-grow-tracking-jsdoc(?:\\s[^>]*)?>)([\\s\\S]*)(<\\/woocommerce-grow-tracking-jsdoc.*>)"
     }
   }
 ```
@@ -44,7 +44,7 @@ If you would like to add some descriptions to `@fires` or `@emmits` tags, for ex
 {
   "plugins": [
     // To be able to add descriptions to `@fires` & `@emmits`
-    "woocommerce-tracking-jsdoc/fires-description"
+    "woocommerce-grow-tracking-jsdoc/fires-description"
   ],
   // …
 ```
@@ -76,7 +76,7 @@ If your codebase uses a `.~` or `~` alias for the root directory, you may use `t
 ```js
 {
   "plugins": [
-    "woocommerce-tracking-jsdoc/tilde-alias",
+    "woocommerce-grow-tracking-jsdoc/tilde-alias",
     "jsdoc-plugin-typescript"
   ],
   // …
