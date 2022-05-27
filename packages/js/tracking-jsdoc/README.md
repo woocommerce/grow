@@ -4,7 +4,8 @@ JSDoc template to report Tracking events to markdown file.
 
 ## Usage
 
-1. Install or link the package via npm
+0. `npm i jsdoc` and configure jsdoc according to your source code, so the `npx jsdoc ./your/source/` runs successfully.
+1. Install or link this package via npm
 2. Add your `/TRACKING.md` template
 
    ```md
