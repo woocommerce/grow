@@ -7,7 +7,7 @@ import { argv } from 'process';
 /**
  * Internal dependencies
  */
-import { shell } from '../utils.js'
+import { shell } from '../../utils.js'
 
 switch (argv[argv.length - 1]) {
 	case 'build':
