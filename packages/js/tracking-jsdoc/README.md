@@ -49,27 +49,6 @@ If you would like to add some descriptions to `@fires` or `@emmits` tags, for ex
   ],
   // …
 ```
-
-
-## Imported types
-
-If your codebase uses TS-style of importing types `{import('foo').bar}`, you will most probably get an error, like:
-```
-ERROR: Unable to parse a tag's type expression for source file … Invalid type expression "import('foo').bar"
-```
-
-To mitigate that use a `jsdoc-plugin-typescript` plugin to skip those. `npm install --save-dev jsdoc-plugin-typescript` and add this to your config:
-```js
-{
-  "plugins": [
-    "jsdoc-plugin-typescript"
-  ],
-  "typescript": {
-    "moduleRoot": "assets/source" // Path to your module's root directory.
-  }
-  // …
-```
-
 ## `~` Alias
 
 If your codebase uses a `.~` or `~` alias for the root directory, you may use `tilde-alias`.
