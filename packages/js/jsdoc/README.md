@@ -1,6 +1,6 @@
 # woocommerce-grow-jsdoc
 
-A bundle of commonly used JSDoc plugins, a single plugin to gather them all, and a command to glue as much as possible together.
+A bundle of commonly used JSDoc plugins and a command to glue as much as possible together.
 
 ## Usage
 
