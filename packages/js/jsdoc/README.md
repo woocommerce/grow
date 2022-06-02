@@ -18,7 +18,7 @@ A bundle of commonly used JSDoc plugins, a single plugin to gather them all, and
    ```json
    {
       "plugins": [
-         "woocommerce-grow-tracking-jsdoc/tilde-alias",
+         "woocommerce-grow-jsdoc/tilde-alias",
          "woocommerce-grow-tracking-jsdoc/fires-description",
          "jsdoc-plugin-typescript",
          "jsdoc-advanced-types-plugin",
@@ -37,14 +37,14 @@ A bundle of commonly used JSDoc plugins, a single plugin to gather them all, and
 ## Included plugins
 
 ### `~` Alias
-`woocommerce-grow-tracking-jsdoc/tilde-alias`
+`woocommerce-grow-jsdoc/tilde-alias`
 
 If your codebase uses a `.~` or `~` alias for the root directory, you may use `tilde-alias`.
 
 ```js
 {
   "plugins": [
-    "woocommerce-grow-tracking-jsdoc/tilde-alias"
+    "woocommerce-grow-jsdoc/tilde-alias"
   ],
   // …
 ```

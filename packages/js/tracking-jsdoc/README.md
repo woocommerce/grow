@@ -49,15 +49,3 @@ If you would like to add some descriptions to `@fires` or `@emmits` tags, for ex
   ],
   // …
 ```
-## `~` Alias
-
-If your codebase uses a `.~` or `~` alias for the root directory, you may use `tilde-alias`.
-
-```js
-{
-  "plugins": [
-    "woocommerce-grow-tracking-jsdoc/tilde-alias",
-    "jsdoc-plugin-typescript"
-  ],
-  // …
-```
