@@ -64,7 +64,7 @@ If your codebase uses TS-style of importing types `{import('foo').bar}`, you wil
 ERROR: Unable to parse a tag's type expression for source file … Invalid type expression "import('foo').bar"
 ```
 
-To mitigate that use the `jsdoc-plugin-typescript` plugin to skip those. `npm install --save-dev jsdoc-plugin-typescript` and add this to your config:
+To mitigate that use the `jsdoc-plugin-typescript` plugin to skip those.
 ```js
 {
   "plugins": [
