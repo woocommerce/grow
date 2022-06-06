@@ -1,0 +1,21 @@
+name: Prepare MySQL
+description: Enable MySQL, handle authentication compatibility.
+
+runs:
+  using: composite
+  steps:
+    # Set up MySQL
+    - shell: bash
+      # MySQL 8.0 uses the `caching_sha2_password` authentication method by default.
+      # So here adds default_authentication_plugin=mysql_native_password to my.conf for PHP 7.0.x,
+      # and alters password with `mysql_native_password` authentication method
+      # to make PHP 7.3.x mysql client be able to create database connections.
+      run: |
+        echo "[mysqld]" | sudo tee -a /etc/mysql/my.cnf
+        echo "default_authentication_plugin=mysql_native_password" | sudo tee -a /etc/mysql/my.cnf
+        sudo systemctl start mysql.service
+        mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+
+    # Log information.
+    - shell: bash
+      run: mysql --version
