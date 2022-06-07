@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "jsdoc": "^3.6.10",
-    "jsdoc-advanced-types-plugin": "github:tomalec/jsdoc-advanced-types-plugin#add/return-support",
+    "jsdoc-advanced-types-plugin": "git+https://github.com/tomalec/jsdoc-advanced-types-plugin#add/return-support",
     "jsdoc-plugin-intersection": "^1.0.4",
     "jsdoc-plugin-typescript": "^2.0.6",
     "shelljs": "^0.8.5",
