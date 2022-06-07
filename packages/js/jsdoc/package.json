@@ -21,6 +21,6 @@
     "jsdoc-plugin-intersection": "^1.0.4",
     "jsdoc-plugin-typescript": "^2.0.6",
     "shelljs": "^0.8.5",
-    "woocommerce-grow-tracking-jsdoc": "file:../tracking-jsdoc"
+    "woocommerce-grow-tracking-jsdoc": "https://gitpkg.now.sh/woocommerce/grow/packages/js/tracking-jsdoc?fecfad52db350afd3550842e2374dee8dbc587ea"
   }
 }
