@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
   "type": "module",
+  "scripts": {
+    "build": "npm run build:update-version-tags",
+    "build:update-version-tags": "npx @vercel/ncc build ./update-version-tags/index.js -o ../../../github-actions/update-version-tags/build"
+  },
   "author": "WooCommerce",
   "license": "GPL-3.0-or-later",
   "engines": {
