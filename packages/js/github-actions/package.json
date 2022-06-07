@@ -1,0 +1,16 @@
+{
+  "name": "woocommerce-grow-github-actions",
+  "version": "1.0.0",
+  "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
+  "type": "module",
+  "author": "WooCommerce",
+  "license": "GPL-3.0-or-later",
+  "engines": {
+    "node": ">=14.10"
+  },
+  "dependencies": {
+    "@actions/core": "^1.8.2",
+    "@actions/github": "^5.0.3",
+    "semver": "^7.3.7"
+  }
+}
