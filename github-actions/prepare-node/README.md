@@ -49,6 +49,20 @@ steps:
       node-version-file: ".nvmrc"
 ```
 
+#### Specify the cache dependency path:
+
+```yaml
+steps:
+  - name: Checkout repository
+  - uses: actions/checkout@v3
+
+  - name: Prepare node
+    uses: woocommerce/grow/github-actions/prepare-node@github-actions
+    with:
+      node-version: 16
+      cache-dependency-path: "./packages/js/github-actions"
+```
+
 #### Skip the `npm ci`
 
 ```yaml
