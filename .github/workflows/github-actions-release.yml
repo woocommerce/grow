@@ -1,0 +1,66 @@
+name: GitHub Actions - Release
+
+on:
+  release:
+    types:
+      - published
+      - edited
+
+jobs:
+  CheckVersionTag:
+    name: Check Version Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const tagReg = /^v(0|[1-9]\d*)(\.(0|[1-9]\d*)){2}-actions(-pre)?$/;
+            if ( ! tagReg.test( context.payload.release.tag_name ) ) {
+              await github.rest.actions.cancelWorkflowRun( {
+                ...context.repo,
+                run_id: context.runId,
+              } );
+            }
+
+  UpdateTags:
+    name: Build Bundle and Update Version Tags
+    runs-on: ubuntu-latest
+    needs: CheckVersionTag
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Prepare node
+        uses: ./github-actions/prepare-node
+        with:
+          node-version: 14
+          cache-dependency-path: ./packages/js/github-actions/package-lock.json
+          install-deps: "no"
+
+      - name: Build and commit bundle
+        id: commit-bundle
+        # Use the github-actions bot account to commit.
+        # https://api.github.com/users/github-actions%5Bbot%5D
+        run: |
+          cd ./packages/js/github-actions
+          npm ci --ignore-scripts
+          npm run build
+          cd -
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm -r .
+          git checkout HEAD -- ./github-actions
+          git add ./github-actions
+          git commit -m "Build the ${{ github.event.release.tag_name }} release bundle of GitHub actions."
+          git push origin HEAD:refs/heads/tmp-gha-bundle
+          git push -d origin tmp-gha-bundle
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
+
+      - name: Update version tags
+        uses: ./github-actions/update-version-tags
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ steps.commit-bundle.outputs.sha }}
