@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Prepare MySQL
-        uses: woocommerce/grow/github-actions/prepare-mysql@github-actions
+        uses: woocommerce/grow/github-actions/prepare-mysql@v1-actions
 
       - name: Create database
         run: mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_test;' -u root -proot
