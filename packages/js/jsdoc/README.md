@@ -25,13 +25,13 @@ A bundle of commonly used JSDoc plugins and a command to glue as much as possibl
          "jsdoc-plugin-intersection"
       ],
       "typescript": {
-         "moduleRoot": "js/src"
+         "moduleRoot": "./js/src"
       }
    }
    ```
 4. Generate the docs
    ```sh
-   woocommerce-grow-jsdoc
+   woocommerce-grow-jsdoc ./js/src
    ```
 
 ## Included plugins
@@ -71,7 +71,7 @@ To mitigate that use the `jsdoc-plugin-typescript` plugin to skip those.
     "jsdoc-plugin-typescript"
   ],
   "typescript": {
-    "moduleRoot": "assets/source" // Path to your module's root directory.
+    "moduleRoot": "./js/src" // Path to your module's root directory.
   }
   // …
 ```
