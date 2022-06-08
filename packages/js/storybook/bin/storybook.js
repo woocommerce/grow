@@ -3,11 +3,10 @@
  * External dependencies
  */
 import { argv } from 'process';
+import shell from 'shelljs';
+import path from 'path';
 
-/**
- * Internal dependencies
- */
-import { shell } from '../utils.js'
+process.env.PATH += ( path.delimiter + path.join( process.cwd(), 'node_modules', '.bin') );
 
 switch (argv[argv.length - 1]) {
 	case 'build':
