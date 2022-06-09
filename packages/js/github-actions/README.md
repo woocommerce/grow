@@ -21,7 +21,7 @@ GitHub JavaScript actions that help to composite GitHub workflows across the rep
 1. After publishing the new release, the "GitHub Actions - Release" workflow of the GitHub Actions in this repo will continue the building and committing the bundle. And then update the references of the corresponding major and minor version tags onto the new release. For example:
    - When the new release version is `v1.4.8-actions`, it should update the references of `v1-actions` and `v1.4-actions` onto `v1.4.8-actions`.
    - When the new release version is `v1.5.0-actions`, it should update the reference of `v1-actions` and create `v1.5-actions` tag onto `v1.5.0-actions`.
-   - When the new release version is `v2.0.0-actions`, it should create `v2-actions` and `v2.0-actions` tags onto `v1.4.8-actions`.
+   - When the new release version is `v2.0.0-actions`, it should create `v2-actions` and `v2.0-actions` tags onto `v2.0.0-actions`.
 1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
 
 ### Testing release
