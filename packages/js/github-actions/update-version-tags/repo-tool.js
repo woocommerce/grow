@@ -44,7 +44,7 @@ export default class RepoTool {
 	}
 
 	/**
-	 * Force updates the reference of the given tag onto the specific commit.
+	 * Force updates the reference of the given tag onto the specified commit.
 	 *
 	 * @param {string} tag The tag to be updated. For example, 'v1.2-tools'.
 	 * @param {string} sha The SHA1 value of the commit to set this reference to.
@@ -60,9 +60,10 @@ export default class RepoTool {
 	}
 
 	/**
-	 * Upsert the reference of the given tag onto the specific commit.
+	 * Creates a new tag reference onto the specified commit if the given tag doesn't exist.
+	 * Otherwise, force updates the reference of the given tag onto the specified commit.
 	 *
-	 * @param {string} tag The tag to be updated. For example, 'v1.2-tools'.
+	 * @param {string} tag The tag to be updated or created. For example, 'v1.2-tools'.
 	 * @param {string} sha The SHA1 value of the commit to set this reference to.
 	 * @return {Promise} Promise instance represents the result of this operation.
 	 */
