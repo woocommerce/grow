@@ -15,7 +15,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const tagReg = /^v(0|[1-9]\d*)(\.(0|[1-9]\d*)){2}-actions(-pre)?$/;
+            const tagReg = /^actions-v(0|[1-9]\d*)(\.(0|[1-9]\d*)){2}(-pre)?$/;
             if ( ! tagReg.test( context.payload.release.tag_name ) ) {
               await github.rest.actions.cancelWorkflowRun( {
                 ...context.repo,
