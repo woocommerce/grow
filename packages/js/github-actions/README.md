@@ -16,6 +16,92 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 1. Install `node` with version >= 14
 1. Install node modules `npm i`
 
+## Development
+
+### Directory structure of source code
+
+```
+/packages/js/github-actions/  # The root of this package
+├── actions/                  # All actions to be exposed in the release build
+│   ├── prepare-node/         # Composite action
+│   │   ├── action.yml
+│   │   └── README.md         # How to use this action
+│   └── update-version-tags/  # JavaScript action
+│       ├── src/              # Script sources
+│       │   ├── index.js
+│       │   ├── parse-version.js
+│       │   └── repo-tool.js
+│       ├── action.yml
+│       └── README.md
+├── utils/                    # Sources of the shared files
+│   └── do-something.js
+├── package.json              # The required dependent packages of the scripts, tests, build, and etc
+└── README.md                 # The overall info about this Github actions package
+```
+
+- The `src` directories will be skipped in the release build.
+- When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `npm run build`.
+
+### Directory structure of release build
+
+```
+/                               # Entry points for the caller repositories
+├── prepare-node/
+│   ├── action.yml
+│   └── README.md
+├── update-version-tags/
+│   ├── update-version-tags.js  # Built file
+│   ├── action.yml
+│   └── README.md
+└── README.md                   # Document prompts viewers to find the correct source code
+```
+
+The release build will be committed to a standalone point in the git tree via the release workflow, to make these custom GitHub actions have better paths and can be fetched faster.
+
+```mermaid
+%%{
+  init: {
+    "gitGraph": {
+      "mainBranchName": "trunk",
+      "mainBranchOrder": 2
+    },
+    "themeVariables": {
+      "git0": "#2155CD",
+      "git1": "#5D8BF4",
+      "git2": "#5D8BF4",
+      "git3": "#2FA4FF",
+      "gitBranchLabel0": "#FFFFFF",
+      "gitBranchLabel1": "#FFFFFF",
+      "gitBranchLabel2": "#FFFFFF",
+      "gitBranchLabel3": "#FFFFFF",
+      "tagLabelBorder": "#874356",
+      "tagLabelBackground": "#F73D93",
+      "tagLabelColor": "#FFFFFF",
+      "commitLabelBackground": "#DFDFDE",
+      "gitInv0": "#2155CD"
+    }
+  }
+}%%
+
+gitGraph
+  commit
+  commit
+  branch add/action-feature order: 3
+  commit
+  commit
+  checkout trunk
+  merge add/action-feature
+  branch release/actions order: 1
+  commit id: "Changelog"
+  commit id: "Bump version"
+  checkout trunk
+  merge release/actions
+  branch tmp/release-build order: 0
+  commit id: "Release bundle" type: HIGHLIGHT tag: "actions-v1.2.3"
+  checkout trunk
+  commit
+```
+
 ## Release
 
 ### Official release
