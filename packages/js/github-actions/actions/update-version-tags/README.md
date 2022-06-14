@@ -47,4 +47,4 @@ jobs:
 
 #### Specify the target commit:
 
-See [github-actions-release.yml](../../.github/workflows/github-actions-release.yml) of this repo.
+See [github-actions-release.yml](/.github/workflows/github-actions-release.yml) of this repo.

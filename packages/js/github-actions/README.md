@@ -1,8 +1,15 @@
-# GitHub JavaScript actions
+# Custom GitHub actions
 
 [![GitHub Actions - Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml)
 
-GitHub JavaScript actions that help to composite GitHub workflows across the repos maintained by the Grow Team.
+Custom GitHub actions that help to composite GitHub workflows across the repos maintained by the Grow Team.
+
+## Actions list
+
+- [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
+- [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
+- [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
+- [`update-version-tags`](actions/update-version-tags) - Update version tags
 
 ## Prerequisites
 
@@ -28,10 +35,6 @@ GitHub JavaScript actions that help to composite GitHub workflows across the rep
 
 1. Basically use the same processing as the [Official release](#official-release) above, :warning: **but the format of version tag should be `actions-vX.Y.Z-pre`**.
 1. Delete the testing releases and tags once they are no longer in use.
-
-## Usage
-
-See the [GitHub actions](../../../github-actions) in each directory.
 
 <p align="center">
 	<br/><br/>
