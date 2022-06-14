@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "npm run build:update-version-tags",
-    "build:update-version-tags": "npx @vercel/ncc build ./actions/update-version-tags/src/index.js -o ./actions/update-version-tags/build"
+    "build:update-version-tags": "npx @vercel/ncc build ./actions/update-version-tags/src/update-version-tags.js -o ./actions/update-version-tags",
+    "postbuild:update-version-tags": "mv ./actions/update-version-tags/index.js ./actions/update-version-tags/update-version-tags.js"
   },
   "author": "WooCommerce",
   "license": "GPL-3.0-or-later",
