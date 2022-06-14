@@ -60,6 +60,12 @@ jobs:
           echo "/packages/js/github-actions/actions/*/src" > .gitignore
           git add ./packages/js/github-actions/actions
           git mv ./packages/js/github-actions/actions/* ./
+          tee README.md << END
+          # Custom GitHub actions
+          ### This is the release build of ${{ github.event.release.tag_name }}.
+          ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${{ github.sha }}/packages/js/github-actions).
+          END
+          git add README.md
           git commit -q --amend -C HEAD
           git push origin HEAD:refs/heads/tmp-gha-bundle
           git push -d origin tmp-gha-bundle
