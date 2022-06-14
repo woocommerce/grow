@@ -44,6 +44,8 @@ jobs:
         id: commit-bundle
         # Use the github-actions bot account to commit.
         # https://api.github.com/users/github-actions%5Bbot%5D
+        #
+        # The second `git checkout HEAD^` is to prevent errors from the post jobs like "Prepare node".
         run: |
           cd ./packages/js/github-actions
           npm ci --ignore-scripts
@@ -52,11 +54,16 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git rm -r .
-          git checkout HEAD -- ./packages/js/github-actions/actions
+          git commit -q -m "Build the ${{ github.event.release.tag_name }} release bundle of GitHub actions."
+          git checkout HEAD^ -- ./packages/js/github-actions/actions
+          git restore --staged .
+          echo "/packages/js/github-actions/actions/*/src" > .gitignore
           git add ./packages/js/github-actions/actions
-          git commit -m "Build the ${{ github.event.release.tag_name }} release bundle of GitHub actions."
+          git mv ./packages/js/github-actions/actions/* ./
+          git commit -q --amend -C HEAD
           git push origin HEAD:refs/heads/tmp-gha-bundle
           git push -d origin tmp-gha-bundle
+          git checkout HEAD^ -- ./packages/js/github-actions/actions
           echo "::set-output name=sha::$(git rev-parse HEAD)"
 
       - name: Update version tags
