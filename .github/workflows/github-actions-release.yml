@@ -24,7 +24,7 @@ jobs:
             }
 
   UpdateTags:
-    name: Build Bundle and Update Version Tags
+    name: Create Release Build and Update Version Tags
     runs-on: ubuntu-latest
     needs: CheckVersionTag
     steps:
@@ -40,8 +40,8 @@ jobs:
           cache-dependency-path: ./packages/js/github-actions/package-lock.json
           install-deps: "no"
 
-      - name: Build and commit bundle
-        id: commit-bundle
+      - name: Create and commit release build
+        id: commit-build
         # Use the github-actions bot account to commit.
         # https://api.github.com/users/github-actions%5Bbot%5D
         #
@@ -54,7 +54,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git rm -r .
-          git commit -q -m "Build the ${{ github.event.release.tag_name }} release bundle of GitHub actions."
+          git commit -q -m "Build the ${{ github.event.release.tag_name }} release build of GitHub actions."
           git checkout HEAD^ -- ./packages/js/github-actions/actions
           git restore --staged .
           echo "/packages/js/github-actions/actions/*/src" > .gitignore
@@ -62,13 +62,13 @@ jobs:
           git mv ./packages/js/github-actions/actions/* ./
           tee README.md << END
           # Custom GitHub actions
-          ### This is the release build of ${{ github.event.release.tag_name }}.
+          ### This is the release build of version \`${{ github.event.release.tag_name }}\`.
           ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${{ github.sha }}/packages/js/github-actions).
           END
           git add README.md
           git commit -q --amend -C HEAD
-          git push origin HEAD:refs/heads/tmp-gha-bundle
-          git push -d origin tmp-gha-bundle
+          git push origin HEAD:refs/heads/tmp-gha-release-build
+          git push -d origin tmp-gha-release-build
           git checkout HEAD^ -- ./packages/js/github-actions/actions
           echo "::set-output name=sha::$(git rev-parse HEAD)"
 
@@ -76,4 +76,4 @@ jobs:
         uses: ./update-version-tags
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          sha: ${{ steps.commit-bundle.outputs.sha }}
+          sha: ${{ steps.commit-build.outputs.sha }}

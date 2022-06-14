@@ -68,7 +68,7 @@ The release build will be committed to a standalone point in the git tree via th
     "themeVariables": {
       "git0": "#2155CD",
       "git1": "#5D8BF4",
-      "git2": "#5D8BF4",
+      "git2": "#66B7FF",
       "git3": "#2FA4FF",
       "gitBranchLabel0": "#FFFFFF",
       "gitBranchLabel1": "#FFFFFF",
@@ -97,7 +97,7 @@ gitGraph
   checkout trunk
   merge release/actions
   branch tmp/release-build order: 0
-  commit id: "Release bundle" type: HIGHLIGHT tag: "actions-v1.2.3"
+  commit id: "Release build" type: HIGHLIGHT tag: "actions-v1.2.3"
   checkout trunk
   commit
 ```
@@ -111,7 +111,7 @@ gitGraph
    - For a patch version like fixing bugs, increases the Z number. For example, `actions-v1.4.8`.
    - For a minor version like adding new features, increases the Y number and reset the Z to 0. For example, `actions-v1.5.0`.
    - For a major version like having incompatible changes, increases the X number and reset the Y and Z to 0. For example, `actions-v2.0.0`.
-1. After publishing the new release, the "GitHub Actions - Release" workflow of the GitHub Actions in this repo will continue the building and committing the bundle. And then update the references of the corresponding major and minor version tags onto the new release. For example:
+1. After publishing the new release, the "GitHub Actions - Release" workflow of the GitHub Actions in this repo will continue the creating and committing the release build. And then update the references of the corresponding major and minor version tags onto the new release. For example:
    - When the new release version is `actions-v1.4.8`, it should update the references of `actions-v1` and `actions-v1.4` onto `actions-v1.4.8`.
    - When the new release version is `actions-v1.5.0`, it should update the reference of `actions-v1` and create `actions-v1.5` tag onto `actions-v1.5.0`.
    - When the new release version is `actions-v2.0.0`, it should create `actions-v2` and `actions-v2.0` tags onto `actions-v2.0.0`.
