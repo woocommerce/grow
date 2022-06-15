@@ -1,0 +1,79 @@
+name: GitHub Actions - Release
+
+on:
+  release:
+    types:
+      - published
+      - edited
+
+jobs:
+  CheckVersionTag:
+    name: Check Version Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const tagReg = /^actions-v(0|[1-9]\d*)(\.(0|[1-9]\d*)){2}(-pre)?$/;
+            if ( ! tagReg.test( context.payload.release.tag_name ) ) {
+              await github.rest.actions.cancelWorkflowRun( {
+                ...context.repo,
+                run_id: context.runId,
+              } );
+            }
+
+  UpdateTags:
+    name: Create Release Build and Update Version Tags
+    runs-on: ubuntu-latest
+    needs: CheckVersionTag
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Prepare node
+        uses: ./packages/js/github-actions/actions/prepare-node
+        with:
+          node-version: 14
+          cache-dependency-path: ./packages/js/github-actions/package-lock.json
+          install-deps: "no"
+
+      - name: Create and commit release build
+        id: commit-build
+        # Use the github-actions bot account to commit.
+        # https://api.github.com/users/github-actions%5Bbot%5D
+        #
+        # The second `git checkout HEAD^` is to prevent errors from the post jobs like "Prepare node".
+        run: |
+          cd ./packages/js/github-actions
+          npm ci --ignore-scripts
+          npm run build
+          cd -
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git rm -r .
+          git commit -q -m "Build the ${{ github.event.release.tag_name }} release build of GitHub actions."
+          git checkout HEAD^ -- ./packages/js/github-actions/actions
+          git restore --staged .
+          echo "/packages/js/github-actions/actions/*/src" > .gitignore
+          git add ./packages/js/github-actions/actions
+          git mv ./packages/js/github-actions/actions/* ./
+          tee README.md << END
+          # Custom GitHub actions
+          ### This is the release build of version \`${{ github.event.release.tag_name }}\`.
+          ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${{ github.sha }}/packages/js/github-actions).
+          END
+          git add README.md
+          git commit -q --amend -C HEAD
+          git push origin HEAD:refs/heads/tmp-gha-release-build
+          git push -d origin tmp-gha-release-build
+          git checkout HEAD^ -- ./packages/js/github-actions/actions
+          echo "::set-output name=sha::$(git rev-parse HEAD)"
+
+      - name: Update version tags
+        uses: ./update-version-tags
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ steps.commit-build.outputs.sha }}

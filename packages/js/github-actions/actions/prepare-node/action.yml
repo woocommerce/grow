@@ -10,6 +10,11 @@ inputs:
     description: "Specify Node.js version via a file. For example: .nvmrc"
     default: ""
 
+  cache-dependency-path:
+    description: "Specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies."
+    required: false
+    default: ""
+
   install-deps:
     description: Whether to run `npm ci`. "yes" by default. Set "no" to skip.
     required: false
@@ -29,6 +34,7 @@ runs:
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
         cache: "npm"
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     # Log information.
     - shell: bash
