@@ -17,6 +17,7 @@ export default class RepoTool {
 		this.context = context;
 		this.octokit = github.getOctokit( token );
 		this.git = this.octokit.rest.git;
+		this.repos = this.octokit.rest.repos;
 	}
 
 	/**
@@ -77,5 +78,31 @@ export default class RepoTool {
 			ref: `refs/tags/${ tag }`,
 			sha,
 		} );
+	}
+
+	/**
+	 * Generate release notes content via GitHub.
+	 *
+	 * @param {string} tag The tag name for the release. This can be an existing tag or a new one.
+	 * @param {string} [targetCommitish] Specifies the commitish value that will be the target for the release's tag. Required if the supplied `tag` does not reference an existing tag.
+	 * @param {string} [previousTag] The name of the previous tag to use as the starting point for the release notes.
+	 * @param {string} [configPath] Specifies a file path in this repository containing the config used for generating the release notes. If unspecified, the fallback is .github/release.yml and then the default config of GitHub.
+	 * @return {Promise} Promise instance represents the result of this operation.
+	 */
+	async generateReleaseNotes(
+		tag,
+		targetCommitish,
+		previousTag,
+		configPath
+	) {
+		const response = await this.repos.generateReleaseNotes( {
+			...this.context.repo,
+			tag_name: tag,
+			target_commitish: targetCommitish,
+			previous_tag_name: previousTag,
+			configuration_file_path: configPath,
+		} );
+
+		return response.data;
 	}
 }
