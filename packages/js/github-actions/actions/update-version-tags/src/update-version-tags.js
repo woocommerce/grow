@@ -7,7 +7,7 @@ import core from '@actions/core';
 /**
  * Internal dependencies
  */
-import RepoTool from './repo-tool.js';
+import RepoTool from '../../../utils/repo-tool.js';
 import parseVersion from './parse-version.js';
 
 async function updateVersionTags() {
