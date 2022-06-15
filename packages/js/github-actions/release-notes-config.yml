@@ -1,0 +1,32 @@
+changelog:
+  categories:
+    # Major level
+    - title: Breaking Changes 🚨
+      labels:
+        - "[actions] changelog: breaking"
+
+    # Minor level
+    - title: New Features 🎉
+      labels:
+        - "[actions] changelog: feature"
+
+    - title: Updated ✨
+      labels:
+        - "[actions] changelog: update"
+
+    - title: Enhancements ⚡️
+      labels:
+        - "[actions] changelog: enhancement"
+
+    # Patch level
+    - title: Bug Fixes 🐛
+      labels:
+        - "[actions] changelog: fix"
+
+    - title: Tweaked 🔧
+      labels:
+        - "[actions] changelog: tweak"
+
+    - title: Documentation 📚
+      labels:
+        - "[actions] changelog: docs"
