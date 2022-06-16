@@ -7,7 +7,11 @@ inputs:
     required: true
 
   package-dir:
-    description: The directory path of package.json.
+    description: >
+      The directory path of package.json. This action uses the version in package.json
+      to generate a version tag name with the input tag-template, and check whether that
+      tag exists to be used as the previous tag. The previous tag is the starting point of
+      a range for getting the release notes.
     default: ""
 
   tag-template:
@@ -29,15 +33,6 @@ inputs:
       already exists, leave it empty by default.
     default: ""
 
-  previous-tag:
-    description: >
-      The name of the previous tag to use as the starting point for the release notes.
-      Use to manually specify the range for the set of changes considered as part of this
-      release. If this value is empty, this action will use the version in package.json
-      to generate a version tag name with the input tag-template, and check whether that
-      tag exists to be used as the previous tag.
-    default: ""
-
   config-path:
     description: >
       Specifies a path to a file in the repository containing the config used for
@@ -46,12 +41,26 @@ inputs:
       the default config of GitHub will be used.
     default: ""
 
+  major-keywords:
+    description: Comma-separated keywords for matching the major level. For example, "breaking, major changes".
+    default: "breaking"
+
+  minor-keywords:
+    description: Comma-separated keywords for matching the minor level. For example, "new features, improvements".
+    default: "feature, enhancement"
+
 outputs:
   release-notes:
     description: The content of release notes.
 
   release-changelog:
     description: The changelog part in release notes.
+
+  next-version:
+    description: The next version inferred via the release notes. For example, 2.0.0, 1.5.0 or 1.4.8.
+
+  next-tag:
+    description: The next tag name inferred via the release notes. For example, 2.0.0, v1.5.0 or my-tool-v1.4.8.
 
 runs:
   using: node16

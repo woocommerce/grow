@@ -11,6 +11,7 @@ import semver from 'semver';
 import getPackageSettings from '../../../utils/get-package-settings.js';
 import RepoTool from '../../../utils/repo-tool.js';
 import handleActionErrors from '../../../utils/handle-action-errors.js';
+import matchVersionLevel from './match-version-level.js';
 
 const TMP_TAG = 'tmp--github-action-get-release-notes';
 
@@ -40,24 +41,28 @@ async function getReleaseNotes() {
 	const targetCommitish =
 		core.getInput( 'target-commitish' ) ||
 		context.ref.replace( 'refs/heads/', '' );
-	let previousTag = core.getInput( 'previous-tag' );
 	const configPath = core.getInput( 'config-path' );
+
+	const majorKeywords = core.getInput( 'major-keywords' );
+	const minorKeywords = core.getInput( 'minor-keywords' );
 
 	// Resolve the previous tag
 	const repoTool = new RepoTool( token, context );
 	const { version } = getPackageSettings( workspace, packageDir );
-
-	if ( ! previousTag ) {
-		const versionTag = compositeVersionTag( version );
-
-		if ( await repoTool.hasTag( versionTag ) ) {
-			previousTag = versionTag;
-		}
-	}
+	const versionTag = compositeVersionTag( version );
+	const previousTag = ( await repoTool.hasTag( versionTag ) )
+		? versionTag
+		: '';
 
 	// Log info
 	core.info( `Resolved target commitish: ${ targetCommitish }` );
-	core.info( `Resolved previous tag: ${ previousTag }` );
+	if ( previousTag ) {
+		core.info( `Resolved previous tag: ${ previousTag }` );
+	} else {
+		core.info(
+			`The previous tag ${ versionTag } does not exist. The inferred version number will be the same as package.json.`
+		);
+	}
 
 	// Fetch release notes
 	const { body } = await repoTool.generateReleaseNotes(
@@ -68,9 +73,28 @@ async function getReleaseNotes() {
 	);
 	const changelog = parseChangelog( body );
 
+	let notesContent = body;
+	let nextVersion = '';
+	let nextTag = '';
+
+	// Infer the next version and tag.
+	if ( semver.valid( version ) ) {
+		const level = matchVersionLevel( body, majorKeywords, minorKeywords );
+		nextVersion = previousTag ? semver.inc( version, level ) : version;
+		nextTag = compositeVersionTag( nextVersion );
+
+		if ( notesContent.endsWith( TMP_TAG ) ) {
+			notesContent = notesContent.replace( TMP_TAG, nextTag );
+		}
+	} else {
+		core.warning( `The ${ version } is not a valid semantic versioning.` );
+	}
+
 	// Output results
-	core.setOutput( 'release-notes', body );
+	core.setOutput( 'release-notes', notesContent );
 	core.setOutput( 'release-changelog', changelog );
+	core.setOutput( 'next-version', nextVersion );
+	core.setOutput( 'next-tag', nextTag );
 }
 
 // Start running this action.
