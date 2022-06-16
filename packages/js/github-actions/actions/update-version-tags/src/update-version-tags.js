@@ -9,6 +9,7 @@ import core from '@actions/core';
  */
 import RepoTool from '../../../utils/repo-tool.js';
 import parseVersion from './parse-version.js';
+import handleActionErrors from '../../../utils/handle-action-errors.js';
 
 async function updateVersionTags() {
 	// Prepare parameters
@@ -57,23 +58,5 @@ async function updateVersionTags() {
 
 // Start running this action.
 updateVersionTags()
-	.then( () => {
-		core.info( 'Finish updating the version tags.' );
-	} )
-	.catch( ( e ) => {
-		let message;
-
-		if ( e instanceof Error ) {
-			message = `${ e.name } - ${ e.message }`;
-
-			if ( e.stack ) {
-				core.startGroup( 'Call stack' );
-				core.info( e.stack );
-				core.endGroup();
-			}
-		} else {
-			message = JSON.stringify( e, null, 2 );
-		}
-
-		core.setFailed( `Action failed with error: ${ message }` );
-	} );
+	.then( () => core.info( 'Finish updating the version tags.' ) )
+	.catch( handleActionErrors );
