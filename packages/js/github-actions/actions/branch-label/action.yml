@@ -27,3 +27,8 @@ runs:
       with:
         labels: |
           changelog: tweak
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.head_ref, 'release/') }}
+      with:
+        labels: |
+          changelog: none
