@@ -54,7 +54,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git rm -r .
-          git commit -q -m "Build the ${{ github.event.release.tag_name }} release build of GitHub actions."
+          git commit -q -m "Create the ${{ github.event.release.tag_name }} release build for the \`github-actions\` package."
           git checkout HEAD^ -- ./packages/js/github-actions/actions
           git restore --staged .
           echo "/packages/js/github-actions/actions/*/src" > .gitignore
