@@ -1,4 +1,9 @@
 changelog:
+  exclude:
+    authors:
+      - dependabot
+      - github-actions
+
   categories:
     # Major level
     - title: Breaking Changes 🚨
@@ -8,15 +13,11 @@ changelog:
     # Minor level
     - title: New Features 🎉
       labels:
-        - "[actions] changelog: feature"
+        - "[actions] changelog: add"
 
     - title: Updated ✨
       labels:
         - "[actions] changelog: update"
-
-    - title: Enhancements ⚡️
-      labels:
-        - "[actions] changelog: enhancement"
 
     # Patch level
     - title: Bug Fixes 🐛
