@@ -30,6 +30,11 @@ function parseChangelog( notesContent ) {
 	return '';
 }
 
+function setOutput( key, value ) {
+	core.info( `==> Output "${ key }":\n${ value }` );
+	core.setOutput( key, value );
+}
+
 async function getReleaseNotes() {
 	// Prepare parameters
 	const { context } = github;
@@ -91,10 +96,10 @@ async function getReleaseNotes() {
 	}
 
 	// Output results
-	core.setOutput( 'release-notes', notesContent );
-	core.setOutput( 'release-changelog', changelog );
-	core.setOutput( 'next-version', nextVersion );
-	core.setOutput( 'next-tag', nextTag );
+	setOutput( 'release-notes', notesContent );
+	setOutput( 'release-changelog', changelog );
+	setOutput( 'next-version', nextVersion );
+	setOutput( 'next-tag', nextTag );
 }
 
 // Start running this action.
