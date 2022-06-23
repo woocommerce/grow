@@ -10,7 +10,7 @@ runs:
         fetch-depth: 2
 
     # Set up PHP and tools.
-    - uses: woocommerce/grow/prepare-php@actions-v1-pre
+    - uses: woocommerce/grow/prepare-php@actions-v1
 
     #Log information
     - shell: bash
