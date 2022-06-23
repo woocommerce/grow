@@ -1,0 +1,36 @@
+name: PHPCS Diff
+description: Run PHPCS to the changed lines of code, set error annotations to a pull request.
+
+runs:
+  using: composite
+  steps:
+    # Checkout repository.
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    # Set up PHP and tools.
+    - uses: woocommerce/grow/prepare-php@actions-v1
+
+    #Log information
+    - shell: bash
+      run: |
+        vendor/bin/phpcs -i
+        vendor/bin/diffFilter -v
+
+    # Run PHPCS with diffFilter in the coverageChecker.
+    - shell: bash
+      # When creating a pull request on GitHub, it will create a merge commit locally based on
+      # the `head` and `base` branches of the PR. It's the same in GitHub Actions, when triggering
+      # a workflow to a pull request, it uses the revision of a merge commit to run the workflow
+      # as well. Therefore, `git diff HEAD^...HEAD` includes all diffs of a PR.
+      run: |
+        vendor/bin/diffFilter --phpcsStrict <(git diff HEAD^...HEAD) <(vendor/bin/phpcs ./* -q --report=json) --report=phpcs 0 > /tmp/phpcs-diff.json
+        cd "${{ github.action_path }}"
+        node annotate-phpcs-report.js /tmp/phpcs-diff.json
+        cd -
+
+        TOTAL_ERRORS=$(jq ".totals.errors" /tmp/phpcs-diff.json)
+        if [ "$TOTAL_ERRORS" != "0" ]; then
+          exit 1
+        fi
