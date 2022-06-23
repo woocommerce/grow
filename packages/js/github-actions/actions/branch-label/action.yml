@@ -6,11 +6,21 @@ runs:
   steps:
     - uses: actions/checkout@v2
     - uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.head_ref, 'breaking/') }}
+      with:
+        labels: |
+          changelog: breaking
+    - uses: actions-ecosystem/action-add-labels@v1
       if: ${{ startsWith(github.head_ref, 'add/') }}
       with:
         labels: |
           type: enhancement
           changelog: add
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.head_ref, 'update/') }}
+      with:
+        labels: |
+          changelog: update
     - uses: actions-ecosystem/action-add-labels@v1
       if: ${{ startsWith(github.head_ref, 'fix/') }}
       with:
@@ -18,15 +28,16 @@ runs:
           type: bug
           changelog: fix
     - uses: actions-ecosystem/action-add-labels@v1
-      if: ${{ startsWith(github.head_ref, 'update/') || startsWith(github.head_ref, 'remove/') }}
-      with:
-        labels: |
-          changelog: update
-    - uses: actions-ecosystem/action-add-labels@v1
-      if: ${{ startsWith(github.head_ref, 'tweak/') || startsWith(github.head_ref, 'dev/') }}
+      if: ${{ startsWith(github.head_ref, 'tweak/') }}
       with:
         labels: |
           changelog: tweak
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.head_ref, 'doc/') }}
+      with:
+        labels: |
+          changelog: doc
+          type: documentation
     - uses: actions-ecosystem/action-add-labels@v1
       if: ${{ startsWith(github.head_ref, 'release/') }}
       with:
