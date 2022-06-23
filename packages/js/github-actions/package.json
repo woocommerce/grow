@@ -4,7 +4,9 @@
   "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
   "type": "module",
   "scripts": {
-    "build": "npm run build:update-version-tags",
+    "build": "npm run build:get-release-notes && npm run build:update-version-tags",
+    "build:get-release-notes": "npx @vercel/ncc build ./actions/get-release-notes/src/get-release-notes.js -o ./actions/get-release-notes",
+    "postbuild:get-release-notes": "mv ./actions/get-release-notes/index.js ./actions/get-release-notes/get-release-notes.js",
     "build:update-version-tags": "npx @vercel/ncc build ./actions/update-version-tags/src/update-version-tags.js -o ./actions/update-version-tags",
     "postbuild:update-version-tags": "mv ./actions/update-version-tags/index.js ./actions/update-version-tags/update-version-tags.js"
   },

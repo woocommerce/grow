@@ -6,6 +6,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
+- [`get-release-notes`](actions/get-release-notes) - Get release notes via GitHub, infer the next version and tag
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
 - [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
@@ -94,32 +95,36 @@ gitGraph
   branch release/actions order: 1
   commit id: "Changelog"
   commit id: "Bump version"
-  checkout trunk
-  merge release/actions
   branch tmp/release-build order: 0
   commit id: "Release build" type: HIGHLIGHT tag: "actions-v1.2.3"
   checkout trunk
-  commit
+  merge release/actions
+
 ```
 
 ## Release
 
 ### Official release
 
-1. Find the latest version tag of GitHub actions in this repo. For example, `actions-v1.4.7`.
-1. Create a new release with a new version tag that increases numerically in the format `actions-vX.Y.Z`.
+1. Create the specific branch `release/actions` onto the target revision on `trunk` branch.
+1. The ["GitHub Actions - Prepare New Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-prepare-release.yml) will continue to prepend changelog to [CHANGELOG.md](CHANGELOG.md), update versions to [package.json](package.json) and [package-lock.json](package-lock.json), and then commit the changes to `release/actions` branch.
+1. Create a release PR from `release/actions` branch with `trunk` as the base branch.
+1. Check if the new changelog content and updated version are correct.
    - For a patch version like fixing bugs, increases the Z number. For example, `actions-v1.4.8`.
    - For a minor version like adding new features, increases the Y number and reset the Z to 0. For example, `actions-v1.5.0`.
    - For a major version like having incompatible changes, increases the X number and reset the Y and Z to 0. For example, `actions-v2.0.0`.
+1. Create a new release with a new version tag.
+1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
 1. After publishing the new release, the "GitHub Actions - Release" workflow of the GitHub Actions in this repo will continue the creating and committing the release build. And then update the references of the corresponding major and minor version tags onto the new release. For example:
    - When the new release version is `actions-v1.4.8`, it should update the references of `actions-v1` and `actions-v1.4` onto `actions-v1.4.8`.
    - When the new release version is `actions-v1.5.0`, it should update the reference of `actions-v1` and create `actions-v1.5` tag onto `actions-v1.5.0`.
    - When the new release version is `actions-v2.0.0`, it should create `actions-v2` and `actions-v2.0` tags onto `actions-v2.0.0`.
-1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
+1. Merge the release PR.
 
 ### Testing release
 
-1. Basically use the same processing as the [Official release](#official-release) above, :warning: **but the format of version tag should be `actions-vX.Y.Z-pre`**.
+1. Create a new release with a **prerelease version tag**. For example `actions-vX.Y.Z-pre`.
+1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
 1. Delete the testing releases and tags once they are no longer in use.
 
 <p align="center">
