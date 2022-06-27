@@ -47,4 +47,22 @@ export default class PackageTool {
 	getSettings() {
 		return JSON.parse( this.getFile( 'package.json' ) );
 	}
+
+	/**
+	 * Gets the heading and content of a specific version of the changelog.
+	 *
+	 * @param {string} version The version of changelog be obtained. For example, '1.4.7'.
+	 * @param {string} [changelogFilePath='CHANGELOG.md'] The relative path to the changelog file.
+	 * @return {{version: string, heading: string, content: string}} The version, heading and content of the specified version.
+	 */
+	getChangelogByVersion( version, changelogFilePath = 'CHANGELOG.md' ) {
+		const versionPattern = version.replace( /\./g, '\\.' );
+		const pattern = `^(## [\\d-]{10} \\(${ versionPattern }\\))\\n((?:.+\\n)+)`;
+		const regex = new RegExp( pattern, 'm' );
+
+		const changelog = this.getFile( changelogFilePath );
+		const [ , heading = '', content = '' ] = changelog.match( regex ) || [];
+
+		return { version, heading, content };
+	}
 }
