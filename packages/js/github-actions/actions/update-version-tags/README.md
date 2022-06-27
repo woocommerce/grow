@@ -45,6 +45,10 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+#### Trigger by a workflow_run event:
+
+See [github-actions-release.yml](/.github/workflows/github-actions-release.yml) of this repo.
+
 #### Specify the target commit:
 
 See [github-actions-release.yml](/.github/workflows/github-actions-release.yml) of this repo.

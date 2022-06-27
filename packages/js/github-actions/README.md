@@ -107,20 +107,27 @@ gitGraph
 
 ### Official release
 
-1. Create the specific branch `release/actions` onto the target revision on `trunk` branch.
-1. The ["GitHub Actions - Prepare New Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-prepare-release.yml) will continue to prepend changelog to [CHANGELOG.md](CHANGELOG.md), update versions to [package.json](package.json) and [package-lock.json](package-lock.json), and then commit the changes to `release/actions` branch.
-1. Create a release PR from `release/actions` branch with `trunk` as the base branch.
-1. Check if the new changelog content and updated version are correct.
+1. :technologist: Create the specific branch `release/actions` onto the target revision on `trunk` branch.
+1. :octocat: When the branch `release/actions` is created, will continue to commit the release content to `release/actions` branch.
+   - Workflow [GitHub Actions - Prepare New Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-prepare-release.yml)
+   - Prepend changelog to [CHANGELOG.md](CHANGELOG.md).
+   - Update versions to [package.json](package.json) and [package-lock.json](package-lock.json).
+   - Creates a release PR from `release/actions` branch with `trunk` as the base branch.
+1. :technologist: Check if the new changelog content and updated version are correct.
    - For a patch version like fixing bugs, increases the Z number. For example, `actions-v1.4.8`.
    - For a minor version like adding new features, increases the Y number and reset the Z to 0. For example, `actions-v1.5.0`.
    - For a major version like having incompatible changes, increases the X number and reset the Y and Z to 0. For example, `actions-v2.0.0`.
-1. Create a new release with a new version tag.
-1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
-1. After publishing the new release, the "GitHub Actions - Release" workflow of the GitHub Actions in this repo will continue the creating and committing the release build. And then update the references of the corresponding major and minor version tags onto the new release. For example:
+   - If something needs to be revised, append the changes in the release PR.
+1. :technologist: If it's all good, approve the release PR to proceed with the next workflow.
+1. :octocat: Once the release PR is approved, a workflow will create a new release with a new version tag.
+   - Workflow [GitHub Actions - Create Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-release.yml)
+1. :octocat: After publishing the new release, a workflow will continue to create and commit the release build. And then update the references of the corresponding major and minor version tags onto the new release.
+   - Workflow [GitHub Actions - Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml)
    - When the new release version is `actions-v1.4.8`, it should update the references of `actions-v1` and `actions-v1.4` onto `actions-v1.4.8`.
    - When the new release version is `actions-v1.5.0`, it should update the reference of `actions-v1` and create `actions-v1.5` tag onto `actions-v1.5.0`.
    - When the new release version is `actions-v2.0.0`, it should create `actions-v2` and `actions-v2.0` tags onto `actions-v2.0.0`.
-1. Merge the release PR.
+1. :technologist: Check if both release workflows are run successfully.
+1. :technologist: Merge the release PR.
 
 ### Testing release
 
