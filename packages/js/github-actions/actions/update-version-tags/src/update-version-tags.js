@@ -14,10 +14,13 @@ import handleActionErrors from '../../../utils/handle-action-errors.js';
 async function updateVersionTags() {
 	// Prepare parameters
 	const { context } = github;
-	const tagName = context.payload.release.tag_name;
 
 	const token = core.getInput( 'repo-token' );
 	const sha = core.getInput( 'sha' ) || context.sha;
+	const release = core.getInput( 'release' )
+		? JSON.parse( core.getInput( 'release' ) )
+		: context.payload.release;
+	const tagName = release.tag_name;
 
 	core.info( `Release tag: ${ tagName }` );
 	core.info( `Target sha: ${ sha }` );
@@ -38,7 +41,7 @@ async function updateVersionTags() {
 		await repoTool.updateTag( tagName, sha );
 	}
 
-	const { draft, prerelease } = context.payload.release;
+	const { draft, prerelease } = release;
 
 	if ( draft || prerelease ) {
 		core.notice(
