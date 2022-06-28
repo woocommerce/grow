@@ -4,7 +4,6 @@ description: Set PR labels according to the branch name.
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v2
     - uses: actions-ecosystem/action-add-labels@v1
       if: ${{ startsWith(github.head_ref, 'breaking/') }}
       with:
