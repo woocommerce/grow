@@ -24,5 +24,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set Labels
-        uses: woocommerce/grow/github-actions/branch-label@add/label-action
+        uses: woocommerce/grow/branch-label@actions-v1
 ```
