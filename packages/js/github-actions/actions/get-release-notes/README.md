@@ -33,9 +33,11 @@ on:
 
       - name: Echo release notes
         run: |
-          echo "${{ steps.get-notes.outputs.release-notes }}"
-          echo "${{ steps.get-notes.outputs.release-changelog }}"
+          echo '${{ steps.get-notes.outputs.release-notes-shell }}'
+          echo '${{ steps.get-notes.outputs.release-changelog-shell }}'
 ```
+
+:pushpin: Please note that when using release notes in the shell, always use the output with `-shell` suffix and wrap it in single quotes to avoid special characters that may cause problems.
 
 #### Matching version level keywords to infer the next version and tag:
 
@@ -96,8 +98,8 @@ jobs:
 
       - name: Echo release notes
         run: |
-          echo "${{ steps.get-notes.outputs.release-notes }}"
-          echo "${{ steps.get-notes.outputs.release-changelog }}"
+          echo '${{ steps.get-notes.outputs.release-notes-shell }}'
+          echo '${{ steps.get-notes.outputs.release-changelog-shell }}'
           echo "${{ steps.get-notes.outputs.next-version }}"
           echo "${{ steps.get-notes.outputs.next-tag }}"
 ```
@@ -147,12 +149,14 @@ jobs:
         run: |
           TODAY=$(date '+%Y-%m-%d')
           NEXT_VER="${{ steps.get-notes.outputs.next-version }}"
-          CHANGELOG="${{ steps.get-notes.outputs.release-changelog }}"
+          CHANGELOG='${{ steps.get-notes.outputs.release-changelog-shell }}'
+
           printf "## ${TODAY} (${NEXT_VER})\n${CHANGELOG}\n\n%s\n" "$(cat CHANGELOG.md)" > CHANGELOG.md
           jq ".version=\"${NEXT_VER}\"" package.json > package.json.tmp
           mv package.json.tmp package.json
           jq ".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
           mv package-lock.json.tmp package-lock.json
+
           git config user.name github-actions
           git config user.email github-actions@users.noreply.github.com
           git add CHANGELOG.md

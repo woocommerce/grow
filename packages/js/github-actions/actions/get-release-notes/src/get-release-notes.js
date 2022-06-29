@@ -30,6 +30,10 @@ function parseChangelog( notesContent ) {
 	return '';
 }
 
+function escapeSingleQuote( text ) {
+	return text.replace( /'/g, `'"'"'` );
+}
+
 function setOutput( key, value ) {
 	core.info( `==> Output "${ key }":\n${ value }` );
 	core.setOutput( key, value );
@@ -97,7 +101,9 @@ async function getReleaseNotes() {
 
 	// Output results
 	setOutput( 'release-notes', notesContent );
+	setOutput( 'release-notes-shell', escapeSingleQuote( notesContent ) );
 	setOutput( 'release-changelog', changelog );
+	setOutput( 'release-changelog-shell', escapeSingleQuote( changelog ) );
 	setOutput( 'next-version', nextVersion );
 	setOutput( 'next-tag', nextTag );
 }
