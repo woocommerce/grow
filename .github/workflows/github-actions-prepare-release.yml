@@ -60,17 +60,21 @@ jobs:
         # https://api.github.com/users/github-actions%5Bbot%5D
         run: |
           cd ./packages/js/github-actions
+
           TODAY=$(date '+%Y-%m-%d')
           NEXT_VER="${{ steps.get-notes.outputs.next-version }}"
-          CHANGELOG="${{ steps.get-notes.outputs.release-changelog }}"
+          CHANGELOG='${{ steps.get-notes.outputs.release-changelog-shell }}'
           CHANGELOG=$(echo "$CHANGELOG" | sed -E 's/\.? by @[^ ]+ in (https:\/\/github\.com\/.+)/. (\1)/')
+
           sed -i "/# Changelog/r"<(
             printf "\n## ${TODAY} (${NEXT_VER})\n${CHANGELOG}\n"
           ) CHANGELOG.md
+
           jq ".version=\"${NEXT_VER}\"" package.json > package.json.tmp
           mv package.json.tmp package.json
           jq ".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
           mv package-lock.json.tmp package-lock.json
+
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add CHANGELOG.md
