@@ -67,17 +67,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: Setup
     steps:
-      - name: Checkout repository - release event
-        if: ${{ github.event_name == 'release' }}
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.release.tag_name }}
+      - name: Resolve tag name
+        id: resolve-tag
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          if [ "$TAG_NAME" = '' ]; then
+            TAG_NAME="${{ fromJSON(needs.Setup.outputs.release).tag_name }}"
+          fi
+          echo "::set-output name=tag_name::${TAG_NAME}"
 
-      - name: Checkout repository - workflow_run event
-        if: ${{ github.event_name == 'workflow_run' }}
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ fromJSON(needs.Setup.outputs.release).tag_name }}
+          ref: ${{ steps.resolve-tag.outputs.tag_name }}
 
       - name: Prepare node
         uses: ./packages/js/github-actions/actions/prepare-node
@@ -94,10 +96,7 @@ jobs:
         # The second `git checkout HEAD^` is to prevent errors from the post jobs like "Prepare node".
         run: |
           SOURCE_SHA=$(git rev-parse HEAD);
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          if [ "$TAG_NAME" = '' ]; then
-            TAG_NAME="${{ fromJSON(needs.Setup.outputs.release).tag_name }}"
-          fi
+          TAG_NAME="${{ steps.resolve-tag.outputs.tag_name }}"
 
           cd ./packages/js/github-actions
           npm ci --ignore-scripts
