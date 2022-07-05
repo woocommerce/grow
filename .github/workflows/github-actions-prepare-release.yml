@@ -84,11 +84,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const script = require( './.github/scripts/github-actions-create-pr-for-release.js' );
+            const workspace = '${{ github.workspace }}';
+            const { default: script } = await import( `${ workspace }/.github/scripts/github-actions-create-pr-for-release.mjs` );
             await script( {
               github,
               context,
-              workspace: '${{ github.workspace }}',
               refName: '${{ github.ref_name }}',
               version: '${{ steps.get-notes.outputs.next-version }}',
             } );

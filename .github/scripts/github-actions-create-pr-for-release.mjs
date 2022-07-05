@@ -1,10 +1,10 @@
-module.exports = async ( { github, context, workspace, refName, version } ) => {
-	const packageDir = 'packages/js/github-actions';
-	const { default: PackageTool } = await import(
-		`${ workspace }/${ packageDir }/utils/package-tool.js`
-	);
+/**
+ * Internal dependencies
+ */
+import PackageTool from '../../packages/js/github-actions/utils/package-tool.js';
 
-	const packageTool = new PackageTool( packageDir );
+export default async ( { github, context, refName, version } ) => {
+	const packageTool = new PackageTool( 'packages/js/github-actions' );
 	const { heading, content } = packageTool.getChangelogByVersion( version );
 
 	const title = `Release version ${ version } of the \`github-actions\` package`;

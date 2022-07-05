@@ -1,12 +1,15 @@
-const fs = require( 'fs' );
+/**
+ * External dependencies
+ */
+import fs from 'fs';
 
-module.exports = async ( { github, context, workspace, outputJsonPath } ) => {
-	const packageDir = 'packages/js/github-actions';
-	const { default: PackageTool } = await import(
-		`${ workspace }/${ packageDir }/utils/package-tool.js`
-	);
+/**
+ * Internal dependencies
+ */
+import PackageTool from '../../packages/js/github-actions/utils/package-tool.js';
 
-	const packageTool = new PackageTool( packageDir );
+export default async ( { github, context, outputJsonPath } ) => {
+	const packageTool = new PackageTool( 'packages/js/github-actions' );
 	const { version } = packageTool.getSettings();
 	const { content } = packageTool.getChangelogByVersion( version );
 	const tag = `actions-v${ version }`;
