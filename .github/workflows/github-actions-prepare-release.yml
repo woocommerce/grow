@@ -83,3 +83,16 @@ jobs:
           cd -
           git commit -q -m "Update changelog and package version for the ${{ steps.get-notes.outputs.next-tag }} release of GitHub actions."
           git push
+
+      - name: Create a pull request for release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const workspace = '${{ github.workspace }}';
+            const { default: script } = await import( `${ workspace }/.github/scripts/github-actions-create-pr-for-release.mjs` );
+            await script( {
+              github,
+              context,
+              refName: '${{ github.ref_name }}',
+              version: '${{ steps.get-notes.outputs.next-version }}',
+            } );

@@ -8,7 +8,7 @@ import semver from 'semver';
 /**
  * Internal dependencies
  */
-import getPackageSettings from '../../../utils/get-package-settings.js';
+import PackageTool from '../../../utils/package-tool.js';
 import RepoTool from '../../../utils/repo-tool.js';
 import handleActionErrors from '../../../utils/handle-action-errors.js';
 import matchVersionLevel from './match-version-level.js';
@@ -42,7 +42,6 @@ function setOutput( key, value ) {
 async function getReleaseNotes() {
 	// Prepare parameters
 	const { context } = github;
-	const workspace = process.env.GITHUB_WORKSPACE;
 	const token = core.getInput( 'repo-token' );
 	const packageDir = core.getInput( 'package-dir' );
 
@@ -57,7 +56,8 @@ async function getReleaseNotes() {
 
 	// Resolve the previous tag
 	const repoTool = new RepoTool( token, context );
-	const { version } = getPackageSettings( workspace, packageDir );
+	const packageTool = new PackageTool( packageDir );
+	const { version } = packageTool.getSettings();
 	const versionTag = compositeVersionTag( version );
 	const previousTag = ( await repoTool.hasTag( versionTag ) )
 		? versionTag

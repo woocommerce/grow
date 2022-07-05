@@ -1,0 +1,33 @@
+name: GitHub Actions - Create Release
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  CreateRelease:
+    name: Create release for github-actions package
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.head.ref == 'release/actions' && github.event.review.state == 'approved' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const workspace = '${{ github.workspace }}';
+            const { default: script } = await import( `${ workspace }/.github/scripts/github-actions-create-release.mjs` );
+            await script( {
+              github,
+              context,
+              outputJsonPath: '/tmp/release.json',
+            } );
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release
+          path: /tmp/release.json
