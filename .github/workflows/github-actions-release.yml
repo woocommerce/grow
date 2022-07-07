@@ -72,7 +72,7 @@ jobs:
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
           if [ "$TAG_NAME" = '' ]; then
-            TAG_NAME="${{ fromJSON(needs.Setup.outputs.release).tag_name }}"
+            TAG_NAME="${{ fromJSON(needs.Setup.outputs.release || '{}').tag_name }}"
           fi
           echo "::set-output name=tag_name::${TAG_NAME}"
 
