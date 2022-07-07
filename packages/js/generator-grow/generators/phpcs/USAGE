@@ -1,0 +1,7 @@
+Description:
+  Set up PHPCS with WordPress coding standards to run the PHPCS check in the
+  local environment and GitHub Actions.
+
+  If it's introducing PHPCS into a legacy repository for the first time,
+  choosing to perform the check on the changed lines of code would be helpful
+  to fix the existing codebase gradually.

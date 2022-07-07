@@ -20,6 +20,7 @@ To generate everything, you can run `yo grow` and follow the prompts.
 Or call task separately:
 - `yo grow:github` GitHub Issue templates & co.
 - `yo grow:dotfiles`
+- `yo grow:phpcs` PHPCS with WordPress coding standards.
 
 <p align="center">
 	<br/><br/>
