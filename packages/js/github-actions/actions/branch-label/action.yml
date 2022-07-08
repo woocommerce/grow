@@ -32,6 +32,11 @@ runs:
         labels: |
           changelog: tweak
     - uses: actions-ecosystem/action-add-labels@v1
+      if: ${{ startsWith(github.head_ref, 'dev/') }}
+      with:
+        labels: |
+          changelog: dev
+    - uses: actions-ecosystem/action-add-labels@v1
       if: ${{ startsWith(github.head_ref, 'doc/') }}
       with:
         labels: |
