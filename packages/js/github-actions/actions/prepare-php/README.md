@@ -42,7 +42,7 @@ steps:
   - name: Prepare PHP
     uses: woocommerce/grow/prepare-php@actions-v1
     with:
-      php-version: 16
+      php-version: 8.1
 ```
 
 #### Set up with tools

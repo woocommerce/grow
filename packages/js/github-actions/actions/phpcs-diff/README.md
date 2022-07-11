@@ -43,5 +43,5 @@ steps:
   - name: Run PHPCS to changed lines of code
     uses: woocommerce/grow/phpcs-diff@actions-v1
     with:
-      php-version: 16
+      php-version: 8.1
 ```
