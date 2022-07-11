@@ -28,6 +28,8 @@ runs:
         JSON_REPORT="/tmp/phpcs-diff.json"
         vendor/bin/diffFilter --phpcsStrict <(git diff HEAD^...HEAD) <(vendor/bin/phpcs ./* -q --report=json) --report=phpcs 0 > "$JSON_REPORT"
 
+        # It's a workaround that prevents the empty result from being passed as a JSON file to annotate-phpcs-report.js
+        # Related issue: https://github.com/exussum12/coverageChecker/issues/72
         if [ ! -s "$JSON_REPORT" ]; then
           echo "No changes."
           exit 0
