@@ -1,6 +1,12 @@
 name: PHPCS Diff
 description: Run PHPCS to the changed lines of code, set error annotations to a pull request.
 
+inputs:
+  php-version:
+    description: Specify PHP version. "7.4" by default.
+    required: false
+    default: "7.4"
+
 runs:
   using: composite
   steps:
@@ -9,8 +15,10 @@ runs:
       with:
         fetch-depth: 2
 
-    # Set up PHP and tools.
+    # Set up PHP.
     - uses: woocommerce/grow/prepare-php@actions-v1
+      with:
+        php-version: ${{ inputs.php-version }}
 
     #Log information
     - shell: bash

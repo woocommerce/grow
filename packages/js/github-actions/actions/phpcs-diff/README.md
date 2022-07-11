@@ -35,3 +35,13 @@ jobs:
       - name: Run PHPCS to changed lines of code
         uses: woocommerce/grow/phpcs-diff@actions-v1
 ```
+
+#### Specify the PHP version:
+
+```yaml
+steps:
+  - name: Run PHPCS to changed lines of code
+    uses: woocommerce/grow/phpcs-diff@actions-v1
+    with:
+      php-version: 8.1
+```
