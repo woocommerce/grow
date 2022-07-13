@@ -37,6 +37,16 @@ export default [
 		plugins: [ nodeResolve( { preferBuiltins: true } ), commonjs() ],
 	},
 	{
+		input: './actions/stylelint-annotation/src/stylelintFormatter.js',
+		output: {
+			file: './actions/stylelint-annotation/stylelintFormatter.cjs',
+			format: 'cjs',
+			exports: 'auto',
+		},
+		// This action imports 'stylelint' from the caller repo.
+		external: [ 'stylelint' ],
+	},
+	{
 		input: './actions/update-version-tags/src/update-version-tags.js',
 		output: {
 			file: './actions/update-version-tags/update-version-tags.js',
