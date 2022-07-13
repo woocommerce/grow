@@ -1,5 +1,13 @@
 # Changelog
 
+## 2022-07-13 (1.2.0)
+### New Features 🎉
+* Add "php-version" input to the phpcs-diff action for specifying PHP version. (https://github.com/woocommerce/grow/pull/25)
+* Add "dev" change type to `branch-label` GHA,. (https://github.com/woocommerce/grow/pull/28)
+### Bug Fixes 🐛
+* Fix the JSON parse error when manually releasing the `github-actions` package. (https://github.com/woocommerce/grow/pull/24)
+* Fix the JSON syntax error of running `phpcd-diff` action when no changes are made. (https://github.com/woocommerce/grow/pull/27)
+
 ## 2022-07-05 (1.1.0)
 ### New Features 🎉
 * Add a GitHub action for adding branch type labels. (https://github.com/woocommerce/grow/pull/14)
