@@ -4,13 +4,7 @@
   "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
   "type": "module",
   "scripts": {
-    "build": "npm run build:get-release-notes && npm run build:phpcs-diff && npm run build:update-version-tags",
-    "build:get-release-notes": "npx @vercel/ncc build ./actions/get-release-notes/src/get-release-notes.js -o ./actions/get-release-notes",
-    "postbuild:get-release-notes": "mv ./actions/get-release-notes/index.js ./actions/get-release-notes/get-release-notes.js",
-    "build:phpcs-diff": "npx @vercel/ncc build ./actions/phpcs-diff/src/annotate-phpcs-report.js -o ./actions/phpcs-diff",
-    "postbuild:phpcs-diff": "mv ./actions/phpcs-diff/index.js ./actions/phpcs-diff/annotate-phpcs-report.js",
-    "build:update-version-tags": "npx @vercel/ncc build ./actions/update-version-tags/src/update-version-tags.js -o ./actions/update-version-tags",
-    "postbuild:update-version-tags": "mv ./actions/update-version-tags/index.js ./actions/update-version-tags/update-version-tags.js"
+    "build": "npx rollup -c"
   },
   "author": "WooCommerce",
   "license": "GPL-3.0-or-later",

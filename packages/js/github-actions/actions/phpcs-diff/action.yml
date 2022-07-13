@@ -44,7 +44,7 @@ runs:
         fi
 
         cd "${{ github.action_path }}"
-        node annotate-phpcs-report.js "$JSON_REPORT"
+        node annotate-phpcs-report.mjs "$JSON_REPORT"
         cd -
 
         TOTAL_ERRORS=$(jq ".totals.errors" "$JSON_REPORT")

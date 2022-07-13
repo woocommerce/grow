@@ -70,4 +70,4 @@ outputs:
 
 runs:
   using: node16
-  main: get-release-notes.js
+  main: get-release-notes.mjs
