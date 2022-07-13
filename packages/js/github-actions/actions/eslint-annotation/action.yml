@@ -1,0 +1,18 @@
+name: ESlint annotattion formatter
+description: Annotate eslint results via eslint formatter.
+
+inputs:
+  formatter-dest:
+    description: The relative path to place the eslint formatter script. Please use a destination file path within the caller repository since the script will depends on the eslint package installed in it.
+    default: "./eslintFormatter.cjs"
+
+runs:
+  using: composite
+  steps:
+    # Copy formatter script to the destination file path.
+    - shell: bash
+      run: |
+        SCRIPT_DEST="${{ inputs.formatter-dest }}"
+        mkdir -p $(dirname "$SCRIPT_DEST")
+        echo '/* eslint-disable */' > "$SCRIPT_DEST"
+        cat "${{ github.action_path }}/eslintFormatter.cjs" >> "$SCRIPT_DEST"
