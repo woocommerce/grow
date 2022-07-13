@@ -47,7 +47,7 @@ runs:
         node annotate-phpcs-report.js "$JSON_REPORT"
         cd -
 
-        TOTAL_ERRORS=$(jq ".totals.errors" "$JSON_REPORT"
+        TOTAL_ERRORS=$(jq ".totals.errors" "$JSON_REPORT")
         if [ "$TOTAL_ERRORS" != "0" ]; then
           exit 1
         fi
