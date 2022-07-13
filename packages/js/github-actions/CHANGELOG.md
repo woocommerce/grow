@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-07-13 (1.2.1)
+### Bug Fixes 🐛
+* Fix a bash script syntax error in the `phpcs-diff` action. (https://github.com/woocommerce/grow/pull/30)
+
 ## 2022-07-13 (1.2.0)
 ### New Features 🎉
 * Add "php-version" input to the phpcs-diff action for specifying PHP version. (https://github.com/woocommerce/grow/pull/25)
