@@ -1,5 +1,8 @@
 # Changelog
 
+## 2022-07-13 (1.2.2)
+
+
 ## 2022-07-13 (1.2.1)
 ### Bug Fixes 🐛
 * Fix a bash script syntax error in the `phpcs-diff` action. (https://github.com/woocommerce/grow/pull/30)
