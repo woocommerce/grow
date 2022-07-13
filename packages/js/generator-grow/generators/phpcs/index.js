@@ -187,10 +187,9 @@ export default class PhpcsGenerator extends Generator {
 
 	_findExclusionPatterns() {
 		const patterns = [];
-		const configFilename = [
-			'phpcs.xml.dist',
-			'phpcs.xml',
-		].find( ( filename ) => this.existsDestination( filename ) );
+		const configFilename = [ 'phpcs.xml.dist', 'phpcs.xml' ].find(
+			( filename ) => this.existsDestination( filename )
+		);
 
 		if ( configFilename ) {
 			const content = this.readDestination( configFilename );

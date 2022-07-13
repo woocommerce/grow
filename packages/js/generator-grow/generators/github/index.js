@@ -1,21 +1,25 @@
+/**
+ * External dependencies
+ */
 import Generator from 'yeoman-generator';
 
 export default class GitHubGenerator extends Generator {
 	async prompting() {
-		this.answers = await this.prompt([
+		this.answers = await this.prompt( [
 			{
-				type: "input",
-				name: "title",
-				message: "Your project title (used in CONTRIBUTING.md)",
-				default: this.packageJson.get( 'title' ) || this.appname
+				type: 'input',
+				name: 'title',
+				message: 'Your project title (used in CONTRIBUTING.md)',
+				default: this.packageJson.get( 'title' ) || this.appname,
 			},
 			{
-				type: "input",
-				name: "ideasboard",
-				message: "What's the plugin ideas board's category number? (leave empty if none)",
-				default: ''
-			}
-		]);
+				type: 'input',
+				name: 'ideasboard',
+				message:
+					"What's the plugin ideas board's category number? (leave empty if none)",
+				default: '',
+			},
+		] );
 	}
 
 	writing() {
@@ -25,4 +29,4 @@ export default class GitHubGenerator extends Generator {
 			{ ...this.answers }
 		);
 	}
-};
+}

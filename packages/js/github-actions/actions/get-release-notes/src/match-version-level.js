@@ -17,7 +17,7 @@ function parseKeywords( keywords ) {
  * starting with the same keyword, the match level is returned.
  * If both major and minor cannot be matched, 'patch' will be returned.
  *
- * @param {string} notesContent The content of release notes got from GitHub.
+ * @param {string} notesContent  The content of release notes got from GitHub.
  * @param {string} majorKeywords The string of major level keywords that separated by commas. For example, 'breaking, brand new'.
  * @param {string} minorKeywords The string of minor level keywords that separated by commas. For example, 'feature, enhancement'.
  * @return {'major'|'minor'|'patch'} The matched version level.

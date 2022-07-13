@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import Generator from 'yeoman-generator';
 
 export default class DotFilesGenerator extends Generator {
@@ -7,4 +10,4 @@ export default class DotFilesGenerator extends Generator {
 			this.destinationPath( './' )
 		);
 	}
-};
+}

@@ -11,7 +11,7 @@ export default class PackageTool {
 	/**
 	 * Create a PackageTool instance.
 	 *
-	 * @param {string} packageDir The path to the root directory of a package in this repository.
+	 * @param {string} packageDir                               The path to the root directory of a package in this repository.
 	 * @param {string} [workspace=process.env.GITHUB_WORKSPACE] The working directory on the job runner in GitHub actions for steps. Usually, it's an environment variable that can be accessed by the variable name `GITHUB_WORKSPACE` or the context `github.workspace`.
 	 */
 	constructor( packageDir, workspace = process?.env.GITHUB_WORKSPACE ) {
@@ -51,7 +51,7 @@ export default class PackageTool {
 	/**
 	 * Gets the heading and content of a specific version of the changelog.
 	 *
-	 * @param {string} version The version of changelog be obtained. For example, '1.4.7'.
+	 * @param {string} version                            The version of changelog be obtained. For example, '1.4.7'.
 	 * @param {string} [changelogFilePath='CHANGELOG.md'] The relative path to the changelog file.
 	 * @return {{version: string, heading: string, content: string}} The version, heading and content of the specified version.
 	 */
