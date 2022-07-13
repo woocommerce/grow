@@ -7,11 +7,13 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 ## Actions list
 
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
+- [`eslint-annotation`](actions/eslint-annotation) - Annotate eslint results via eslint formatter
 - [`get-release-notes`](actions/get-release-notes) - Get release notes via GitHub, infer the next version and tag
 - [`phpcs-diff`](actions/phpcs-diff) - Run PHPCS to the changed lines of code, set error annotations to a pull request
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
 - [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
+- [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
 
 ## Prerequisites
