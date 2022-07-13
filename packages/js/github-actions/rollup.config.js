@@ -7,6 +7,16 @@ import json from '@rollup/plugin-json';
 
 export default [
 	{
+		input: './actions/eslint-annotation/src/eslintFormatter.js',
+		output: {
+			file: './actions/eslint-annotation/eslintFormatter.cjs',
+			format: 'cjs',
+			exports: 'auto',
+		},
+		// This action imports 'eslint' from the caller repo.
+		external: [ 'eslint' ],
+	},
+	{
 		input: './actions/get-release-notes/src/get-release-notes.js',
 		output: {
 			file: './actions/get-release-notes/get-release-notes.mjs',
