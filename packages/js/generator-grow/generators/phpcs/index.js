@@ -39,15 +39,6 @@ export default class PhpcsGenerator extends Generator {
 
 		// PHPCS configuration
 		if ( this.answers.installConfig ) {
-			const filenameAnswer = await this.prompt( {
-				type: 'list',
-				name: 'configFilename',
-				message: 'Which PHPCS config file name is preferred?',
-				...this._prepareConfigFileOptions(),
-			} );
-
-			Object.assign( this.answers, filenameAnswer );
-
 			furtherQuestions.push(
 				{
 					type: 'input',
@@ -132,9 +123,10 @@ export default class PhpcsGenerator extends Generator {
 
 		// PHPCS configuration
 		if ( answers.installConfig ) {
+			const filename = 'phpcs.xml.dist';
 			this.fs.copyTpl(
-				this.templatePath( 'phpcs.xml.dist' ),
-				this.destinationPath( answers.configFilename ),
+				this.templatePath( filename ),
+				this.destinationPath( filename ),
 				answers
 			);
 		}
@@ -179,15 +171,6 @@ export default class PhpcsGenerator extends Generator {
 		}
 	}
 
-	_prepareConfigFileOptions() {
-		const choices = [ 'phpcs.xml.dist', 'phpcs.xml' ];
-		const defaultVal =
-			choices.find( ( filename ) =>
-				this.existsDestination( filename )
-			) || choices[ 0 ];
-		return { choices, default: defaultVal };
-	}
-
 	_findTextDomain() {
 		// Ref: https://developer.wordpress.org/plugins/internationalization/how-to-internationalize-your-plugin/#text-domains
 		const mainFile = `${ path.basename( this.contextRoot ) }.php`;
@@ -203,10 +186,13 @@ export default class PhpcsGenerator extends Generator {
 	}
 
 	_findExclusionPatterns() {
-		const { configFilename } = this.answers;
 		const patterns = [];
+		const configFilename = [
+			'phpcs.xml.dist',
+			'phpcs.xml',
+		].find( ( filename ) => this.existsDestination( filename ) );
 
-		if ( this.existsDestination( configFilename ) ) {
+		if ( configFilename ) {
 			const content = this.readDestination( configFilename );
 			const regex = /<exclude-pattern>([^<]+)<\/exclude-pattern>/g;
 			content.replace( regex, ( _, pattern ) => {

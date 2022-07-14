@@ -10,8 +10,8 @@ Description:
 
   - PHPCS config file
 
-    Create a phpcs.xml.dist or phpcs.xml file for configuring PHPCS.
-    It will also ask about the text domain and exclusion patterns.
+    Create a phpcs.xml.dist file for configuring PHPCS. It will also ask about
+    the text domain and exclusion patterns.
 
   - Local scripts
 
