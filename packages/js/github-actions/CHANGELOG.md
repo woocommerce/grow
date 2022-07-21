@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-07-21 (1.3.0)
+### New Features 🎉
+* Add annotation actions of `eslint` and `stylelint` for annotating the linting results via their formatter. (https://github.com/woocommerce/grow/pull/35)
+### Tweaked 🔧
+* Change the build tool of `github-actions` package to `rollup`. (https://github.com/woocommerce/grow/pull/34)
+
 ## 2022-07-13 (1.2.1)
 ### Bug Fixes 🐛
 * Fix a bash script syntax error in the `phpcs-diff` action. (https://github.com/woocommerce/grow/pull/30)
