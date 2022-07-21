@@ -20,5 +20,13 @@
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0"
+  },
+  "eslintConfig": {
+    "settings": {
+      "import/core-modules": [
+        "eslint",
+        "stylelint"
+      ]
+    }
   }
 }

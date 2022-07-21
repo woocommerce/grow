@@ -23,5 +23,15 @@
     "yeoman-assert": "^3.1.1",
     "yeoman-environment": "^3.8.1",
     "yeoman-test": "^6.2.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "jest/expect-expect": [
+        "warn",
+        {
+          "assertFunctionNames": ["assert"]
+        }
+      ]
+    }
   }
 }

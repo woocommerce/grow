@@ -1,11 +1,11 @@
 /**
  * @typedef {Object} Annotation
- * @property {string} command Annotation command name.
- * @property {string} [message] Annotation message.
- * @property {string} [filePath] Path to the associated file.
- * @property {string} [line] Line number of the associated file, starting at 1.
- * @property {string} [endLine] End line number of the associated file.
- * @property {string} [column] Column number of the associated file, starting at 1.
+ * @property {string} command     Annotation command name.
+ * @property {string} [message]   Annotation message.
+ * @property {string} [filePath]  Path to the associated file.
+ * @property {string} [line]      Line number of the associated file, starting at 1.
+ * @property {string} [endLine]   End line number of the associated file.
+ * @property {string} [column]    Column number of the associated file, starting at 1.
  * @property {string} [endColumn] End column number of the associated file.
  */
 
@@ -30,7 +30,7 @@ function toAnnotationCommand( annotation ) {
  * - https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-warning-message
  * - https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
  *
- * @param  {Array<Annotation>} annotations Annotations to be handled.
+ * @param {Array<Annotation>} annotations Annotations to be handled.
  */
 export default function annotateByWorkflowCommand( annotations ) {
 	if ( annotations.length === 0 ) {
