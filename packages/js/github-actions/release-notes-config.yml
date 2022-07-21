@@ -3,6 +3,8 @@ changelog:
     authors:
       - dependabot
       - github-actions
+    labels:
+      - "changelog: none"
 
   categories:
     # Major level
