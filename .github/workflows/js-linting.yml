@@ -35,7 +35,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Prepare annotation formatter
-        uses: woocommerce/grow/eslint-annotation@actions-v1-pre
+        uses: woocommerce/grow/eslint-annotation@actions-v1
 
       # Turn off import/no-unresolved rule since this check doesn't install packages for all sub-packages.
       - name: Lint JavaScript and annotate linting errors
