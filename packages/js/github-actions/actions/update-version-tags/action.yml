@@ -16,4 +16,4 @@ inputs:
 
 runs:
   using: node16
-  main: update-version-tags.js
+  main: update-version-tags.mjs
