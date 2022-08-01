@@ -12,6 +12,9 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 - [`/packages/js/storybook`](packages/js/storybook/README.md) - Storybook dependencies and basic scripts
 - [`/packages/js/tracking-jsdoc`](packages/js/tracking-jsdoc/README.md) - `jsdoc` plugin to document Tracking Events in markdown
 
+## List of configs
+- [`/configs/woocommerce-github-sync-labels`](configs/woocommerce-github-sync-labels/README.md) - Config to add extra labels to Grow's repositories.
+
 <p align="center">
 	<br/><br/>
 	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
