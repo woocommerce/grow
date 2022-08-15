@@ -20,6 +20,11 @@ describe( ':github', function () {
 			assert.file( '.github/SECURITY.md' );
 		} );
 	} );
+	it( 'generate `.github/workflows/branch-labels.yml` file', async function () {
+		await helpers.run( githubPath ).then( function () {
+			assert.file( '.github/worflows/branch-labels.yml' );
+		} );
+	} );
 	it( 'Should use given project title in CONTRIBUTING.md', async function () {
 		await helpers
 			.run( githubPath )
