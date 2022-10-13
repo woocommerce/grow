@@ -24,7 +24,8 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Automattic\\WooCommerce\\Grow\\Ventures\\Installer\\": "packages/php/installer"
+			"Automattic\\WooCommerce\\Grow\\Ventures\\Installer\\": "packages/php/installer",
+			"WooCommerce\\Ventures\\WR\\": "packages/php/woorelease-extension/src"
 		}
 	},
 	"extra": {
