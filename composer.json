@@ -26,6 +26,17 @@
 		}
 	},
 	"scripts": {
-		"post-update-cmd": "git update-index --assume-unchanged release.txt"
+		"assumeReleaseUnchanged": "git update-index --assume-unchanged release.txt",
+		"noAssumeReleaseUnchanged": "git update-index --no-assume-unchanged release.txt",
+		"post-install-cmd": [
+			"@assumeReleaseUnchanged"
+		],
+		"post-update-cmd": [
+			"@assumeReleaseUnchanged"
+		]
+	},
+	"scripts-descriptions": {
+		"assumeReleaseUnchanged": "Tell Git to assume that the 'release.txt' file is unchanged. This allows changes in this file to be ignored by Git.",
+		"noAssumeReleaseUnchanged": "Tell Git to stop assuming that the 'release.txt' file is unchanged, and track it normally."
 	}
 }
