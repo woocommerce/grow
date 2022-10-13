@@ -24,5 +24,8 @@
 		"psr-4": {
 			"Automattic\\WooCommerce\\Grow\\WR\\": "packages/php/woorelease-extension/src"
 		}
+	},
+	"scripts": {
+		"post-update-cmd": "git update-index --assume-unchanged release.txt"
 	}
 }
