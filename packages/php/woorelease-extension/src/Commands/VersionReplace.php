@@ -1,12 +1,12 @@
 <?php
 
-namespace WooCommerce\Ventures\WR\Commands;
+namespace Automattic\WooCommerce\Grow\WR\Commands;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use WooCommerce\Ventures\WR\Utils\VersionReplace as VR;
+use Automattic\WooCommerce\Grow\WR\Utils\VersionReplace as VR;
 use WR\Command\Versionbump_Replace;
 use WR\Tools\Git;
 use WR\Tools\Logger;

@@ -1,6 +1,6 @@
 <?php
 
-namespace WooCommerce\Ventures\WR\Commands;
+namespace Automattic\WooCommerce\Grow\WR\Commands;
 
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;

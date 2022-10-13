@@ -1,6 +1,6 @@
 <?php
 
-namespace WooCommerce\Ventures\WR\Utils;
+namespace Automattic\WooCommerce\Grow\WR\Utils;
 
 use WR\Tools\Logger;
 use WR\Tools\Product;

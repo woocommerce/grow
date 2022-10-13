@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-use WooCommerce\Ventures\WR\Commands\Bulk;
-use WooCommerce\Ventures\WR\Commands\VersionReplace;
+use Automattic\WooCommerce\Grow\WR\Commands\Bulk;
+use Automattic\WooCommerce\Grow\WR\Commands\VersionReplace;
 use WR\Application;
 
 $rootDir = dirname(__DIR__);
