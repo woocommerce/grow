@@ -5,10 +5,14 @@ namespace Automattic\WooCommerce\Grow\WR\Commands;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\LogicException;
+use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use WR\Application;
 use WR\Command\Release;
 
 /**
@@ -16,16 +20,14 @@ use WR\Command\Release;
  *
  * @since %VERSION%
  */
-class Bulk extends Command
-{
+class Bulk extends Command {
 	/**
 	 * Configures the current command.
 	 */
-	protected function configure()
-	{
+	protected function configure() {
 		$this
-			->setName('bulk')
-			->setDescription('Run a bulk simulate or release.')
+			->setName( 'bulk' )
+			->setDescription( 'Run a bulk simulate or release.' )
 			->addArgument(
 				'release-command',
 				InputArgument::REQUIRED,
@@ -46,11 +48,10 @@ class Bulk extends Command
 	 * @see InputInterface::bind()
 	 * @see InputInterface::validate()
 	 */
-	protected function initialize(InputInterface $input, OutputInterface $output)
-	{
+	protected function initialize( InputInterface $input, OutputInterface $output ) {
 		// This throws an exception if the command is not found, which we want to allow.
-		$command = $this->getApplication()->get($input->getArgument('release-command'));
-		if (!$command instanceof Release) {
+		$command = $this->getApplication()->get( $input->getArgument( 'release-command' ) );
+		if ( ! $command instanceof Release ) {
 			throw new InvalidArgumentException(
 				sprintf(
 					'Command "%s" is not an instance of %s',
@@ -62,33 +63,28 @@ class Bulk extends Command
 
 		// Get the command definition and merge it to this command definition.
 		$newDefinition = new InputDefinition();
-		$newOptions = [];
+		$newOptions    = [];
 
 		$commandOptions = $command->getDefinition()->getOptions();
-		foreach ($commandOptions as $commandOption) {
+		foreach ( $commandOptions as $commandOption ) {
 			// Skip the product_version option.
-			if ('product_version' === $commandOption->getName()) {
+			if ( 'product_version' === $commandOption->getName() ) {
 				continue;
 			}
 
 			$newOptions[] = $commandOption;
 		}
 
-		$newDefinition->setArguments($this->getDefinition()->getArguments());
-		$newDefinition->setOptions($this->getDefinition()->getOptions());
-		$newDefinition->addOptions($newOptions);
+		$newDefinition->setArguments( $this->getDefinition()->getArguments() );
+		$newDefinition->setOptions( $this->getDefinition()->getOptions() );
+		$newDefinition->addOptions( $newOptions );
 
-		$this->setDefinition($newDefinition);
-		$input->bind($this->getDefinition());
+		$this->setDefinition( $newDefinition );
+		$input->bind( $this->getDefinition() );
 	}
 
 	/**
 	 * Executes the current command.
-	 *
-	 * This method is not abstract because you can use this class
-	 * as a concrete class. In this case, instead of defining the
-	 * execute() method, you set the code to execute by passing
-	 * a Closure to the setCode() method.
 	 *
 	 * @return int 0 if everything went fine, or an exit code
 	 *
