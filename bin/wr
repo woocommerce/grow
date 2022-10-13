@@ -25,6 +25,7 @@ define('WOORELEASE_VERSION', $version);
 
 // Set up application and add our own commands.
 $app = new Application(WOORELEASE_PRODUCT_NAME, $version);
+$app->set_meta('root_dir', $rootDir);
 
 print(
 	"\033[38;5;99m
