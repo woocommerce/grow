@@ -4,7 +4,9 @@ namespace Automattic\WooCommerce\Grow\WR\Commands;
 
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use WR\Command\Release;
@@ -29,6 +31,9 @@ class Bulk extends Command
 				InputArgument::REQUIRED,
 				'The command to run in bulk.'
 			);
+
+		// We're going to do our own validation, so ignore those errors.
+		$this->ignoreValidationErrors();
 	}
 
 	/**
@@ -55,7 +60,26 @@ class Bulk extends Command
 			);
 		}
 
-		$commandDefinition = $command->getDefinition();
+		// Get the command definition and merge it to this command definition.
+		$newDefinition = new InputDefinition();
+		$newOptions = [];
+
+		$commandOptions = $command->getDefinition()->getOptions();
+		foreach ($commandOptions as $commandOption) {
+			// Skip the product_version option.
+			if ('product_version' === $commandOption->getName()) {
+				continue;
+			}
+
+			$newOptions[] = $commandOption;
+		}
+
+		$newDefinition->setArguments($this->getDefinition()->getArguments());
+		$newDefinition->setOptions($this->getDefinition()->getOptions());
+		$newDefinition->addOptions($newOptions);
+
+		$this->setDefinition($newDefinition);
+		$input->bind($this->getDefinition());
 	}
 
 	/**
