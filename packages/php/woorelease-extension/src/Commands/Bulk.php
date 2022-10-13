@@ -3,7 +3,6 @@
 namespace WooCommerce\Ventures\WR\Commands;
 
 use InvalidArgumentException;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +25,7 @@ class Bulk extends Command
 			->setName('bulk')
 			->setDescription('Run a bulk simulate or release.')
 			->addArgument(
-				'command',
+				'release-command',
 				InputArgument::REQUIRED,
 				'The command to run in bulk.'
 			);
@@ -45,7 +44,7 @@ class Bulk extends Command
 	protected function initialize(InputInterface $input, OutputInterface $output)
 	{
 		// This throws an exception if the command is not found, which we want to allow.
-		$command = $this->getApplication()->get($input->getArgument('command'));
+		$command = $this->getApplication()->get($input->getArgument('release-command'));
 		if (!$command instanceof Release) {
 			throw new InvalidArgumentException(
 				sprintf(
