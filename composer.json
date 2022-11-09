@@ -1,0 +1,42 @@
+{
+	"name": "woocommerce/grow",
+	"description": "description",
+	"type": "library",
+	"license": "MIT",
+	"require": {
+		"php": ">=7.4",
+		"woocommerce/woorelease": "^2.4",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"ext-zip": "*",
+		"phpcompatibility/php-compatibility": "^9.0",
+		"php-parallel-lint/php-parallel-lint": "^1.3.1",
+		"yoast/phpunit-polyfills": "^1.0"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/woocommerce/woorelease"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Automattic\\WooCommerce\\Grow\\WR\\": "packages/php/woorelease-extension/src"
+		}
+	},
+	"scripts": {
+		"assumeReleaseUnchanged": "git update-index --assume-unchanged release.txt",
+		"noAssumeReleaseUnchanged": "git update-index --no-assume-unchanged release.txt",
+		"post-install-cmd": [
+			"@assumeReleaseUnchanged"
+		],
+		"post-update-cmd": [
+			"@assumeReleaseUnchanged"
+		]
+	},
+	"scripts-descriptions": {
+		"assumeReleaseUnchanged": "Tell Git to assume that the 'release.txt' file is unchanged. This allows changes in this file to be ignored by Git.",
+		"noAssumeReleaseUnchanged": "Tell Git to stop assuming that the 'release.txt' file is unchanged, and track it normally."
+	}
+}
