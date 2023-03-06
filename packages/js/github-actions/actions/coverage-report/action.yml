@@ -59,3 +59,5 @@ runs:
         file: "${{ inputs.report-path }}/${{ inputs.report-file }}"
         base-file: "${{ inputs.report-path }}/${{ inputs.base-branch }}/${{ inputs.report-file }}"
         signature: ${{ inputs.test-comment }}
+        table-above-coverage: 1
+        table-below-coverage: 99
