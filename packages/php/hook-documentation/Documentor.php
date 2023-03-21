@@ -26,6 +26,14 @@ class Documentor {
 	 */
 	protected const HOOKS_MARKDOWN_OUTPUT = './Docs/Hooks.md';
 
+	public function __construct() {
+		$args = [
+			'github_path' => '',
+			'source_files' => [],
+			'output_file' => '',
+		];
+	}
+
 	/**
 	 * Get files.
 	 *
