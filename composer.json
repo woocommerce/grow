@@ -5,8 +5,9 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=7.4",
-		"woocommerce/woorelease": "^2.4",
-		"ext-json": "*"
+		"ext-json": "*",
+		"symfony/finder": "^5.4",
+		"woocommerce/woorelease": "^2.4"
 	},
 	"require-dev": {
 		"ext-zip": "*",
@@ -23,7 +24,7 @@
 	"autoload": {
 		"psr-4": {
 			"Automattic\\WooCommerce\\Grow\\WR\\": "packages/php/woorelease-extension/src",
-			"Automattic\\WooCommerce\\Grow\\Actions\\HookDocumentation\\": "packages/actions/hook-documentation"
+			"Automattic\\WooCommerce\\Grow\\HookDocumentation\\": "packages/php/hook-documentation"
 		}
 	},
 	"scripts": {
