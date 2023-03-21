@@ -4,17 +4,14 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\Actions\HookDocumentation;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * Class Documentor
  *
  * @since x.x.x
  */
 class Documentor {
-	/**
-	 * Source path.
-	 */
-	protected const SOURCE_PATH = 'src/';
-
 
 	/**
 	 * GITHUB_PATH
@@ -26,44 +23,17 @@ class Documentor {
 	 */
 	protected const HOOKS_MARKDOWN_OUTPUT = './Docs/Hooks.md';
 
-	public function __construct() {
-		$args = [
-			'github_path' => '',
-			'source_files' => [],
-			'output_file' => '',
-		];
-	}
+	protected array $args;
 
-	/**
-	 * Get files.
-	 *
-	 * @param string $pattern Search pattern.
-	 * @param int    $flags   Glob flags.
-	 * @param string $path    Directory path.
-	 * @return array
-	 */
-	protected static function get_files( $pattern, $flags = 0, $path = '' ) {
-		$dir = dirname( $pattern );
-		// phpcs:ignore WordPress.PHP.YodaConditions.NotYoda
-		if ( ! $path && $dir !== '.' ) {
-			if ( '\\' === $dir || '/' === $dir ) {
-				$dir = '';
-			}
-
-			return self::get_files( basename( $pattern ), $flags, $dir . '/' );
-		}
-
-		$paths = (array) glob( $path . '*', GLOB_ONLYDIR | GLOB_NOSORT );
-		$files = (array) glob( $path . $pattern, $flags );
-
-		foreach ( $paths as $p ) {
-			$retrieved_files = (array) self::get_files( $pattern, $flags, $p . '/' );
-			if ( is_array( $files ) && is_array( $retrieved_files ) ) {
-				$files = array_merge( $files, $retrieved_files );
-			}
-		}
-
-		return $files;
+	public function __construct( array $args = [] ) {
+		$this->args = array_merge(
+			[
+				'github_path'  => '',
+				'source_dirs' => [],
+				'output_file'  => '',
+			],
+			$args
+		);
 	}
 
 	/**
@@ -71,11 +41,17 @@ class Documentor {
 	 *
 	 * @return array
 	 */
-	protected static function get_files_to_scan(): array {
+	protected function get_files_to_scan(): array {
 		$files = [];
 
-		$files['Main'] = [ 'woocommerce-order-source-attribution.php' ];
-		$files['Src']  = array_unique( self::get_files( '*.php', GLOB_MARK, self::SOURCE_PATH ) );
+		$finder = new Finder();
+		$finder->in($this->args['source_dirs']);
+		$finder->files()->name('*.php');
+
+		foreach ( $finder as $file ) {
+			$files[] = $file->getRealPath();
+		}
+
 		return array_filter( $files );
 	}
 
@@ -83,9 +59,10 @@ class Documentor {
 	 * Get hooks.
 	 *
 	 * @param array $files_to_scan Files to scan.
+	 *
 	 * @return array
 	 */
-	protected static function get_hooks( array $files_to_scan ): array {
+	protected function get_hooks( array $files_to_scan ): array {
 		$scanned = [];
 		$results = [];
 
@@ -93,17 +70,17 @@ class Documentor {
 			$hooks_found = [];
 
 			foreach ( $files as $f ) {
+				if ( array_key_exists( $f, $scanned ) ) {
+					continue;
+				}
+
 				$current_file     = $f;
-				$tokens           = token_get_all( file_get_contents( $f ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+				$tokens           = token_get_all( file_get_contents( $f ) );
 				$token_type       = false;
 				$current_class    = '';
 				$current_function = '';
 
-				if ( in_array( $current_file, $scanned, true ) ) {
-					continue;
-				}
-
-				$scanned[] = $current_file;
+				$scanned[ $current_file ] = 1;
 
 				foreach ( $tokens as $index => $token ) {
 					if ( is_array( $token ) ) {
@@ -136,7 +113,7 @@ class Documentor {
 
 									// Keep adding to hook until we find a comma or colon.
 									while ( 1 ) {
-										$loop++;
+										$loop ++;
 										$prev_hook = is_string( $tokens[ $index + $loop - 1 ] ) ? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
 										$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ] : $tokens[ $index + $loop ][1];
 
@@ -204,9 +181,8 @@ class Documentor {
 	 * @param array $file File data.
 	 * @return string
 	 */
-	protected static function get_file_url( array $file ): string {
-		$url = str_replace( '.php', '.php#L' . $file['line'], $file['path'] );
-		return $url;
+	protected function get_file_url( array $file ): string {
+		return str_replace( '.php', '.php#L' . $file['line'], $file['path'] );
 	}
 
 	/**
@@ -215,11 +191,10 @@ class Documentor {
 	 * @param array $file File data.
 	 * @return string
 	 */
-	protected static function get_file_link( array $file ): string {
-
+	protected function get_file_link( array $file ): string {
 		return sprintf(
 			'<a href="%s">%s</a>',
-			self::GITHUB_PATH . self::get_file_url( $file ),
+			"{$this->args['github_path']}{$this->get_file_url( $file )}",
 			basename( $file['path'] ) . "#L{$file['line']}"
 		);
 	}
@@ -230,7 +205,7 @@ class Documentor {
 	 * @param array $hook_list List of hooks.
 	 * @param array $files_to_scan List of files to scan.
 	 */
-	protected static function get_delimited_list_output( array $hook_list, array $files_to_scan ): string {
+	protected function get_delimited_list_output( array $hook_list, array $files_to_scan ): string {
 
 		$output  = "# Hooks Reference\n\n";
 		$output .= "A list of hooks, i.e `actions` and `filters`, that are defined or used in this project.\n\n";
@@ -239,7 +214,7 @@ class Documentor {
 			foreach ( $hooks as $hook => $details ) {
 				$link_list = [];
 				foreach ( $details['files'] as $file ) {
-					$link_list[] = '- ' . self::get_file_link( $file );
+					$link_list[] = "- {$this->get_file_link( $file )}";
 				}
 
 				$links   = implode( "\n", $link_list );
@@ -258,9 +233,9 @@ class Documentor {
 	/**
 	 * Generate hooks documentation.
 	 */
-	public static function generate_hooks_docs() {
-		$files_to_scan = self::get_files_to_scan();
-		$hook_list     = self::get_hooks( $files_to_scan );
+	public function generate_hooks_docs() {
+		$files_to_scan = $this->get_files_to_scan();
+		$hook_list     = $this->get_hooks( $files_to_scan );
 
 		if ( empty( $hook_list ) ) {
 			return;
@@ -269,6 +244,6 @@ class Documentor {
 		// Add hooks reference content.
 		$output = self::get_delimited_list_output( $hook_list, $files_to_scan );
 
-		file_put_contents( self::HOOKS_MARKDOWN_OUTPUT, $output ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		file_put_contents( $this->args['output_file'], $output ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 	}
 }
