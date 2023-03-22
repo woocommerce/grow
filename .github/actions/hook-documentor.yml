@@ -1,0 +1,39 @@
+name: GitHub Actions - Document Hooks
+inputs:
+  output-file:
+    description: Relative file path in the repository for Hooks output
+    required: true
+    default: 'docs/Hooks.md'
+  source-directories:
+    description: Directories 
+
+runs:
+  using: "composite"
+  steps:
+    - 
+
+on:
+  pull_request:
+    types:
+      - closed
+    
+    # Run when a pull request contains PHP files
+    paths:
+      - '**.php'
+
+
+jobs:
+  DocumentHooks:
+    name: Document hooks when pull request is merged
+
+    # Only run when a pull request is merged. There are multiple
+    # Reasons a PR will be closed.
+    if: github.event.pull_request.merged == true
+    
+    # Set up environment variables for the script
+    env:
+      
+    
+    runs-on: ubuntu-latest
+    steps:
+      - 
