@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Automattic\WooCommerce\Grow\Actions\HookDocumentation;
+namespace Automattic\WooCommerce\Grow\HookDocumentation;
 
 use Symfony\Component\Finder\Finder;
 
@@ -13,16 +13,7 @@ use Symfony\Component\Finder\Finder;
  */
 class Documentor {
 
-	/**
-	 * GITHUB_PATH
-	 */
-	protected const GITHUB_PATH = 'https://github.com/woocommerce/woocommerce-order-source-attribution/blob/main/';
-
-	/**
-	 * Hooks docs markdown output.
-	 */
-	protected const HOOKS_MARKDOWN_OUTPUT = './Docs/Hooks.md';
-
+	/** @var array */
 	protected array $args;
 
 	public function __construct( array $args = [] ) {
@@ -205,7 +196,7 @@ class Documentor {
 	 * @param array $hook_list List of hooks.
 	 * @param array $files_to_scan List of files to scan.
 	 */
-	protected function get_delimited_list_output( array $hook_list, array $files_to_scan ): string {
+	protected function get_delimited_list_output( array $hook_list ): string {
 
 		$output  = "# Hooks Reference\n\n";
 		$output .= "A list of hooks, i.e `actions` and `filters`, that are defined or used in this project.\n\n";
@@ -234,16 +225,14 @@ class Documentor {
 	 * Generate hooks documentation.
 	 */
 	public function generate_hooks_docs() {
-		$files_to_scan = $this->get_files_to_scan();
-		$hook_list     = $this->get_hooks( $files_to_scan );
-
+		$hook_list = $this->get_hooks( $this->get_files_to_scan() );
 		if ( empty( $hook_list ) ) {
 			return;
 		}
 
 		// Add hooks reference content.
-		$output = self::get_delimited_list_output( $hook_list, $files_to_scan );
+		$output = $this->get_delimited_list_output( $hook_list );
 
-		file_put_contents( $this->args['output_file'], $output ); // phpcs:ignore WordPress.WP.AlternativeFunctions
+		file_put_contents( $this->args['output_file'], $output );
 	}
 }
