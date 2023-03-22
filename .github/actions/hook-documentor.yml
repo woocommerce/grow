@@ -5,35 +5,27 @@ inputs:
     required: true
     default: 'docs/Hooks.md'
   source-directories:
-    description: Directories 
+    description: Directories to search for hooks
+    required: true
+    default: 'src/'
+  main-branch:
+    description: The main branch of the repository
+    default: main
 
 runs:
   using: "composite"
   steps:
-    - 
-
-on:
-  pull_request:
-    types:
-      - closed
-    
-    # Run when a pull request contains PHP files
-    paths:
-      - '**.php'
-
-
-jobs:
-  DocumentHooks:
-    name: Document hooks when pull request is merged
-
-    # Only run when a pull request is merged. There are multiple
-    # Reasons a PR will be closed.
-    if: github.event.pull_request.merged == true
-    
-    # Set up environment variables for the script
-    env:
+    - uses: actions/checkout@v3
       
-    
-    runs-on: ubuntu-latest
-    steps:
-      - 
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+    - name: Install composer dependencies
+      uses: php-actions/composer@v6
+      with:
+        dev: no
+        interaction: no
+        args: --no-scripts --ignore-platform-reqs 
