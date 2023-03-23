@@ -16,16 +16,27 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-      
+
     - name: Cache Composer dependencies
+      working-directory: ${{ github.workspace }}
       uses: actions/cache@v3
       with:
         path: /tmp/composer-cache
         key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
     - name: Install composer dependencies
+      working-directory: ${{ github.workspace }}
       uses: php-actions/composer@v6
       with:
         dev: no
         interaction: no
-        args: --no-scripts --ignore-platform-reqs 
+        args: --no-scripts --ignore-platform-reqs
+        
+    - name: Run documentation generator
+      run: ../scripts/github-actions-hook-documentor.php
+      shell: bash
+      
+    - name: Commit the documentation result
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: ${{ input.output-file }}
