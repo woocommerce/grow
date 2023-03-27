@@ -27,6 +27,11 @@ inputs:
     required: false
     default: "Unit test coverage"
 
+  with-table:
+    description: Add a table with a list of files and its coverage
+    required: false
+    default: true
+
   workflow:
     description: Destination workflow where the downloaded artifact will be stored.
     required: true
@@ -59,5 +64,6 @@ runs:
         file: "${{ inputs.report-path }}/${{ inputs.report-file }}"
         base-file: "${{ inputs.report-path }}/${{ inputs.base-branch }}/${{ inputs.report-file }}"
         signature: ${{ inputs.test-comment }}
+        with-table: ${{ inputs.with-table }}
         table-above-coverage: 1
         table-below-coverage: 99
