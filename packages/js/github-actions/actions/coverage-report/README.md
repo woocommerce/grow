@@ -1,4 +1,4 @@
-# Prepare PHP in GitHub Actions
+# Unit Test Coverage Report in GitHub Actions
 
 This action adds a Unit test coverage report to the PR as a comment. The coverage report must be in the clover format.
 For main branches (trunk) the coverage report will be uploaded as a GitHub artifact. When the action is run as part of a PR the artifact from the main branch will be downloaded, and use as a comparison with the report in the current PR.
