@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-04-04 (1.4.0)
+### New Features 🎉
+* Add coverage Report as PR comment. (https://github.com/woocommerce/grow/pull/44)
+
 ## 2022-07-21 (1.3.0)
 ### New Features 🎉
 * Add annotation actions of `eslint` and `stylelint` for annotating the linting results via their formatter. (https://github.com/woocommerce/grow/pull/35)
