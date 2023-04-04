@@ -1,0 +1,69 @@
+name: Coverage Report
+description: Parses a coverage report and adds it to the PR as a comment.
+
+inputs:
+  base-branch:
+    description: Base branch to compare coverage report with.
+    required: false
+    default: trunk
+
+  report-file:
+    description: Clover coverage report filename.
+    required: false
+    default: report.xml
+
+  report-path:
+    description: Path where reports are saved.
+    required: false
+    default: tests/coverage
+
+  report-name:
+    description: Artifact name of the saved report.
+    required: false
+    default: coverage-report
+
+  test-comment:
+    description: Test comment to describe type of test.
+    required: false
+    default: "Unit test coverage"
+
+  with-table:
+    description: Add a table with a list of files and its coverage
+    required: false
+    default: true
+
+  workflow:
+    description: Destination workflow where the downloaded artifact will be stored.
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    # Download coverage report artifact
+    - if: github.event_name == 'pull_request'
+      uses: dawidd6/action-download-artifact@v2.14.1
+      continue-on-error: true
+      with:
+        workflow: ${{ inputs.workflow }}
+        branch: ${{ inputs.base-branch }}
+        name: ${{ inputs.report-name }}
+        path: "${{ inputs.report-path }}/${{ inputs.base-branch }}"
+
+    # Save coverage report as an artifact
+    - if: github.event_name != 'pull_request'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.report-name }}
+        path: "${{ inputs.report-path }}/${{ inputs.report-file }}"
+
+    # Coverage report as PR comment
+    - if: github.event_name == 'pull_request'
+      uses: lucassabreu/comment-coverage-clover@main
+      with:
+        file: "${{ inputs.report-path }}/${{ inputs.report-file }}"
+        base-file: "${{ inputs.report-path }}/${{ inputs.base-branch }}/${{ inputs.report-file }}"
+        signature: ${{ inputs.test-comment }}
+        with-table: ${{ inputs.with-table }}
+        table-above-coverage: 1
+        table-below-coverage: 99
