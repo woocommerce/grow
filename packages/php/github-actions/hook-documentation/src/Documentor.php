@@ -2,7 +2,7 @@
 
 declare( strict_types=1 );
 
-namespace Automattic\WooCommerce\Grow\HookDocumentation;
+namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation;
 
 use Symfony\Component\Finder\Finder;
 
