@@ -1,9 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-use Automattic\WooCommerce\Grow\HookDocumentation\Documentor;
+use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
 
-$autoloadPath = dirname( __DIR__, 2 ) . '/vendor/autoload.php';
+$autoloadPath = dirname( __DIR__ ) . '/vendor/autoload.php';
 if ( ! file_exists( $autoloadPath ) ) {
 	echo "Please run 'composer install'!\n";
 	exit( 1 );
