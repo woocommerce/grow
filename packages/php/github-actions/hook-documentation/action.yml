@@ -1,13 +1,16 @@
 name: GitHub Actions - Document Hooks
+description: Generate documentation of WordPress hooks.
 inputs:
   output-file:
     description: Relative file path in the repository for Hooks output
     required: true
     default: 'docs/Hooks.md'
+
   source-directories:
     description: Directories to search for hooks
     required: true
     default: 'src/'
+
   main-branch:
     description: The main branch of the repository
     default: main
