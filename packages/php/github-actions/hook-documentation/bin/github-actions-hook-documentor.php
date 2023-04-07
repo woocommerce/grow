@@ -11,28 +11,36 @@ if ( ! file_exists( $autoloadPath ) ) {
 
 require_once $autoloadPath;
 
+// Set the base path for files to work with.
+$base_path = getcwd();
+
 // Source directories need the full path prepended.
 $source_dirs = array_map(
-	function( $path ) {
+	function ( $path ) use ( $base_path ) {
 		$path = trim( $path );
+		$path = ltrim( $path, '/' );
 
-		return $path;
+		return "{$base_path}/{$path}";
 	},
 	explode( ',', $_ENV['INPUT_SOURCE-DIRECTORIES'] ?? 'src/' )
 );
 
 $args = [
-	'output_file' => $_ENV['INPUT_OUTPUT-FILE'] ?? 'docs/Hooks.md',
+	'github_path' => '',
+	'source_dirs' => $source_dirs,
 ];
 
-$documentor = new Documentor(
-	[
-		'github_path' => '',
-		'source_dirs' => [
-			'src/',
-		],
-		'output_file' => $_ENV['INPUT_OUTPUT-FILE'] ?? 'docs/Hooks.md',
-	]
-);
+$documentor = new Documentor( $args );
 
-$documentor->generate_hooks_docs();
+try {
+	$output = $documentor->generate_hooks_docs();
+
+	// Write to the output file.
+	$output_file = ltrim( $_ENV['INPUT_OUTPUT-FILE'] ?? 'docs/Hooks.md', '/' );
+	file_put_contents("{$base_path}/{$output_file}", $output );
+
+	// Set action output.
+	echo $output;
+} catch ( RuntimeException $e ) {
+	// No hooks found.
+}

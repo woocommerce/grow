@@ -2,8 +2,8 @@
 	"name": "woocommerce/grow-github-actions-hook-documentation",
 	"description": "Grow Hook Documentation",
 	"require": {
-		"symfony/finder": "^5.4",
-		"php": ">=7.4"
+		"php": ">=7.4",
+		"symfony/finder": "^5.4"
 	},
 	"license": "MIT",
 	"autoload": {

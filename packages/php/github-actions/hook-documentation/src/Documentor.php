@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation;
 
+use RuntimeException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -21,7 +22,6 @@ class Documentor {
 			[
 				'github_path'  => '',
 				'source_dirs' => [],
-				'output_file'  => '',
 			],
 			$args
 		);
@@ -224,15 +224,12 @@ class Documentor {
 	/**
 	 * Generate hooks documentation.
 	 */
-	public function generate_hooks_docs() {
+	public function generate_hooks_docs(): string {
 		$hook_list = $this->get_hooks( $this->get_files_to_scan() );
 		if ( empty( $hook_list ) ) {
-			return;
+			throw new RuntimeException('No hooks found!');
 		}
 
-		// Add hooks reference content.
-		$output = $this->get_delimited_list_output( $hook_list );
-
-		file_put_contents( $this->args['output_file'], $output );
+		return $this->get_delimited_list_output( $hook_list );
 	}
 }
