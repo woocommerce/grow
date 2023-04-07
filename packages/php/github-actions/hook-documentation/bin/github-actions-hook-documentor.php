@@ -14,15 +14,17 @@ require_once $autoloadPath;
 // Set the base path for files to work with.
 $base_path = getcwd();
 
+$source_dirs = getenv( 'SOURCE_DIRECTORIES' ) ?? 'src/';
+
 // Source directories need the full path prepended.
 $source_dirs = array_map(
-	function ( $path ) use ( $base_path ) {
+	function( $path ) use ( $base_path ) {
 		$path = trim( $path );
 		$path = ltrim( $path, '/' );
 
 		return "{$base_path}/{$path}";
 	},
-	explode( ',', $_ENV['INPUT_SOURCE-DIRECTORIES'] ?? 'src/' )
+	explode( ',', $source_dirs )
 );
 
 $args = [
@@ -30,17 +32,11 @@ $args = [
 	'source_dirs' => $source_dirs,
 ];
 
-$documentor = new Documentor( $args );
-
 try {
-	$output = $documentor->generate_hooks_docs();
-
-	// Write to the output file.
-	$output_file = ltrim( $_ENV['INPUT_OUTPUT-FILE'] ?? 'docs/Hooks.md', '/' );
-	file_put_contents("{$base_path}/{$output_file}", $output );
-
-	// Set action output.
-	echo $output;
+	printf(
+		'hook-docs=%s',
+		( new Documentor( $args ) )->generate_hooks_docs()
+	);
 } catch ( RuntimeException $e ) {
-	// No hooks found.
+	exit( 2 );
 }
