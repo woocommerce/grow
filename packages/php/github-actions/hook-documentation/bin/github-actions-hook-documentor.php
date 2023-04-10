@@ -38,5 +38,6 @@ try {
 		( new Documentor( $args ) )->generate_hooks_docs()
 	);
 } catch ( RuntimeException $e ) {
+	echo $e->getMessage();
 	exit( 2 );
 }
