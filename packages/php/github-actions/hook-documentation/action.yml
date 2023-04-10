@@ -38,7 +38,7 @@ runs:
         MAIN_BRANCH=${{ inputs.main-branch }} \
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
         if [ $? -ne 0 ]; then
-          exit 1
+          exit $?
         fi
 
     - name: Debugging output
