@@ -36,11 +36,18 @@ class Documentor {
 		$files = [];
 
 		$finder = new Finder();
-		$finder->in($this->args['source_dirs']);
 		$finder->files()->name('*.php');
 
-		foreach ( $finder as $file ) {
-			$files[] = $file->getRealPath();
+		foreach ( $this->args['source_dirs'] as $section ) {
+			$section_name = basename( $section );
+			$files[ $section_name ] = [];
+
+			$section_finder = clone $finder;
+			$section_finder->in($section);
+
+			foreach ( $section_finder as $file ) {
+				$files[ $section_name ][] = $file->getRealPath();
+			}
 		}
 
 		return array_filter( $files );
