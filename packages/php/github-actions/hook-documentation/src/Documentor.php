@@ -197,7 +197,25 @@ class Documentor {
 	 * @return string
 	 */
 	protected function get_file_url( array $file ): string {
-		return str_replace( '.php', '.php#L' . $file['line'], $file['path'] );
+		$replacements = [
+			"{$this->args['workspace']}" => $this->get_github_url_permalink(),
+			'.php'                       => ".php#L{$file['line']}",
+		];
+
+		return str_replace(
+			array_keys( $replacements ),
+			array_values( $replacements ),
+			$file['path']
+		);
+	}
+
+	/**
+	 * Get the base permalink URL for GitHub.
+	 *
+	 * @return string
+	 */
+	protected function get_github_url_permalink(): string {
+		return "{$this->args['github_path']}/blob/{$this->args['github_blob']}";
 	}
 
 	/**
@@ -209,7 +227,7 @@ class Documentor {
 	protected function get_file_link( array $file ): string {
 		return sprintf(
 			'<a href="%s">%s</a>',
-			"{$this->args['github_path']}{$this->get_file_url( $file )}",
+			$this->get_file_url( $file ),
 			basename( $file['path'] ) . "#L{$file['line']}"
 		);
 	}
