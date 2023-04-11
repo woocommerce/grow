@@ -18,13 +18,30 @@ class Documentor {
 	protected array $args;
 
 	public function __construct( array $args = [] ) {
-		$this->args = array_merge(
-			[
-				'github_path'  => '',
-				'source_dirs' => [],
-			],
-			$args
-		);
+		$defaults = [
+			'github_blob' => '',
+			'github_path' => '',
+			'source_dirs' => [],
+			'workspace'   => '',
+		];
+
+		$this->args = array_filter( array_merge( $defaults, $args ) );
+
+		// Validate args.
+		$arg_count     = count( $this->args );
+		$default_count = count( $defaults );
+		if ( $arg_count < $default_count ) {
+			$diff     = $default_count - $arg_count;
+			$singular = $diff === 1;
+			throw new RuntimeException(
+				sprintf(
+					'Missing %s argument%s: %s',
+					$singular ? 'an' : 'some',
+					$singular ? '' : 's',
+					join( ',', array_diff_key( $defaults, $this->args ) )
+				)
+			);
+		}
 	}
 
 	/**
