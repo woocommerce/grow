@@ -221,12 +221,14 @@ class Documentor {
 	/**
 	 * Get file link.
 	 *
+	 * The link will be returned in Markdown format.
+	 *
 	 * @param array $file File data.
 	 * @return string
 	 */
 	protected function get_file_link( array $file ): string {
 		return sprintf(
-			'<a href="%s">%s</a>',
+			'[%2$s](%1$s)',
 			$this->get_file_url( $file ),
 			basename( $file['path'] ) . "#L{$file['line']}"
 		);
