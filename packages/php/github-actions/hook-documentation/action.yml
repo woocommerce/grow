@@ -27,23 +27,28 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout the repository
+    - name: Checkout the action repository
       uses: actions/checkout@v3
+      with:
+        repository: ${{ github.action_repository }}@${{ github.action_ref }}
 
     - name: Run documentation generator
       id: run-documentation-generator
       shell: bash
       run: |
-        SOURCE_DIRECTORIES=${{ inputs.source-directories }} \
-        MAIN_BRANCH=${{ inputs.main-branch }} \
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
         if [ $? -ne 0 ]; then
           exit $?
         fi
+      env:
+        SOURCE_DIRECTORIES: ${{ inputs.source-directories }}
+        MAIN_BRANCH: ${{ inputs.main-branch }}
+        GITHUB_PATH: ${{ github.server_url }}/${{ github.repository }}
+        WORKSPACE: ${{ github.workspace }}
 
     - name: Debugging output
       id: debugging-output
       shell: bash
       run: |
-        echo "debugging-output=$(pwd && ls -la && env)" >> $GITHUB_OUTPUT
+        echo "debugging-output=\"$(pwd && ls -la && env)\"" >> $GITHUB_OUTPUT
       if: ${{ failure() }} || 'yes' == inputs.debug-output
