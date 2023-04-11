@@ -11,9 +11,11 @@ if ( ! file_exists( $autoloadPath ) ) {
 
 require_once $autoloadPath;
 
-// Set the base path for files to work with.
-$base_path = getcwd();
+print_r( getenv() );
 
+// Set up variables from the environment.
+$base_path   = getenv( 'WORKSPACE' ) ?? getcwd();
+$ref         = getenv( 'SHA' ) ?? getenv( 'BRANCH' ) ?? '';
 $source_dirs = getenv( 'SOURCE_DIRECTORIES' ) ?? 'src/';
 
 // Source directories need the full path prepended.
@@ -28,8 +30,10 @@ $source_dirs = array_map(
 );
 
 $args = [
-	'github_path' => '',
+	'github_blob' => '',
+	'github_path' => getenv( 'GITHUB_PATH' ) ?? '',
 	'source_dirs' => $source_dirs,
+	'workspace'   => $base_path,
 ];
 
 try {
