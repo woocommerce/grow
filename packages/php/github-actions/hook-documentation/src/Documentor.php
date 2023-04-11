@@ -38,7 +38,7 @@ class Documentor {
 					'Missing %s argument%s: %s',
 					$singular ? 'an' : 'some',
 					$singular ? '' : 's',
-					join( ',', array_diff_key( $defaults, $this->args ) )
+					join( ',', array_keys( array_diff_key( $defaults, $this->args ) ) )
 				)
 			);
 		}
