@@ -74,7 +74,7 @@ jobs:
           if [ "$TAG_NAME" = '' ]; then
             TAG_NAME="${{ fromJSON(needs.Setup.outputs.release || '{}').tag_name }}"
           fi
-          echo "::set-output name=tag_name::${TAG_NAME}"
+          echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -126,7 +126,7 @@ jobs:
           git push -d origin tmp-gha-release-build
 
           git checkout HEAD^ -- ./packages/js/github-actions/actions
-          echo "::set-output name=sha::$(git rev-parse HEAD)"
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update version tags
         uses: ./update-version-tags
