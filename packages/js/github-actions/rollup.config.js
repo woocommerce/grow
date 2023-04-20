@@ -62,6 +62,7 @@ export default [
 		output: {
 			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
 		},
+		external: [ 'path', 'fs' ],
 		plugins: [
 			nodeResolve( { preferBuiltins: true } ),
 			commonjs(),
