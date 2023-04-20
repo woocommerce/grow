@@ -1,5 +1,12 @@
+/**
+ * External dependencies
+ */
 import fetch from 'node-fetch';
 import core from '@actions/core';
+
+/**
+ * Internal dependencies
+ */
 import handleActionErrors from "../../../utils/handle-action-errors";
 
 
