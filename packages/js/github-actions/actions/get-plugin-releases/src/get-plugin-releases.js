@@ -29,8 +29,16 @@ function getAPIEndpoint( slug ) {
 }
 
 function getInput( key ) {
-	const input = core.getInput( key );
-	core.info( `==> Input "${ key }":\n${ input }` );
+	const rawInput = core.getInput( key );
+	let input = rawInput;
+
+	if (rawInput === "false") {
+		input = false;
+	} else if (rawInput === "true") {
+		input = true;
+	}
+
+	core.info( `==> Input "${ key }":\n${ rawInput }` );
 	return input;
 }
 
@@ -68,7 +76,7 @@ function parsePluginVersions( releases = {} ) {
 
 function isMinorAlreadyAdded( output, version) {
 
-	if ( getInput( 'includePatches' ) ) {
+	if ( getInput('includePatches') ) {
 		return false;
 	}
 
