@@ -25,7 +25,7 @@ function getAPIEndpoint( slug ) {
 		return 'https://api.wordpress.org/stats/wordpress/1.0/'
 	}
 
-	return `https://api.wordpress.org/stats/plugin/1.0/${slug}`;
+	return `https://api.wordpress.org/plugins/info/1.0/${slug}.json`;
 }
 
 function getInput( key ) {
@@ -39,19 +39,46 @@ function setOutput( key, value ) {
 	core.setOutput( key, value );
 }
 
-function parsePluginVersions( versions = {} ) {
-
+function parsePluginVersions( releases = {} ) {
+	const slug = getInput( 'slug' );
 	const numberOfReleases = parseInt( getInput( 'releases' ) ) || 3;
+	const includeRC = getInput( 'includeRC' );
+	let versions = releases;
 
 	let output = [];
 
+	if ( slug !== 'wordpress') {
+		versions = releases.versions;
+	}
+
 	Object.keys( versions ).reverse().forEach( version => {
-		if (version !== 'other') {
+		if (output.length === numberOfReleases) {
+			return;
+		}
+
+		if ( version !== 'other' && version !== 'trunk' && ! version.includes('beta') && ( ! includeRC && ! version.includes('rc') ) && ! isMinorAlreadyAdded( output, version ) ) {
 			output.push( version );
 		}
 	});
 
-	setOutput( 'matrix', output.slice(-numberOfReleases) );
+
+
+	setOutput( 'matrix', output );
+}
+
+function isMinorAlreadyAdded( output, version) {
+
+	if ( getInput( 'includePatches' ) ) {
+		return false;
+	}
+
+	if ( output.find( el => {
+		let elSegments = el.split('.');
+		let versionSegments = version.split('.');
+		return elSegments[0] === versionSegments[0] && elSegments[1] === versionSegments[1];
+	} )) {
+		return true
+	}
 }
 
 
