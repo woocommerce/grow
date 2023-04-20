@@ -21,8 +21,8 @@ jobs:
         id: wc-matrix
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5-pre
         with:
-          slug: woocommerce
+          slug: woocommerce 
           
       - name: Show the matrix output
-          run: |
-            echo "the versions are: ${{ steps.wc-matrix.outputs.matrix }}."      
+        run: |
+          echo "the versions are: ${{ steps.wc-matrix.outputs.matrix }}."
