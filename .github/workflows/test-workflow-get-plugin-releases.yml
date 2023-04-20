@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Get Release versions from WooCommerce
         id: wc-matrix
-        uses: woocommerce/grow/get-plugin-releases@actions-v1.5-pre
+        uses: ./packages/js/github-actions/actions/get-plugin-releases
         with:
           slug: woocommerce 
           
