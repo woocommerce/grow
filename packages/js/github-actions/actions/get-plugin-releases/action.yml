@@ -5,7 +5,10 @@ inputs:
   slug:
     description: The plugin slug to get the versions.
     required: true
-
+  releases:
+    description: Number of releases to get. By default L-2 directive (3 releases)
+    default: "3"
+    
 outputs:
   matrix:
     description: A matrix array in the format ["7.4","7.5","7.6"]

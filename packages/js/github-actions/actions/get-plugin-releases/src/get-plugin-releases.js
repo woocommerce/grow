@@ -11,9 +11,21 @@ import handleActionErrors from "../../../utils/handle-action-errors";
 
 
 async function getPluginReleases() {
-	fetch(`https://api.wordpress.org/stats/plugin/1.0/${getInput( 'slug' )}`)
+
+	const slug = getInput( 'slug' );
+	const apiEndpoint = getAPIEndpoint(slug);
+
+	fetch(apiEndpoint)
 		.then(res => res.json())
 		.then(parsePluginVersions);
+}
+
+function getAPIEndpoint( slug ) {
+	if (slug === 'wordpress') {
+		return 'https://api.wordpress.org/stats/wordpress/1.0/'
+	}
+
+	return `https://api.wordpress.org/stats/plugin/1.0/${slug}`;
 }
 
 function getInput( key ) {
@@ -29,15 +41,17 @@ function setOutput( key, value ) {
 
 function parsePluginVersions( versions = {} ) {
 
+	const numberOfReleases = parseInt( getInput( 'releases' ) ) || 3;
+
 	let output = [];
 
-	Object.keys( versions ).forEach( version => {
+	Object.keys( versions ).reverse().forEach( version => {
 		if (version !== 'other') {
 			output.push( version );
 		}
 	});
 
-	setOutput( 'matrix', output );
+	setOutput( 'matrix', output.slice(-numberOfReleases) );
 }
 
 

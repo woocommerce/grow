@@ -61,8 +61,8 @@ export default [
 		input: './actions/get-plugin-releases/src/get-plugin-releases.js',
 		output: {
 			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
+			inlineDynamicImports: true,
 		},
-		inlineDynamicImports: true,
 		plugins: [
 			nodeResolve( { preferBuiltins: true } ),
 			commonjs(),
