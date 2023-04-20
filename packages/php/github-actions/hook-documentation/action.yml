@@ -35,6 +35,7 @@ runs:
     - name: Run documentation generator
       id: run-documentation-generator
       shell: bash
+      working-directory: ${{ env.GITHUB_ACTION_PATH }}
       run: |
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
         if [ $? -ne 0 ]; then
