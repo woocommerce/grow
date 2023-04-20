@@ -1,0 +1,28 @@
+name: TEST - Get Plugin Releases
+
+on:
+  push:
+    branches:
+      - add/get-plugin-releases
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: 2
+
+jobs:
+  GetPluginReleases:
+    name: Get Plugin Releases
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Release versions from WooCommerce
+        id: wc-matrix
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.5-pre
+        with:
+          slug: woocommerce
+          
+      - name: Show the matrix output
+          run: |
+            echo "the versions are: ${{ steps.wc-matrix.outputs.matrix }}."      
