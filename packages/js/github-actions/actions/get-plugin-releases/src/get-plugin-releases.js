@@ -46,7 +46,7 @@ function setOutput( key, value ) {
 
 function parsePluginVersions( releases = {} ) {
 	const slug = getInput( 'slug' );
-	const numberOfReleases = parseInt( getInput( 'releases' ) ) || 3;
+	const numberOfReleases = parseInt( getInput( 'releases' ), 10 ) || 3;
 	const includeRC = getInput( 'includeRC' ) || false;
 	const includePatches = getInput( 'includePatches' ) || false;
 
