@@ -62,7 +62,7 @@ export default [
 		output: {
 			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
 		},
-		external: [ 'node-fetch' ],
+		inlineDynamicImports: true,
 		plugins: [
 			nodeResolve( { preferBuiltins: true } ),
 			commonjs(),
