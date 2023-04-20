@@ -25,4 +25,4 @@ jobs:
           
       - name: Show the matrix output
         run: |
-          echo "the versions are: ${{ steps.wc-matrix.outputs.matrix }}."
+          echo "The versions are: ${{ steps.wc-matrix.outputs.matrix }}."
