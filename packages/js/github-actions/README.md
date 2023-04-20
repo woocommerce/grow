@@ -9,6 +9,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
 - [`coverage-report`](actions/coverage-report) - Add a clover coverage report as a PR comment
 - [`eslint-annotation`](actions/eslint-annotation) - Annotate eslint results via eslint formatter
+- [`get-plugin-releases`](actions/get-plugin-releases) - Get latest releases versions from WordPress or from a plugin.
 - [`get-release-notes`](actions/get-release-notes) - Get release notes via GitHub, infer the next version and tag
 - [`phpcs-diff`](actions/phpcs-diff) - Run PHPCS to the changed lines of code, set error annotations to a pull request
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
