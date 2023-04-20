@@ -57,4 +57,15 @@ export default [
 			json( { compact: true } ),
 		],
 	},
+	{
+		input: './actions/get-plugin-releases/src/get-plugin-releases.js',
+		output: {
+			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
+		},
+		plugins: [
+			nodeResolve( { preferBuiltins: true } ),
+			commonjs(),
+			json( { compact: true } ),
+		],
+	},
 ];
