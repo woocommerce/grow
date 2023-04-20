@@ -1,0 +1,93 @@
+name: Woo Extension - Prepare New Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to release from'
+        required: true
+        default: 'develop'
+      version:
+        description: 'Version number to be released'
+        required: true
+      type:
+        description: 'Type of the release (release|hotfix)'
+        required: true
+        default: 'release'
+      wp_version:
+        description: 'WP tested up to version'
+      wc_version:
+        description: 'WC tested up to version'
+
+jobs:
+  CheckCreatedBranch:
+    name: Check Created Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check created release branch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            if ( ! context.payload.created ) {
+              await github.rest.actions.cancelWorkflowRun( {
+                ...context.repo,
+                run_id: context.runId,
+              } );
+            }
+
+  PrepareRelease:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    needs: CheckCreatedBranch
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Prepare node
+        uses: ./packages/js/github-actions/actions/prepare-node
+        with:
+          node-version: 14
+          cache-dependency-path: ./packages/js/github-actions/package-lock.json
+          install-deps: "no"
+
+      # The checkout revision of this repo itself doesn't have the built actions,
+      # so it needs to build them before using it locally.
+      - name: Build actions
+        run: |
+          cd ./packages/js/github-actions
+          npm ci --ignore-scripts
+          npm run build
+          cd -
+
+      - name: Prepare release commits
+        # Use the github-actions bot account to commit.
+        # https://api.github.com/users/github-actions%5Bbot%5D
+        run: |
+          cd ./packages/js/github-actions
+
+          TODAY=$(date '+%Y-%m-%d')
+          NEXT_VER="${{ github.event.inputs.version }}"
+
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git checkout -b ${{ github.event.inputs.type }}/${{ github.event.inputs.version }}
+
+          git commit -q -m "Start the ${{ github.event.inputs.type }}/${{ github.event.inputs.version }} release."
+          git push
+
+      - name: Create a pull request for release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const workspace = '${{ github.workspace }}';
+            const { default: script } = await import( `${ workspace }/.github/scripts/woo-extension-create-pr-for-release.mjs` );
+            await script( {
+              github,
+              context,
+              base: '${{ github.event.inputs.branch }}',
+              refName: '${{ github.event.inputs.type }}/${{ github.event.inputs.version }}',
+              type: '${{ github.event.inputs.type }}'
+              version: '${{ steps.get-notes.outputs.next-version }}',
+            } );
