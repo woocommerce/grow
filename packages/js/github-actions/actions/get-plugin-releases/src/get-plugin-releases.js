@@ -38,7 +38,6 @@ function getInput( key ) {
 		input = true;
 	}
 
-	core.info( `==> Input "${ key }":\n${ rawInput }` );
 	return input;
 }
 
@@ -50,7 +49,8 @@ function setOutput( key, value ) {
 function parsePluginVersions( releases = {} ) {
 	const slug = getInput( 'slug' );
 	const numberOfReleases = parseInt( getInput( 'releases' ) ) || 3;
-	const includeRC = getInput( 'includeRC' );
+	const includeRC = getInput( 'includeRC' ) || false;
+	const includePatches = getInput( 'includePatches' ) || false;
 	let versions = releases;
 
 	let output = [];
@@ -64,7 +64,7 @@ function parsePluginVersions( releases = {} ) {
 			return;
 		}
 
-		if ( version !== 'other' && version !== 'trunk' && ! version.includes('beta') && ( ! includeRC && ! version.includes('rc') ) && ! isMinorAlreadyAdded( output, version ) ) {
+		if ( version !== 'other' && version !== 'trunk' && ! version.includes('beta') && ! includesRC(version, includeRC) && ! isMinorAlreadyAdded( output, version, includePatches ) ) {
 			output.push( version );
 		}
 	});
@@ -74,9 +74,17 @@ function parsePluginVersions( releases = {} ) {
 	setOutput( 'matrix', output );
 }
 
-function isMinorAlreadyAdded( output, version) {
+function includesRC(version, includeRC) {
+	if ( includeRC ) {
+		return false;
+	}
 
-	if ( getInput('includePatches') ) {
+	return version.includes('rc')
+}
+
+function isMinorAlreadyAdded( output, version, includePatches ) {
+
+	if ( includePatches ) {
 		return false;
 	}
 
