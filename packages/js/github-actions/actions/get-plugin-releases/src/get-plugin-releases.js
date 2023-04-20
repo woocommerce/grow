@@ -22,7 +22,7 @@ async function getPluginReleases() {
 
 function getAPIEndpoint( slug ) {
 	if (slug === 'wordpress') {
-		return 'https://api.wordpress.org/stats/wordpress/1.0/'
+		return 'https://api.wordpress.org/core/version-check/1.7/'
 	}
 
 	return `https://api.wordpress.org/plugins/info/1.0/${slug}.json`;
@@ -51,25 +51,30 @@ function parsePluginVersions( releases = {} ) {
 	const numberOfReleases = parseInt( getInput( 'releases' ) ) || 3;
 	const includeRC = getInput( 'includeRC' ) || false;
 	const includePatches = getInput( 'includePatches' ) || false;
-	let versions = releases;
 
 	let output = [];
 
 	if ( slug !== 'wordpress') {
-		versions = releases.versions;
+		Object.keys( releases.versions ).reverse().forEach( version => {
+			if (output.length === numberOfReleases) {
+				return;
+			}
+
+			if ( version !== 'other' && version !== 'trunk' && ! version.includes('beta') && ! includesRC(version, includeRC) && ! isMinorAlreadyAdded( output, version, includePatches ) ) {
+				output.push( version );
+			}
+		});
+	} else {
+		releases.offers.forEach( release => {
+			if (output.length === numberOfReleases) {
+				return;
+			}
+
+			if ( release.new_files && ! release.version.includes('beta') && ! includesRC(release.version, includeRC) && ! isMinorAlreadyAdded( output, release.version, includePatches ) ) {
+				output.push( release.version );
+			}
+		});
 	}
-
-	Object.keys( versions ).reverse().forEach( version => {
-		if (output.length === numberOfReleases) {
-			return;
-		}
-
-		if ( version !== 'other' && version !== 'trunk' && ! version.includes('beta') && ! includesRC(version, includeRC) && ! isMinorAlreadyAdded( output, version, includePatches ) ) {
-			output.push( version );
-		}
-	});
-
-
 
 	setOutput( 'matrix', output );
 }
