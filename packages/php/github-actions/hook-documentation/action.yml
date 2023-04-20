@@ -30,7 +30,8 @@ runs:
     - name: Checkout the action repository
       uses: actions/checkout@v3
       with:
-        repository: ${{ github.action_repository }}@${{ github.action_ref }}
+        repository: ${{ github.action_repository }}
+        ref: ${{ github.action_ref }}
 
     - name: Run documentation generator
       id: run-documentation-generator
