@@ -38,10 +38,14 @@ runs:
       shell: bash
       working-directory: ${{ env.GITHUB_ACTION_PATH }}
       run: |
+        pwd
+        cd $GITHUB_ACTION_PATH
+        pwd
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
         if [ $? -ne 0 ]; then
           exit $?
         fi
+        cd -
       env:
         SOURCE_DIRECTORIES: ${{ inputs.source-directories }}
         MAIN_BRANCH: ${{ inputs.main-branch }}
