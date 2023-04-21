@@ -5,6 +5,7 @@ declare( strict_types=1 );
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation;
 
 use RuntimeException;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -59,8 +60,13 @@ class Documentor {
 			$section_name = basename( $section );
 			$files[ $section_name ] = [];
 
-			$section_finder = clone $finder;
-			$section_finder->in($section);
+			try {
+				$section_finder = clone $finder;
+				$section_finder->in( $section );
+			} catch ( DirectoryNotFoundException $e ) {
+				echo $e->getMessage() . PHP_EOL;
+				continue;
+			}
 
 			foreach ( $section_finder as $file ) {
 				$files[ $section_name ][] = $file->getRealPath();
