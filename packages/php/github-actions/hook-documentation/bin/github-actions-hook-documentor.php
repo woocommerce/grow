@@ -11,8 +11,6 @@ if ( ! file_exists( $autoloadPath ) ) {
 
 require_once $autoloadPath;
 
-print_r( getenv() );
-
 // Set up variables from the environment.
 $env = getenv();
 
