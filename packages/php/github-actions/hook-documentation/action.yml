@@ -46,6 +46,7 @@ runs:
         cd -
       env:
         SOURCE_DIRECTORIES: ${{ inputs.source-directories }}
+        SHA: ${{ github.ref }}
         MAIN_BRANCH: ${{ inputs.main-branch }}
         GITHUB_PATH: ${{ github.server_url }}/${{ github.repository }}
         WORKSPACE: ${{ github.workspace }}
