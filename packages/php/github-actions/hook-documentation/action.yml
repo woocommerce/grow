@@ -36,11 +36,9 @@ runs:
     - name: Run documentation generator
       id: run-documentation-generator
       shell: bash
-      working-directory: ${{ env.GITHUB_ACTION_PATH }}
       run: |
-        pwd
         cd $GITHUB_ACTION_PATH
-        pwd
+        composer install -no --no-dev --ignore-platform-reqs
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
         if [ $? -ne 0 ]; then
           exit $?
