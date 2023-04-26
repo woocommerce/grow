@@ -38,12 +38,14 @@ runs:
       shell: bash
       run: |
         cd $GITHUB_ACTION_PATH
+        echo "checking workspace..."
+        ls -la $WORKSPACE
         composer install -no --no-dev --ignore-platform-reqs
         php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
+        cd -
         if [ $? -ne 0 ]; then
           exit $?
         fi
-        cd -
       env:
         SOURCE_DIRECTORIES: ${{ inputs.source-directories }}
         SHA: ${{ github.ref }}
