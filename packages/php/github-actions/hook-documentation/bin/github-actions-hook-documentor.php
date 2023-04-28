@@ -17,6 +17,7 @@ $env = getenv();
 $base_path   = $env[ 'WORKSPACE' ] ?? getcwd();
 $ref         = $env[ 'SHA' ] ?? $env[ 'BRANCH' ] ?? '';
 $source_dirs = $env[ 'SOURCE_DIRECTORIES' ] ?? 'src/';
+$github_path = $env[ 'GITHUB_PATH' ] ?? '';
 
 // Source directories need the full path prepended.
 $source_dirs = array_map(
@@ -24,14 +25,15 @@ $source_dirs = array_map(
 		$path = trim( $path );
 		$path = ltrim( $path, '/' );
 
-		return "{$base_path}/{$path}";
+//		return "{$base_path}/{$path}";
+		return $path;
 	},
 	explode( ',', $source_dirs )
 );
 
 $args = [
 	'github_blob' => $ref,
-	'github_path' => $env[ 'GITHUB_PATH' ] ?? '',
+	'github_path' => $github_path,
 	'source_dirs' => $source_dirs,
 	'workspace'   => $base_path,
 ];

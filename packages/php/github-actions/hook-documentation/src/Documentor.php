@@ -55,6 +55,7 @@ class Documentor {
 
 		$finder = new Finder();
 		$finder->files()->name('*.php');
+		$finder->in( $this->args['workspace'] );
 
 		foreach ( $this->args['source_dirs'] as $section ) {
 			$section_name = basename( $section );
@@ -62,7 +63,7 @@ class Documentor {
 
 			try {
 				$section_finder = clone $finder;
-				$section_finder->in( $section );
+				$section_finder->path( $section );
 			} catch ( DirectoryNotFoundException $e ) {
 				echo $e->getMessage() . PHP_EOL;
 				continue;
@@ -249,7 +250,7 @@ class Documentor {
 	protected function get_delimited_list_output( array $hook_list ): string {
 
 		$output  = "# Hooks Reference\n\n";
-		$output .= "A list of hooks, i.e `actions` and `filters`, that are defined or used in this project.\n\n";
+		$output .= "A list of hooks, i.e \`actions\` and \`filters\`, that are defined or used in this project.\n\n";
 
 		foreach ( $hook_list as $hooks ) {
 			foreach ( $hooks as $hook => $details ) {
