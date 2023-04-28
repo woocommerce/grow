@@ -43,9 +43,9 @@ runs:
       shell: bash
       run: |
         cd $GITHUB_ACTION_PATH
-        echo "hook-docs=<<EOF" >> $GITHUB_OUTPUT
-        php bin/github-actions-hook-documentor.php >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        echo "hook-docs<<EOF" >> "$GITHUB_OUTPUT"
+        php bin/github-actions-hook-documentor.php >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
         cd -
         if [ $? -ne 0 ]; then
           exit $?
