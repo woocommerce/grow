@@ -31,9 +31,7 @@ runs:
       id: composer-install
       shell: bash
       run: |
-        cd $GITHUB_ACTION_PATH
-        composer install --no-dev --ignore-platform-reqs
-        cd -
+        composer install -no --no-dev --ignore-platform-reqs -d "$GITHUB_ACTION_PATH"
         if [ $? -ne 0 ]; then
           exit $?
         fi
