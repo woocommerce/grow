@@ -37,10 +37,7 @@ $args = [
 ];
 
 try {
-	printf(
-		'hook-docs=%s',
-		( new Documentor( $args ) )->generate_hooks_docs()
-	);
+	echo ( new Documentor( $args ) )->generate_hooks_docs();
 } catch ( RuntimeException $e ) {
 	echo $e->getMessage() . PHP_EOL;
 	exit( 2 );
