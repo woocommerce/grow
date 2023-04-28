@@ -27,11 +27,11 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout the action repository
-      uses: actions/checkout@v3
-      with:
-        repository: ${{ github.action_repository }}
-        ref: ${{ github.action_ref }}
+#    - name: Checkout the action repository
+#      uses: actions/checkout@v3
+#      with:
+#        repository: ${{ github.action_repository }}
+#        ref: ${{ github.action_ref }}
 
     - name: Run documentation generator
       id: run-documentation-generator
