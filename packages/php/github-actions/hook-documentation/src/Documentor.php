@@ -53,9 +53,7 @@ class Documentor {
 	protected function get_files_to_scan(): array {
 		$files = [];
 
-		$finder = new Finder();
-		$finder->files()->name('*.php');
-		$finder->in( $this->args['workspace'] );
+		$finder = $this->get_finder();
 
 		foreach ( $this->args['source_dirs'] as $section ) {
 			$section_name = basename( $section );
@@ -282,5 +280,17 @@ class Documentor {
 		}
 
 		return $this->get_delimited_list_output( $hook_list );
+	}
+
+	/**
+	 * Get base finder instance.
+	 *
+	 * @return Finder
+	 */
+	protected function get_finder(): Finder {
+		return ( new Finder() )
+			->files()
+			->name( '*.php' )
+			->in( $this->args['workspace'] );
 	}
 }
