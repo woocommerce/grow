@@ -232,7 +232,6 @@ class Documentor {
 	 * Get delimited list output.
 	 *
 	 * @param array $hook_list List of hooks.
-	 * @param array $files_to_scan List of files to scan.
 	 */
 	protected function get_delimited_list_output( array $hook_list ): string {
 
@@ -274,6 +273,7 @@ class Documentor {
 	/**
 	 * Get base finder instance.
 	 *
+	 * @codeCoverageIgnore
 	 * @return Finder
 	 */
 	protected function get_finder(): Finder {
