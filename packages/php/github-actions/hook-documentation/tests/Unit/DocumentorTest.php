@@ -3,103 +3,61 @@
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\Unit;
 
 use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
-use PHPUnit\Framework\TestCase;
+use Closure;
+use RuntimeException;
 
-class DocumentorTest extends TestCase {
+it(
+	'should throw an exception for missing constructor args',
+	function( array $args, string $message ) {
+		expect(
+			function() use ( $args ) {
+				new Documentor( $args );
+			}
+		)->toThrow( RuntimeException::class, $message );
+	}
+)->with( 'constructors' );
 
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_the_workspace_is_not_set() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing an argument: workspace' );
-
-		$args = [
-			'github_blob' => 'foo',
-			'github_path' => 'bar',
-			'source_dirs' => [ 'src/' ],
+it(
+	'should correctly replace local path with github url',
+	function() {
+		$workspace   = '/path/to/the/workspace/example-test';
+		$github_repo = 'https://github.com/example/test';
+		$sha         = 'abc123';
+		$args        = [
+			'github_path' => $github_repo,
+			'github_blob' => $sha,
+			'workspace'   => $workspace,
 		];
 
-		new Documentor( $args );
-	}
+		// Mock parts of the class that we need with an anonymous class and function.
+		$class = new class( $args ) extends Documentor {
+			/** No-op */
+			protected function validate_args( array $defaults, array $args ): void {}
+		};
 
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_the_source_dirs_are_not_set() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing an argument: source_dirs' );
+		$get_file_url = Closure::bind(
+			function( array $file ) {
+				return $this->get_file_url( $file );
+			},
+			$class,
+			$class
+		);
 
-		$args = [
-			'github_blob' => 'foo',
-			'github_path' => 'bar',
-			'workspace'   => 'baz',
+		$files = [
+			[
+				'path'     => "{$workspace}/foo.php",
+				'expected' => "{$github_repo}/blob/{$sha}/foo.php#L1",
+				'line'     => 1,
+			],
+			[
+				'path'     => "{$workspace}/bar.php",
+				'expected' => "{$github_repo}/blob/{$sha}/bar.php#L2",
+				'line'     => 2,
+			],
 		];
 
-		new Documentor( $args );
+		foreach ( $files as $file ) {
+			expect( $get_file_url( $file ) )->toBe( $file['expected'] );
+		}
 	}
-
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_the_github_blob_is_not_set() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing an argument: github_blob' );
-
-		$args = [
-			'github_path' => 'bar',
-			'source_dirs' => [ 'src/' ],
-			'workspace'   => 'baz',
-		];
-
-		new Documentor( $args );
-	}
-
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_the_github_path_is_not_set() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing an argument: github_path' );
-
-		$args = [
-			'github_blob' => 'foo',
-			'source_dirs' => [ 'src/' ],
-			'workspace'   => 'baz',
-		];
-
-		new Documentor( $args );
-	}
-
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_the_source_dirs_are_empty() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing an argument: source_dirs' );
-
-		$args = [
-			'github_blob' => 'foo',
-			'github_path' => 'bar',
-			'source_dirs' => [],
-			'workspace'   => 'baz',
-		];
-
-		new Documentor( $args );
-	}
-
-	/**
-	 * @test
-	 */
-	public function it_should_throw_an_exception_if_multiple_args_are_missing() {
-		$this->expectException( \RuntimeException::class );
-		$this->expectExceptionMessage( 'Missing some arguments: source_dirs,workspace' );
-
-		$args = [
-			'github_blob' => 'foo',
-			'github_path' => 'bar',
-		];
-
-		new Documentor( $args );
-	}
-}
+);
