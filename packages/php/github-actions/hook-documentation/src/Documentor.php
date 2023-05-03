@@ -243,7 +243,7 @@ class Documentor {
 	 */
 	protected function get_delimited_list_output( array $hook_list ): string {
 		$output = "# Hooks Reference\n\n";
-		$output .= "A list of hooks, i.e \`actions\` and \`filters\`, that are defined or used in this project.\n\n";
+		$output .= "A list of hooks, e.g. \`actions\` and \`filters\`, that are defined or used in this project.\n\n";
 
 		foreach ( $hook_list as $hooks ) {
 			foreach ( $hooks as $hook => $details ) {
