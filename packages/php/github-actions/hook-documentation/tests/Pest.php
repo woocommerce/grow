@@ -1,7 +1,10 @@
 <?php
+
 declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests;
+
+use PHPUnit\Framework\Assert;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +33,16 @@ namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests;
 //expect()->extend('toBeOne', function () {
 //    return $this->toBe(1);
 //});
+
+expect()->extend(
+	'toContainCount',
+	function( string $value, int $count ) {
+		$result = substr_count( $this->value, $value );
+		Assert::assertEquals( $count, $result );
+
+		return $this;
+	}
+);
 
 /*
 |--------------------------------------------------------------------------
