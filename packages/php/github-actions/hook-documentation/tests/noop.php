@@ -11,6 +11,9 @@ if ( ! function_exists( 'add_filter' ) ) {
 }
 
 if ( ! function_exists( 'apply_filters' ) ) {
+	/**
+	 * @return mixed
+	 */
 	function apply_filters() {}
 }
 

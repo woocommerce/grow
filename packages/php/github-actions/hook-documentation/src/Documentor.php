@@ -273,7 +273,6 @@ class Documentor {
 	/**
 	 * Get base finder instance.
 	 *
-	 * @codeCoverageIgnore
 	 * @return Finder
 	 */
 	protected function get_finder(): Finder {
