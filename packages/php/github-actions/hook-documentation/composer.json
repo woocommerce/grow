@@ -26,6 +26,6 @@
 	},
 	"scripts": {
 		"test": "vendor/bin/pest",
-		"test:coverage": "vendor/bin/pest --coverage --coverage-html coverage"
+		"test:coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage --coverage-html coverage"
 	}
 }
