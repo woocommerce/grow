@@ -1,9 +1,7 @@
 <?php
 declare( strict_types=1 );
 
-namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests;
-
-use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
+namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\Data;
 
 class SampleClassWithHooks {
 

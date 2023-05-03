@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests;
+namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\Data;
 
 use stdClass;
 use function do_action;
