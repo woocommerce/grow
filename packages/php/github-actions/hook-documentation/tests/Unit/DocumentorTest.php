@@ -63,3 +63,22 @@ it(
 		}
 	}
 );
+
+it(
+	'should find actions in sample file 1',
+	function() {
+		$workspace   = dirname( __DIR__ );
+		$github_repo = 'https://github.com/example/test';
+		$sha         = 'abc123';
+		$args        = [
+			'github_path' => $github_repo,
+			'github_blob' => $sha,
+			'workspace'   => $workspace,
+			'source_dirs' => [ 'Data/' ],
+		];
+
+		$documentor = new Documentor( $args );
+		$results    = $documentor->generate_hooks_docs();
+		expect( $results )->not->toBeEmpty();
+	}
+);
