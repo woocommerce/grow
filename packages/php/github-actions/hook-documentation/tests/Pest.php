@@ -4,6 +4,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests;
 
+use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
 use PHPUnit\Framework\Assert;
 
 /*
@@ -59,3 +60,18 @@ expect()->extend(
 //{
 //    // ..
 //}
+/**
+ * @param array $source_dirs
+ *
+ * @return Documentor
+ */
+function getTestDataDocumentor( ...$source_dirs ): Documentor {
+	$args        = [
+		'github_path' => 'https://github.com/example/test',
+		'github_blob' => 'abc123',
+		'workspace'   => __DIR__,
+		'source_dirs' => $source_dirs ?: [ 'Data/' ],
+	];
+
+	return new Documentor( $args );
+}
