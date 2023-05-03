@@ -13,7 +13,7 @@ it(
 		$github_repo = 'https://github.com/example/test';
 		$sha         = 'abc123';
 		$args        = [
-			'github_path' => $github_repo,
+			'base_url'    => $github_repo,
 			'github_blob' => $sha,
 			'workspace'   => $workspace,
 			'source_dirs' => [ 'Data/' ],

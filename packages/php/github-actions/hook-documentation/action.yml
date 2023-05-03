@@ -52,7 +52,7 @@ runs:
         SOURCE_DIRECTORIES: ${{ inputs.source-directories }}
         SHA: ${{ github.sha }}
         MAIN_BRANCH: ${{ inputs.main-branch }}
-        GITHUB_PATH: ${{ github.server_url }}/${{ github.repository }}
+        BASE_URL: ${{ github.server_url }}/${{ github.repository }}
         WORKSPACE: ${{ github.workspace }}
 
     - name: Debugging output

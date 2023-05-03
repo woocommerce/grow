@@ -21,7 +21,7 @@ class Documentor {
 	public function __construct( array $args = [] ) {
 		$defaults = [
 			'github_blob' => '',
-			'github_path' => '',
+			'base_url'    => '',
 			'source_dirs' => [],
 			'workspace'   => '',
 		];
@@ -45,7 +45,7 @@ class Documentor {
 		$finder = $this->get_finder();
 
 		foreach ( $this->args['source_dirs'] as $section ) {
-			$section_name = basename( $section );
+			$section_name           = basename( $section );
 			$files[ $section_name ] = [];
 
 			try {
@@ -123,10 +123,16 @@ class Documentor {
 									// Keep adding to hook until we find a comma or colon.
 									while ( 1 ) {
 										$loop ++;
-										$prev_hook = is_string( $tokens[ $index + $loop - 1 ] ) ? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
-										$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ] : $tokens[ $index + $loop ][1];
+										$prev_hook = is_string( $tokens[ $index + $loop - 1 ] )
+											? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
+										$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ]
+											: $tokens[ $index + $loop ][1];
 
-										if ( in_array( $next_hook, [ '.', '{', '}', '"', "'", ' ', ')', '(' ], true ) ) {
+										if ( in_array(
+											$next_hook,
+											[ '.', '{', '}', '"', "'", ' ', ')', '(' ],
+											true
+										) ) {
 											continue;
 										}
 
@@ -135,13 +141,21 @@ class Documentor {
 										}
 
 										$hook_first = substr( $next_hook, 0, 1 );
-										$hook_last  = substr( $next_hook, -1, 1 );
+										$hook_last  = substr( $next_hook, - 1, 1 );
 
-										if ( '{' === $hook_first || '}' === $hook_last || '$' === $hook_first || ')' === $hook_last || '>' === substr( $prev_hook, -1, 1 ) ) {
+										if ( '{' === $hook_first || '}' === $hook_last || '$' === $hook_first || ')' === $hook_last || '>' === substr(
+												$prev_hook,
+												- 1,
+												1
+											) ) {
 											$next_hook = strtoupper( $next_hook );
 										}
 
-										$next_hook = str_replace( [ '.', '{', '}', '"', "'", ' ', ')', '(' ], '', $next_hook );
+										$next_hook = str_replace(
+											[ '.', '{', '}', '"', "'", ' ', ')', '(' ],
+											'',
+											$next_hook
+										);
 
 										$hook .= $next_hook;
 									}
@@ -188,6 +202,7 @@ class Documentor {
 	 * Get file URL.
 	 *
 	 * @param array $file File data.
+	 *
 	 * @return string
 	 */
 	protected function get_file_url( array $file ): string {
@@ -209,7 +224,7 @@ class Documentor {
 	 * @return string
 	 */
 	protected function get_github_url_permalink(): string {
-		return "{$this->args['github_path']}/blob/{$this->args['github_blob']}";
+		return "{$this->args['base_url']}/blob/{$this->args['github_blob']}";
 	}
 
 	/**
@@ -218,6 +233,7 @@ class Documentor {
 	 * The link will be returned in Markdown format.
 	 *
 	 * @param array $file File data.
+	 *
 	 * @return string
 	 */
 	protected function get_file_link( array $file ): string {
@@ -234,8 +250,7 @@ class Documentor {
 	 * @param array $hook_list List of hooks.
 	 */
 	protected function get_delimited_list_output( array $hook_list ): string {
-
-		$output  = "# Hooks Reference\n\n";
+		$output = "# Hooks Reference\n\n";
 		$output .= "A list of hooks, i.e \`actions\` and \`filters\`, that are defined or used in this project.\n\n";
 
 		foreach ( $hook_list as $hooks ) {
@@ -245,7 +260,7 @@ class Documentor {
 					$link_list[] = "- {$this->get_file_link( $file )}";
 				}
 
-				$links   = implode( "\n", $link_list );
+				$links  = implode( "\n", $link_list );
 				$output .= sprintf(
 					"## %s\n\n**Type**: %s\n\n**Used in**:\n\n%s\n\n",
 					$hook,
@@ -264,7 +279,7 @@ class Documentor {
 	public function generate_hooks_docs(): string {
 		$hook_list = $this->get_hooks( $this->get_files_to_scan() );
 		if ( empty( $hook_list ) ) {
-			throw new RuntimeException('No hooks found!');
+			throw new RuntimeException( 'No hooks found!' );
 		}
 
 		return $this->get_delimited_list_output( $hook_list );

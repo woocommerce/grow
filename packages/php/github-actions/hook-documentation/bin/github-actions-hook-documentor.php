@@ -14,26 +14,22 @@ require_once $autoloadPath;
 // Set up variables from the environment.
 $env = getenv();
 
-$base_path   = $env[ 'WORKSPACE' ] ?? getcwd();
-$ref         = $env[ 'SHA' ] ?? $env[ 'BRANCH' ] ?? '';
-$source_dirs = $env[ 'SOURCE_DIRECTORIES' ] ?? 'src/';
-$github_path = $env[ 'GITHUB_PATH' ] ?? '';
+$base_path   = $env['WORKSPACE'] ?? getcwd();
+$ref         = $env['SHA'] ?? $env['BRANCH'] ?? '';
+$source_dirs = $env['SOURCE_DIRECTORIES'] ?? 'src/';
+$base_url    = $env['BASE_URL'] ?? '';
 
 // Source directories need the full path prepended.
 $source_dirs = array_map(
-	function( $path ) use ( $base_path ) {
-		$path = trim( $path );
-		$path = ltrim( $path, '/' );
-
-//		return "{$base_path}/{$path}";
-		return $path;
+	function( $path ) {
+		return ltrim( trim( $path ), '/' );
 	},
 	explode( ',', $source_dirs )
 );
 
 $args = [
 	'github_blob' => $ref,
-	'github_path' => $github_path,
+	'base_url' => $base_url,
 	'source_dirs' => $source_dirs,
 	'workspace'   => $base_path,
 ];
