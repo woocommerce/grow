@@ -68,3 +68,10 @@ it(
 		);
 	}
 )->depends( 'it should find actions in sample files' );
+
+it(
+	'should find the sample-file-2 filename 12 times – twice for each action',
+	function( string $results ) {
+		expect( $results )->toContainCount( 'sample-file-2.php', 12 );
+	}
+)->depends( 'it should find actions in sample files' );
