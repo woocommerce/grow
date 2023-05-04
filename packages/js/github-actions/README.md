@@ -15,18 +15,28 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
+- [`hook-documentation`](/packages/php/github-actions/hook-documentation) - Generate WordPress hook documentation
 
 ## Prerequisites
 
+### JavaScript actions
+
 1. Install `node` with version >= 14
 1. Install node modules `npm i`
+
+### PHP actions
+
+1. Install `composer` with version >= 2
+1. Run `composer install` in the action directory
+1. Write tests as needed for changes to the action(s)
+1. Run `composer test` to run the tests, and `composer test:coverage` to generate an HTML coverage report
 
 ## Development
 
 ### Directory structure of source code
 
 ```
-/packages/js/github-actions/  # The root of this package
+/packages/js/github-actions/  # The root of actions written in JavaScript
 ├── actions/                  # All actions to be exposed in the release build
 │   ├── prepare-node/         # Composite action
 │   │   ├── action.yml
@@ -42,6 +52,15 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 │   └── do-something.js
 ├── package.json              # The required dependent packages of the scripts, tests, build, and etc
 └── README.md                 # The overall info about this Github actions package
+
+/packages/php/github-actions/               # The root of actions written in PHP
+├── hook-documentation/                     # PHP action
+│   ├── src/                                # Script sources
+│   ├── bin/
+│   │   ├── generate-hook-documentation.php # The entry point of the action
+│   ├── tests/                              # Unit tests for the action
+│   ├── coverage/                           # Directory containg Code coverage report after `composer test:coverage` is run
+│   ├── action.yml                          # The action file
 ```
 
 - The `src` directories will be skipped in the release build.
