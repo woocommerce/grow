@@ -18,9 +18,12 @@ This action accepts the following inputs:
 
 ## Usage
 
-Sample yaml file:
+This action is intended to be used in a workflow that runs on pull requests. It will generate hook documentation from the source code of the plugin and commit it to the repository.
+
+### Example workflow
 
 ```yaml
+# filename: .github/workflows/php-hook-documentation.yml
 name: PHP Hook Documentation Generator
 
 on:
@@ -41,8 +44,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with:
+          # Checks out a branch instead of a commit in detached HEAD state
           ref: ${{ github.head_ref }}
 
+        # This generates the documentation string. The `id` property is used to reference the output in the next step.
       - name: Generate hook documentation
         id: generate-hook-docs
         uses: woocommerce/grow/packages/php/github-actions/hook-documentation@feature/hook_helper
@@ -61,7 +66,28 @@ jobs:
             echo "*No documentation changes to commit.*" >> $GITHUB_STEP_SUMMARY
           else
             echo "*Committing documentation changes.*" >> $GITHUB_STEP_SUMMARY
-            git commit -q -m "Update hooks documentation from ${{ steps.get-notes.outputs.next-tag }} branch."
+            git commit -q -m "Update hooks documentation from ${{ github.head_ref }} branch."
             git push
           fi
 ```
+
+## Development
+
+For development of this action, you will need to install the dependencies with Composer:
+
+```bash
+composer install
+```
+
+### Testing
+
+All of the code for this action is in the `src/` directory. The entry point used by the `action.yml` file is `bin/generate-hook-documentation.php`. This file converts environment variables into proper parameters for the `Documentor` class.
+
+Unit tests are configured using [pest](https://pestphp.com/). There are two options for running tests:
+
+* `composer test` – This is a normal test run, and the test suite will be executed.
+* `composer test:coverage` – This will run the test suite and generate a code coverage report in the `coverage` directory. After the coverage report is generated, launch the `coverage/index.html` file in any browser to view the report.
+
+New unit tests should generally be placed in the `tests/Unit/` directory. Files with the suffix `Test.php` will automatically be run by the test suite.
+
+![Unit Test Suite example](/.github/images/hook-documentation-unit-test-run.png)
