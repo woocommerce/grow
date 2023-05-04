@@ -9,17 +9,12 @@ This action generates WordPress hook documentation from the source code of the p
 This action accepts the following inputs:
 
 * `source-directories` – A comma-separated list of directories to scan for hooks. Defaults to `src/`.
-* `main-branch` – The name of the main branch. Defaults to `main`.
 * `debug-output` – Whether to output extra debug information. Defaults to `no`. Will still produce debug output if the action fails.
 
 ### Outputs
 
 * `hook-docs` – The generated hook documentation. This will be a single file in markdown format.
 * `debugging-output` - Debugging output from the action.
-
-## Development
-
-
 
 ## Usage
 
@@ -54,7 +49,6 @@ jobs:
         with:
           debug-output: yes
           source-directories: src/,templates/
-          main-branch: develop
 
       - name: Commit hook documentation
         shell: bash
