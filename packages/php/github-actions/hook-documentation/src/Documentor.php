@@ -64,8 +64,22 @@ class Documentor {
 	 * @return array
 	 */
 	protected function get_hooks( array $files_to_scan ): array {
-		$scanned = [];
-		$results = [];
+		$scanned       = [];
+		$results       = [];
+		$hook_continue = [
+			'.' => 1,
+			'{' => 1,
+			'}' => 1,
+			'"' => 1,
+			"'" => 1,
+			' ' => 1,
+			')' => 1,
+			'(' => 1,
+		];
+		$hooks_break   = [
+			',' => 1,
+			';' => 1,
+		];
 
 		foreach ( $files_to_scan as $heading => $files ) {
 			$hooks_found = [];
@@ -84,98 +98,88 @@ class Documentor {
 				$scanned[ $current_file ] = 1;
 
 				foreach ( $tokens as $index => $token ) {
-					if ( is_array( $token ) ) {
-						$trimmed_token_1 = trim( $token[1] );
-						if ( T_CLASS === $token[0] ) {
-							$token_type = 'class';
-						} elseif ( T_FUNCTION === $token[0] ) {
-							$token_type = 'function';
-						} elseif ( 'do_action' === $token[1] ) {
-							$token_type = 'action';
-						} elseif ( 'apply_filters' === $token[1] ) {
-							$token_type = 'filter';
-						} elseif ( $token_type && ! empty( $trimmed_token_1 ) ) {
-							switch ( $token_type ) {
-								case 'class':
-									$current_class = $token[1];
-									break;
-								case 'function':
-									$current_function = $token[1];
-									break;
-								case 'filter':
-								case 'action':
-									$hook = trim( $token[1], "'" );
-									$hook = str_replace( '_FUNCTION_', strtoupper( $current_function ), $hook );
-									$hook = str_replace( '_CLASS_', strtoupper( $current_class ), $hook );
-									$hook = str_replace( '$this', strtoupper( $current_class ), $hook );
-									$hook = str_replace( [ '.', '{', '}', '"', "'", ' ', ')', '(' ], '', $hook );
-									$hook = preg_replace( '/\/\/phpcs:(.*)(\n)/', '', $hook );
-									$loop = 0;
+					if ( ! is_array( $token ) ) {
+						continue;
+					}
 
-									// Keep adding to hook until we find a comma or colon.
-									while ( 1 ) {
-										$loop ++;
-										$prev_hook = is_string( $tokens[ $index + $loop - 1 ] )
-											? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
-										$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ]
-											: $tokens[ $index + $loop ][1];
+					$trimmed_token_1 = trim( $token[1] );
+					if ( T_CLASS === $token[0] ) {
+						$token_type = 'class';
+					} elseif ( T_FUNCTION === $token[0] ) {
+						$token_type = 'function';
+					} elseif ( 'do_action' === $token[1] || 'do_action_ref_array' === $token[1] ) {
+						$token_type = 'action';
+					} elseif ( 'apply_filters' === $token[1] ) {
+						$token_type = 'filter';
+					} elseif ( $token_type && ! empty( $trimmed_token_1 ) ) {
+						switch ( $token_type ) {
+							case 'class':
+								$current_class = $token[1];
+								break;
+							case 'function':
+								$current_function = $token[1];
+								break;
+							case 'filter':
+							case 'action':
+								$hook = $this->normalize_hook( $token[1], $current_function, $current_class );
 
-										if ( in_array(
-											$next_hook,
-											[ '.', '{', '}', '"', "'", ' ', ')', '(' ],
-											true
-										) ) {
-											continue;
-										}
+								// Keep adding to hook until we find a comma or colon.
+								$loop = 0;
+								do {
+									$loop++;
+									$prev_hook = is_string( $tokens[ $index + $loop - 1 ] )
+										? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
+									$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ]
+										: $tokens[ $index + $loop ][1];
 
-										if ( in_array( $next_hook, [ ',', ';' ], true ) ) {
-											break;
-										}
-
-										$hook_first = substr( $next_hook, 0, 1 );
-										$hook_last  = substr( $next_hook, - 1, 1 );
-
-										if ( '{' === $hook_first || '}' === $hook_last || '$' === $hook_first || ')' === $hook_last || '>' === substr(
-												$prev_hook,
-												- 1,
-												1
-											) ) {
-											$next_hook = strtoupper( $next_hook );
-										}
-
-										$next_hook = str_replace(
-											[ '.', '{', '}', '"', "'", ' ', ')', '(' ],
-											'',
-											$next_hook
-										);
-
-										$hook .= $next_hook;
+									if ( array_key_exists( $next_hook, $hook_continue ) ) {
+										continue;
 									}
 
-									$hook = trim( $hook );
+									if ( array_key_exists( $next_hook, $hooks_break ) ) {
+										break;
+									}
 
-									if ( isset( $hooks_found[ $hook ] ) ) {
-										$hooks_found[ $hook ]['files'][] = [
-											'path' => $current_file,
-											'line' => $token[2],
-										];
-									} else {
-										$hooks_found[ $hook ] = [
-											'files'    => [
-												[
-													'path' => $current_file,
-													'line' => $token[2],
-												],
+									$hook_first = substr( $next_hook, 0, 1 );
+									$hook_last  = substr( $next_hook, -1, 1 );
+
+									if (
+										'{' === $hook_first ||
+										'}' === $hook_last ||
+										'$' === $hook_first ||
+										')' === $hook_last ||
+										'>' === substr( $prev_hook, -1, 1 )
+									) {
+										$next_hook = strtoupper( $next_hook );
+									}
+
+									$next_hook = $this->remove_special_chars( $next_hook );
+
+									$hook .= $next_hook;
+								} while ( true );
+
+								$hook = trim( $hook );
+								if ( isset( $hooks_found[ $hook ] ) ) {
+									$hooks_found[ $hook ]['files'][] = [
+										'path' => $current_file,
+										'line' => $token[2],
+									];
+								} else {
+									$hooks_found[ $hook ] = [
+										'files'    => [
+											[
+												'path' => $current_file,
+												'line' => $token[2],
 											],
-											'class'    => $current_class,
-											'function' => $current_function,
-											'type'     => $token_type,
-										];
-									}
-									break;
-							}
-							$token_type = false;
+										],
+										'class'    => $current_class,
+										'function' => $current_function,
+										'type'     => $token_type,
+									];
+								}
+								break;
 						}
+						$token_type = false;
 					}
 				}
 			}
@@ -312,5 +316,45 @@ class Documentor {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Normalize the hook.
+	 *
+	 * @param string $hook
+	 * @param string $current_function
+	 * @param string $current_class
+	 *
+	 * @return string
+	 */
+	protected function normalize_hook( string $hook, string $current_function, string $current_class ): string {
+		$hook = trim( $hook, "'" );
+
+		$replacements = [
+			'__FUNCTION__' => $current_function,
+			'__CLASS__'    => $current_class,
+			'$this'        => $current_class,
+		];
+
+		$hook = str_replace(
+			array_keys( $replacements ),
+			array_values( $replacements ),
+			$hook
+		);
+
+		$hook = $this->remove_special_chars( $hook );
+
+		return preg_replace( '#//phpcs:(.*)(\n)#', '', $hook );
+	}
+
+	/**
+	 * @param string $hook
+	 *
+	 * @return string
+	 */
+	protected function remove_special_chars( string $hook ): string {
+		$removals = [ '.', '{', '}', '"', "'", ' ', ')', '(' ];
+
+		return str_replace( $removals, '', $hook );
 	}
 }
