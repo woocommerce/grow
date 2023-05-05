@@ -53,29 +53,29 @@ function parsePluginVersions( releases = {} ) {
 	const output = [];
 
 	if ( slug !== 'wordpress' ) {
-		Object.keys( releases.versions )
+		const versions = Object.keys( releases.versions )
 			.filter(
 				( version ) =>
 					version !== 'trunk' &&
 					version !== 'other' &&
 					! version.includes( 'beta' )
 			)
-			.sort( semverCompare )
-			.forEach( ( version ) => {
-				if ( output.length === numberOfReleases ) {
-					return;
-				}
+			.sort( semverCompare );
 
-				if (
-					( includeRC || ! isRC( version ) ) &&
-					( includePatches ||
-						! isMinorAlreadyAdded( output, version ) )
-				) {
-					output.push( version );
-				}
-			} );
+		for ( const version of versions ) {
+			if ( output.length === numberOfReleases ) {
+				break;
+			}
+
+			if (
+				( includeRC || ! isRC( version ) ) &&
+				( includePatches || ! isMinorAlreadyAdded( output, version ) )
+			) {
+				output.push( version );
+			}
+		}
 	} else {
-		releases.offers.forEach( ( release ) => {
+		for ( const release of releases.offers ) {
 			if ( output.length === numberOfReleases ) {
 				return;
 			}
@@ -87,7 +87,7 @@ function parsePluginVersions( releases = {} ) {
 			) {
 				output.push( release.version );
 			}
-		} );
+		}
 	}
 
 	setOutput( 'matrix', output );
