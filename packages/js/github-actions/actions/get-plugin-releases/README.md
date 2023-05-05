@@ -27,7 +27,7 @@ on:
         with:
           slug: woocommerce
 
-      - name: Get Release versions from Wordpress
+      - name: Get Release versions from WordPress
         id: wp-matrix
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
