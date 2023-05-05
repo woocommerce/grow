@@ -35,12 +35,12 @@ jobs:
         with:
           slug: google-listings-and-ads
           
-      - name: Get L-3 Release versions from WC including RC
+      - name: Get L-20 Release versions from WC including RC
         id: wc-matrix-l3-rc
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.1-miguel
         with:
           slug: woocommerce
-          releases: 4
+          releases: 21
           includeRC: true
           
       - name: Get L-2 Release versions from WC including patches
