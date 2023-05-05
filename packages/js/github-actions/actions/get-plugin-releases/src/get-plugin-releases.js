@@ -133,8 +133,7 @@ function semverCompare( a, b ) {
 		return 1;
 	}
 
-	return 0
-
+	return 0;
 }
 
 getPluginReleases()
