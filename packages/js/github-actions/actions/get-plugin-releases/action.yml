@@ -1,5 +1,5 @@
 name: Get Plugin L-2 release versions
-description: Get release versions for the L-2 releases from a specific Wordpress plugin like WooCommerce or Google Listing And Ads.
+description: Get release versions for the L-x releases from a specific Wordpress plugin like WooCommerce or Google Listing And Ads.
 
 inputs:
   slug:
