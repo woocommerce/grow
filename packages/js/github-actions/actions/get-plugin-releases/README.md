@@ -2,7 +2,7 @@
 
 This action provides the following functionality for GitHub Actions users:
 
-- Get releases versions via GitHub job
+- Get L-x release versions via GitHub job
 
 ## Usage
 
