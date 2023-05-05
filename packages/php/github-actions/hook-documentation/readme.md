@@ -57,9 +57,11 @@ jobs:
 
       - name: Commit hook documentation
         shell: bash
+        # Use the github-actions bot account to commit.
+        # https://api.github.com/users/github-actions%5Bbot%5D
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@users.noreply.github.com
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           echo "${{ steps.generate-hook-docs.outputs.hook-docs }}" > docs/Hooks.md
           git add docs/Hooks.md
           if git diff --cached --quiet; then
