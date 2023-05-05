@@ -46,9 +46,9 @@ function setOutput( key, value ) {
 
 function parsePluginVersions( releases = {} ) {
 	const slug = getInput( 'slug' );
-	const numberOfReleases = parseInt( getInput( 'releases' ), 10 ) || 3;
-	const includeRC = getInput( 'includeRC' ) || false;
-	const includePatches = getInput( 'includePatches' ) || false;
+	const numberOfReleases = parseInt( getInput( 'releases' ), 10 );
+	const includeRC = getInput( 'includeRC' );
+	const includePatches = getInput( 'includePatches' );
 
 	const output = [];
 
@@ -64,7 +64,7 @@ function parsePluginVersions( releases = {} ) {
 					version !== 'other' &&
 					version !== 'trunk' &&
 					! version.includes( 'beta' ) &&
-					! includesRC( version, includeRC ) &&
+					( includeRC || ! isRC( version ) ) &&
 					! isMinorAlreadyAdded( output, version, includePatches )
 				) {
 					output.push( version );
@@ -90,7 +90,7 @@ function parsePluginVersions( releases = {} ) {
 	setOutput( 'matrix', output );
 }
 
-function includesRC( version, includeRC ) {
+function isRC( version, includeRC ) {
 	if ( includeRC ) {
 		return false;
 	}
