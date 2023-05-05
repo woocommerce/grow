@@ -9,7 +9,7 @@ inputs:
     description: Number of releases to get. By default L-2 directive (3 releases)
     default: "3"
   includeRC:
-    description: Weather to include Release Coadidates in the fetched versions. (Wordpress is Not compatible with this)
+    description: Weather to include Release Candidates in the fetched versions. (WordPress is Not compatible with this)
     default: "false"
   includePatches:
     description: Weather to include Patches in the fetched versions. (WordPress is NOT compatible with this)
