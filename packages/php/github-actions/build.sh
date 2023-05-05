@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-# Get passed arguments
-
-
-# Loop through all directories
+# Loop through all directories, building the package for each one.
 for d in "$(find . -mindepth 1 -maxdepth 1 -type d)" ; do
   pushd $d
   baseDir=$(basename $d)
