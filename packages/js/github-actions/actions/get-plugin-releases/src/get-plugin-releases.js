@@ -13,7 +13,7 @@ async function getPluginReleases() {
 	const slug = getInput( 'slug' );
 	const apiEndpoint = getAPIEndpoint( slug );
 
-	fetch( apiEndpoint )
+return fetch( apiEndpoint )
 		.then( ( res ) => res.json() )
 		.then( parsePluginVersions );
 }
