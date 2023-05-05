@@ -23,14 +23,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Run composer install for the action repo
-      id: composer-install
-      shell: bash
-      run: |
-        composer install -no --no-dev --ignore-platform-reqs -d "$GITHUB_ACTION_PATH"
-        if [ $? -ne 0 ]; then
-          exit $?
-        fi
     - name: Run documentation generator
       id: run-documentation-generator
       if: ${{ success() }}
