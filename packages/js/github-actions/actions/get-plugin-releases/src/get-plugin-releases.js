@@ -54,7 +54,12 @@ function parsePluginVersions( releases = {} ) {
 
 	if ( slug !== 'wordpress' ) {
 		Object.keys( releases.versions )
-			.filter( version => version !== 'trunk' && version !== 'other' && ! version.includes( 'beta' ) )
+			.filter(
+				( version ) =>
+					version !== 'trunk' &&
+					version !== 'other' &&
+					! version.includes( 'beta' )
+			)
 			.sort( semverCompare )
 			.forEach( ( version ) => {
 				if ( output.length === numberOfReleases ) {
@@ -63,7 +68,8 @@ function parsePluginVersions( releases = {} ) {
 
 				if (
 					( includeRC || ! isRC( version ) ) &&
-					( includePatches || ! isMinorAlreadyAdded( output, version ) )
+					( includePatches ||
+						! isMinorAlreadyAdded( output, version ) )
 				) {
 					output.push( version );
 				}
@@ -76,7 +82,8 @@ function parsePluginVersions( releases = {} ) {
 
 			if (
 				release.new_files &&
-				( includePatches || ! isMinorAlreadyAdded(  output, release.version ) )
+				( includePatches ||
+					! isMinorAlreadyAdded( output, release.version ) )
 			) {
 				output.push( release.version );
 			}
@@ -105,22 +112,29 @@ function isMinorAlreadyAdded( output, version ) {
 	}
 }
 
-function semverCompare(a, b) {
+function semverCompare( a, b ) {
 	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
 
-	const [ , majorA, minorA, patchA, rcA ] = a.toLowerCase().match(regex);
-	const [ , majorB, minorB, patchB, rcB ] = b.toLowerCase().match(regex);
+	const [ , majorA, minorA, patchA, rcA ] = a.toLowerCase().match( regex ); // eslint-disable-line
+	const [ , majorB, minorB, patchB, rcB ] = b.toLowerCase().match( regex ); // eslint-disable-line
 
-	if ( majorA !== majorB ) return majorB-majorA;
-	if ( minorA !== minorB ) return minorB-minorA;
-	if ( patchA !== patchB ) return patchB-patchA;
-
-	if ( rcA === rcB ) return 0;
+	if ( majorA !== majorB ) return majorB - majorA;
+	if ( minorA !== minorB ) return minorB - minorA;
+	if ( patchA !== patchB ) return patchB - patchA;
 
 	if ( ! rcA ) return -1;
 	if ( ! rcB ) return 1;
 
-	return rcB < rcA ? -1 : rcB > rcA ? 1 : 0;
+	if ( rcB < rcA ) {
+		return -1;
+	}
+
+	if ( rcB > rcA ) {
+		return 1;
+	}
+
+	return 0
+
 }
 
 getPluginReleases()
