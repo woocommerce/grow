@@ -1,4 +1,4 @@
-name: Get Plugin L-2 release versions
+name: Get Plugin L-X release versions
 description: Get release versions for the L-x releases from a specific Wordpress plugin like WooCommerce or Google Listing And Ads.
 
 inputs:
@@ -9,10 +9,10 @@ inputs:
     description: Number of releases to get. By default L-2 directive (3 releases)
     default: "3"
   includeRC:
-    description: Weather to include Release Candidates in the fetched versions. (WordPress is Not compatible with this)
+    description: Whether to include Release Candidates in the fetched versions. (WordPress is Not compatible with this)
     default: "false"
   includePatches:
-    description: Weather to include Patches in the fetched versions. (WordPress is NOT compatible with this)
+    description: Whether to include Patches in the fetched versions. (WordPress is NOT compatible with this)
     default: "false"    
     
 outputs:
