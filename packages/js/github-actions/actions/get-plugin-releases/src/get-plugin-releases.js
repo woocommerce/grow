@@ -13,7 +13,7 @@ async function getPluginReleases() {
 	const slug = getInput( 'slug' );
 	const apiEndpoint = getAPIEndpoint( slug );
 
-return fetch( apiEndpoint )
+	return fetch( apiEndpoint )
 		.then( ( res ) => res.json() )
 		.then( parsePluginVersions );
 }
@@ -79,7 +79,7 @@ function parsePluginVersions( releases = {} ) {
 			if (
 				release.new_files &&
 				! release.version.includes( 'beta' ) &&
-				! includesRC( release.version, includeRC ) &&
+				( includeRC || ! isRC( release.version ) ) &&
 				! isMinorAlreadyAdded( output, release.version, includePatches )
 			) {
 				output.push( release.version );
@@ -90,11 +90,7 @@ function parsePluginVersions( releases = {} ) {
 	setOutput( 'matrix', output );
 }
 
-function isRC( version, includeRC ) {
-	if ( includeRC ) {
-		return false;
-	}
-
+function isRC( version ) {
 	return version.includes( 'rc' );
 }
 
