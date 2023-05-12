@@ -17,6 +17,7 @@ on:
     branches:
       - release/my-tool
 
+jobs:
   EchoRelease:
     name: Echo Release
     runs-on: ubuntu-latest
