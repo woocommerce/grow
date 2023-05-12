@@ -101,7 +101,8 @@ jobs:
           pushd ./packages/js/github-actions
           npm ci --ignore-scripts
           npm run build
-          
+
+          # Build the PHP actions into .zip files.
           cd ../../php/github-actions
           ./build.sh
           popd
@@ -117,10 +118,15 @@ jobs:
           echo "/packages/js/github-actions/actions/*/src" > .gitignore
           git add ./packages/js/github-actions/actions
           git mv ./packages/js/github-actions/actions/* ./
-          
+
+          # Unzip all of the the PHP actions into the top directory. These were built in a previous step
           find ./packages/php/github-actions -name "*.zip" -exec unzip -d ./ {} \;
-          git add .
-          
+
+          # Find each of the PHP action directories, and add them to the git index
+          for actionDir in "$(find packages/php/github-actions -mindepth 1 -maxdepth 1 -type d)"; do
+            git add "$(basename $actionDir)"
+          done
+
           tee README.md << END
           # Custom GitHub actions
           ### This is the release build of version \`${TAG_NAME}\`.
