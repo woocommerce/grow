@@ -17,6 +17,7 @@ on:
     branches:
       - release/my-tool
 
+jobs:
   EchoRelease:
     name: Echo Release
     runs-on: ubuntu-latest
@@ -26,7 +27,7 @@ on:
 
       - name: Get release notes
         id: get-notes
-        uses: ./packages/js/github-actions/actions/get-release-notes
+        uses: woocommerce/grow/get-release-notes@actions-v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -89,7 +90,7 @@ jobs:
 
       - name: Get release notes
         id: get-notes
-        uses: ./packages/js/github-actions/actions/get-release-notes
+        uses: woocommerce/grow/get-release-notes@actions-v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -140,7 +141,7 @@ jobs:
 
       - name: Get release notes
         id: get-notes
-        uses: ./packages/js/github-actions/actions/get-release-notes
+        uses: woocommerce/grow/get-release-notes@actions-v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
