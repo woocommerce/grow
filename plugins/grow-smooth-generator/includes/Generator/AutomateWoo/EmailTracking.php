@@ -126,6 +126,10 @@ class EmailTracking extends Generator {
 
 		$date = $dates[ array_rand( $dates ) ];
 
+		$date_start = strtotime( $start );
+		$date_end   = strtotime( $end );
+		$date       = date( 'Y-m-d', wp_rand( $date_start, $date_end ) );
+
 		if ( $include_time ) {
 			return $date . ' ' . wp_rand( 0, 23 ) . ':00:00';
 		}
