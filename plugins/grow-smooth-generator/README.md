@@ -14,7 +14,7 @@ Grow Smooth Generator requires Composer and WP-CLI to function. The [WooCommerce
 
 ### AutomateWoo Conversions
 
-Generate conversions based on the number of conversions parameter.
+Generate conversions based on the number of conversions parameter (for the current date).
 - `wp wc generate aw-conversions <nr of conversions> --workflow=<workflow ID>`
 
 Generate conversions with random dates between `--date-start` and the current date.
