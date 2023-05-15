@@ -26,10 +26,10 @@ Generate conversions with random dates between `--date-start` and `--date-end`.
 ### AutomateWoo Email and SMS Tracking
 
 Generate email tracking based on the number parameter.
-- `wp wc generate aw-conversions <nr of tracking> --workflow=<workflow ID>`
+- `wp wc generate aw-email-tracking <nr of tracking> --workflow=<workflow ID>`
 
 Generate email tracking with random dates between `--date-start` and the current date.
-- `wp wc generate aw-conversions <nr of tracking> --workflow=<workflow ID> --date-start=2020-04-01`
+- `wp wc generate aw-email-tracking <nr of tracking> --workflow=<workflow ID> --date-start=2020-04-01`
 
 Generate email tracking with random dates between `--date-start` and `--date-end`.
-- `wp wc generate aw-conversions <nr of tracking> --workflow=<workflow ID> --date-start=2020-04-01 --date-end=2020-04-24`
+- `wp wc generate aw-email-tracking <nr of tracking> --workflow=<workflow ID> --date-start=2020-04-01 --date-end=2020-04-24`
