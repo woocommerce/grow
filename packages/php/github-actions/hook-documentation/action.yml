@@ -18,7 +18,7 @@ outputs:
 
   debugging-output:
     description: Extra debugging output from some commands
-    value: ${{ steps.debugging-output.debugging-output }}
+    value: ${{ steps.debugging-output.outputs.debugging-output }}
 
 runs:
   using: "composite"
@@ -46,5 +46,7 @@ runs:
       id: debugging-output
       shell: bash
       run: |
+        echo "debugging-output<<EOF" >> "$GITHUB_OUTPUT"
         echo "$(pwd && ls -la && env)"
+        echo "EOF" >> "$GITHUB_OUTPUT"
       if: ${{ failure() }} || 'yes' == inputs.debug-output
