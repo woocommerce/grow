@@ -63,7 +63,10 @@ function parsePluginVersions( releases = {} ) {
 			.sort( semverCompare );
 
 		for ( const version of versions ) {
-			if ( output.length === numberOfReleases ) {
+
+			const releasesAdded = output.filter( version => ! isRC( version ) );
+
+			if ( releasesAdded.length === numberOfReleases ) {
 				break;
 			}
 
@@ -128,15 +131,7 @@ function semverCompare( a, b ) {
 	if ( ! rcA ) return -1;
 	if ( ! rcB ) return 1;
 
-	if ( rcB < rcA ) {
-		return -1;
-	}
-
-	if ( rcB > rcA ) {
-		return 1;
-	}
-
-	return 0;
+	return rcB.localeCompare(rcA);
 }
 
 getPluginReleases()
