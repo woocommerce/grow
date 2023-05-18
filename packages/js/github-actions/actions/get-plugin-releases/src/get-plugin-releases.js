@@ -77,7 +77,7 @@ function parsePluginVersions( releases = {} ) {
 	} else {
 		for ( const release of releases.offers ) {
 			if ( output.length === numberOfReleases ) {
-				return;
+				break;
 			}
 
 			if (
