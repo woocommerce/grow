@@ -1,4 +1,4 @@
-# Get latest releases versions from a specific plugin or from wordpress core
+# Get latest releases versions from a specific WordPress.org plugin or from WordPress core
 
 This action provides the following functionality for GitHub Actions users:
 

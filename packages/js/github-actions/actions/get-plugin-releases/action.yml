@@ -3,7 +3,7 @@ description: Get release versions for the L-x releases from a specific Wordpress
 
 inputs:
   slug:
-    description: The plugin slug to get the versions.
+    description: The plugin slug to get the versions. (It should be a WordPress.org plugin)
     required: true
   releases:
     description: Number of releases to get. By default L-2 directive (3 releases)
