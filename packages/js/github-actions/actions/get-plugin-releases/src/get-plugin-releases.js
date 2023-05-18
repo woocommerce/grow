@@ -90,7 +90,7 @@ function parsePluginVersions( releases = {} ) {
 		}
 	}
 
-	setOutput( 'matrix', output );
+	setOutput( 'versions', output );
 }
 
 function isRC( version ) {
@@ -115,8 +115,11 @@ function isMinorAlreadyAdded( output, version ) {
 function semverCompare( a, b ) {
 	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
 
-	const [ , majorA, minorA, patchA, rcA ] = a.toLowerCase().match( regex ); // eslint-disable-line
-	const [ , majorB, minorB, patchB, rcB ] = b.toLowerCase().match( regex ); // eslint-disable-line
+	const aMatches = a.toLowerCase().match( regex );
+	const [ , majorA, minorA, patchA, rcA ] = aMatches;
+
+	const bMatches = b.toLowerCase().match( regex );
+	const [ , majorB, minorB, patchB, rcB ] = bMatches;
 
 	if ( majorA !== majorB ) return majorB - majorA;
 	if ( minorA !== minorB ) return minorB - minorA;

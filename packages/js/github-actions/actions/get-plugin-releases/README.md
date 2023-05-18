@@ -16,31 +16,31 @@ on:
     branches:
       - release/my-tool
 
-  jobs:
+jobs:
   GetPluginReleases:
     name: Get Plugin Releases
     runs-on: ubuntu-latest
     steps:
       - name: Get Release versions from WooCommerce
-        id: wc-matrix
+        id: wc-versions
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
           slug: woocommerce
 
       - name: Get Release versions from WordPress
-        id: wp-matrix
+        id: wp-versions
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
           slug: wordpress
 
       - name: Get Release versions from GLA
-        id: gla-matrix
+        id: gla-versions
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
           slug: google-listings-and-ads
 
       - name: Get L-3 Release versions from WC including RC
-        id: wc-matrix-l3-rc
+        id: wc-versions-l3-rc
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
           slug: woocommerce
@@ -48,17 +48,17 @@ on:
           includeRC: true
 
       - name: Get L-2 Release versions from WC including patches
-        id: wc-matrix-patches
+        id: wc-versions-patches
         uses: woocommerce/grow/get-plugin-releases@actions-v1.5.0-pre
         with:
           slug: woocommerce
           includePatches: true
 
-      - name: Show the matrix output
+      - name: Show the versions output
         run: |
-          echo "The versions WooCommerce are: ${{ steps.wc-matrix.outputs.matrix }}"
-          echo "The versions Wordpress are: ${{ steps.wp-matrix.outputs.matrix }}."
-          echo "The versions GLA are: ${{ steps.gla-matrix.outputs.matrix }}."
-          echo "The 4 versions WC RC are: ${{ steps.wc-matrix-l3-rc.outputs.matrix }}."
-          echo "The versions WC ( inc patches ) are: ${{ steps.wc-matrix-patches.outputs.matrix }}."
+          echo "The versions WooCommerce are: ${{ steps.wc-versions.outputs.versions }}"
+          echo "The versions Wordpress are: ${{ steps.wp-versions.outputs.versions }}."
+          echo "The versions GLA are: ${{ steps.gla-versions.outputs.versions }}."
+          echo "The 4 versions WC RC are: ${{ steps.wc-versions-l3-rc.outputs.versions }}."
+          echo "The versions WC ( inc patches ) are: ${{ steps.wc-versions-patches.outputs.versions }}."
 ```

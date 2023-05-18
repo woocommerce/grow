@@ -16,8 +16,8 @@ inputs:
     default: "false"    
     
 outputs:
-  matrix:
-    description: A matrix array in the format ["7.4","7.5","7.6"]
+  versions:
+    description: The versions array in the format ["7.4","7.5","7.6"]
 
 runs:
   using: node16
