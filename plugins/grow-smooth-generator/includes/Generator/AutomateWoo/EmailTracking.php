@@ -117,15 +117,6 @@ class EmailTracking extends Generator {
 			return $current;
 		}
 
-		$dates = array();
-		$date  = strtotime( $start );
-		while ( $date <= strtotime( $end ) ) {
-			$dates[] = date( 'Y-m-d', $date );
-			$date    = strtotime( '+1 day', $date );
-		}
-
-		$date = $dates[ array_rand( $dates ) ];
-
 		$date_start = strtotime( $start );
 		$date_end   = strtotime( $end );
 		$date       = date( 'Y-m-d', wp_rand( $date_start, $date_end ) );
