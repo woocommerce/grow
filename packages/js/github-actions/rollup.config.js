@@ -23,7 +23,10 @@ export default [
 		},
 		external: [ 'path', 'fs' ],
 		plugins: [
-			nodeResolve( { preferBuiltins: true } ),
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
 			commonjs(),
 			json( { compact: true } ),
 		],
@@ -34,7 +37,13 @@ export default [
 			file: './actions/phpcs-diff/annotate-phpcs-report.mjs',
 		},
 		external: [ 'fs', 'node:process' ],
-		plugins: [ nodeResolve( { preferBuiltins: true } ), commonjs() ],
+		plugins: [
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
+			commonjs(),
+		],
 	},
 	{
 		input: './actions/stylelint-annotation/src/stylelintFormatter.js',
@@ -52,7 +61,10 @@ export default [
 			file: './actions/update-version-tags/update-version-tags.mjs',
 		},
 		plugins: [
-			nodeResolve( { preferBuiltins: true } ),
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
 			commonjs(),
 			json( { compact: true } ),
 		],
@@ -64,7 +76,10 @@ export default [
 			inlineDynamicImports: true,
 		},
 		plugins: [
-			nodeResolve( { preferBuiltins: true } ),
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
 			commonjs(),
 			json( { compact: true } ),
 		],
