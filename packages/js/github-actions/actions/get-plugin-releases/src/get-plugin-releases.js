@@ -132,7 +132,7 @@ function semverCompare( a, b ) {
 	if ( ! rcA ) return -1;
 	if ( ! rcB ) return 1;
 
-	return rcB.localeCompare( rcA );
+	return parseInt( rcB.replace('-rc.','') ) - parseInt( rcA.replace('-rc.','') );
 }
 
 getPluginReleases()
