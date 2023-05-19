@@ -132,7 +132,10 @@ function semverCompare( a, b ) {
 	if ( ! rcA ) return -1;
 	if ( ! rcB ) return 1;
 
-	return parseInt( rcB.replace('-rc.','') ) - parseInt( rcA.replace('-rc.','') );
+	return (
+		parseInt( rcB.replace( '-rc.', '' ), 10 ) -
+		parseInt( rcA.replace( '-rc.', '' ), 10 )
+	);
 }
 
 getPluginReleases()
