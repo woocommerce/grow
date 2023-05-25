@@ -1,5 +1,13 @@
 # Changelog
 
+## 2023-05-25 (1.5.0)
+### New Features 🎉
+* [Hackday] Action Get Plugin Releases. (https://github.com/woocommerce/grow/pull/50)
+### Tweaked 🔧
+* Tweak - Upgrade actions/core to v1.10.0. (https://github.com/woocommerce/grow/pull/54)
+### Documentation 📚
+* Fix the missed `jobs` and incorrect `uses` in the README of `get-release-notes` action. (https://github.com/woocommerce/grow/pull/53)
+
 ## 2023-04-14 (1.4.1)
 ### Tweaked 🔧
 * Replace the deprecated command `set-output` of GitHub Actions. (https://github.com/woocommerce/grow/pull/48)
