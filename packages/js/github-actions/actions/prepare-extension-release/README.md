@@ -44,6 +44,3 @@ on:
           wc_version: ${{ github.event.inputs.wc_version }}
           main_branch: 'trunk'
 ```
-
-#### Checklist template
-
