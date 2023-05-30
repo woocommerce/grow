@@ -1,0 +1,75 @@
+name: Prepare extension release
+description: Create the release branch & PR with checklist.
+
+inputs:
+  version:
+    description: 'Version number to be released'
+    required: true
+  type:
+    description: 'Type of the release (release|hotfix)'
+    required: true
+    default: 'release'
+  wp_version:
+    description: 'WordPress tested up to'
+  wc_version:
+    description: 'WooCommerce tested up to'
+  main_branch:
+    description: 'Where release branches are merged'
+    required: true
+    default: 'trunk'
+
+outputs:
+  release-notes:
+    description: The content of release notes.
+
+  release-notes-shell:
+    description: The escaped "release-notes" for use in the shell.
+
+  release-changelog:
+    description: The changelog part in release notes.
+
+  release-changelog-shell:
+    description: The escaped "release-changelog" for use in the shell.
+
+  next-version:
+    description: The next version inferred via the release notes. For example, 2.0.0, 1.5.0 or 1.4.8.
+
+  next-tag:
+    description: The next tag name inferred via the release notes. For example, 2.0.0, v1.5.0 or my-tool-v1.4.8.
+
+runs:
+  using: composite
+  steps:
+    - name: Set release branch name
+      id: release-vars
+      shell: bash
+      run: echo "branch=${{ inputs.type }}/${{ inputs.version }}" >> $GITHUB_OUTPUT
+
+    - name: Prepare release commits
+      shell: bash
+       # Use the github-actions bot account to commit.
+       # https://api.github.com/users/github-actions%5Bbot%5D
+      run: |
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git checkout -b ${{ steps.release-vars.outputs.branch }}
+
+        git commit --allow-empty -q -m "Start \`${{ steps.release-vars.outputs.branch }}\`."
+        git push --set-upstream origin ${{ steps.release-vars.outputs.branch }}
+    - name: Create a pull request for the release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const action_path = '${{ github.action_path }}';
+          const { default: script } = await import( `${ action_path }/woo-extension-create-pr-for-release.mjs` );
+          await script( {
+            github,
+            context,
+            base: '${{ inputs.main_branch }}',
+            repository: '${{ github.repository }}',
+            refName: '${{ steps.release-vars.outputs.branch }}',
+            type: '${{ inputs.type }}',
+            version: '${{ inputs.version }}',
+            wpVersion: '${{ inputs.wp_version }}',
+            wcVersion: '${{ inputs.wc_version }}'
+          } );

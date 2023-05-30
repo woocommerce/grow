@@ -84,4 +84,17 @@ export default [
 			json( { compact: true } ),
 		],
 	},
+	{
+		input: './actions/prepare-extension-release/src/woo-extension-create-pr-for-release.mjs',
+		output: {
+			file: './actions/prepare-extension-release/woo-extension-create-pr-for-release.mjs',
+		},
+		plugins: [
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
+			json( { compact: true } ),
+		],
+	},
 ];
