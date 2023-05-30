@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-05-30 (1.6.0)
+### New Features 🎉
+* Add GH action for release PR & checklist. (https://github.com/woocommerce/grow/pull/56)
+
 ## 2023-05-25 (1.5.0)
 ### New Features 🎉
 * [Hackday] Action Get Plugin Releases. (https://github.com/woocommerce/grow/pull/50)
