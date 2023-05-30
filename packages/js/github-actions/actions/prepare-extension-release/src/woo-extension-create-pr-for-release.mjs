@@ -39,15 +39,14 @@ export default async ( {
    1. [ ] Run a few basic smoke tests
 
 ## Next steps
-1. ~Approve this PR to allow the next workflow to create an actual release.~
 1. [ ] Do the final release
    \`\`\`
    woorelease release --product_version=${ version } ${ testedVersions }  --generate_changelog ${ repoURL }
    \`\`\`
    When prompted for changelog entries, double-check and apply any changes if needed.
-1. ~Another workflow will pick up the new release and post a comment here with GitHub's release notes, merge the PR, and merge \`trunk\` to \`develop\`.~
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
+1. [ ] Merge \`trunk\` to \`develop\` (if applicable for this repo).
 `;
 
 	await github.rest.pulls.create( {
