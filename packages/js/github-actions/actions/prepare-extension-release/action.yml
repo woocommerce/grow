@@ -17,6 +17,12 @@ inputs:
     description: 'Where release branches are merged'
     required: true
     default: 'trunk'
+  pre-steps:
+    description: 'Additional steps to be added before running woorelease'
+    default: ''
+  post-steps:
+    description: 'Additional steps to be added after running woorelease'
+    default: ''
 
 outputs:
   release-notes:

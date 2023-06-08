@@ -43,4 +43,10 @@ on:
           wp-version: ${{ github.event.inputs.wp-version }}
           wc-version: ${{ github.event.inputs.wc-version }}
           main-branch: 'trunk'
+          pre-steps: |
+            1. [ ] Prepare something more before the release
+          post-steps: |
+            ### Additional post-release checklist
+            1. [ ] Update documentation
+               - [ ] Publish any new required docs
 ```

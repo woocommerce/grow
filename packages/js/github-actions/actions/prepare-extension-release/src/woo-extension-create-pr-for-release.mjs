@@ -1,6 +1,8 @@
 export default async ( { context, github, inputs, refName } ) => {
 	const {
 		'main-branch': base,
+		'post-steps': postSteps,
+		'pre-steps': preSteps,
 		type,
 		version,
 		'wc-version': wcVersion,
@@ -17,9 +19,15 @@ export default async ( { context, github, inputs, refName } ) => {
 		( wcVersion ? ' --wc_tested=' + wcVersion : '' );
 
 	const title = `${ type } ${ version }`;
+	// We need to add only one newline before the pre-steps to make sure it's rendered as a list.
+	let trimmedPreSteps = preSteps;
+	if ( trimmedPreSteps !== '' ) {
+		trimmedPreSteps = '\n' + trimmedPreSteps.trim();
+	}
+
 	const body = `## Checklist
 1. [ ] Check if the version, base, and target branches are as you desire.
-1. [ ] Make sure you have \`woorelease\` installed and set up.
+1. [ ] Make sure you have \`woorelease\` installed and set up.${ trimmedPreSteps }
 1. [ ] Simulate the release locally
    \`\`\`sh
    git fetch origin ${ refName }
@@ -45,6 +53,7 @@ export default async ( { context, github, inputs, refName } ) => {
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
 1. [ ] Merge \`trunk\` to \`develop\` (if applicable for this repo).
+${ postSteps }
 `;
 
 	await github.rest.pulls.create( {
