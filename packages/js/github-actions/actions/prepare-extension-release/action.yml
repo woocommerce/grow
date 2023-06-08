@@ -25,23 +25,12 @@ inputs:
     default: ''
 
 outputs:
-  release-notes:
-    description: The content of release notes.
-
-  release-notes-shell:
-    description: The escaped "release-notes" for use in the shell.
-
-  release-changelog:
-    description: The changelog part in release notes.
-
-  release-changelog-shell:
-    description: The escaped "release-changelog" for use in the shell.
-
-  next-version:
-    description: The next version inferred via the release notes. For example, 2.0.0, 1.5.0 or 1.4.8.
-
-  next-tag:
-    description: The next tag name inferred via the release notes. For example, 2.0.0, v1.5.0 or my-tool-v1.4.8.
+  branch-name:
+    description: "Branch name"
+    value: ${{ steps.release-vars.outputs.branch }}
+  pr:
+    description: "Pull request"
+    value: ${{ steps.prepare-release-pr.outputs.result }}
 
 runs:
   using: composite
@@ -71,9 +60,15 @@ runs:
           const inputs = ${{ toJSON(inputs) }};
 
           const { default: script } = await import( `${ action_path }/woo-extension-create-pr-for-release.mjs` );
-          await script( {
+          return await script( {
             context,
             github,
             inputs,
             refName: '${{ steps.release-vars.outputs.branch }}'
           } );
+    - name: Generate summary
+      shell: bash
+      run: |
+        echo "Release PR created at ${{  fromJSON(steps.prepare-release-pr.outputs.result).html_url }}" >> $GITHUB_STEP_SUMMARY
+
+

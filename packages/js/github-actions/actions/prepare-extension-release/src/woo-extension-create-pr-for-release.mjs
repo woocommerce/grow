@@ -56,11 +56,12 @@ export default async ( { context, github, inputs, refName } ) => {
 ${ postSteps }
 `;
 
-	await github.rest.pulls.create( {
+	const pull = await github.rest.pulls.create( {
 		...context.repo,
 		base,
 		head: refName,
 		title,
 		body,
 	} );
+	return pull.data;
 };
