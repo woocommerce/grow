@@ -25,9 +25,9 @@ on:
         description: 'Type of the release (release|hotfix)'
         required: true
         default: 'release'
-      wp_version:
+      wp-version:
         description: 'WordPress tested up to'
-      wc_version:
+      wc-version:
         description: 'WooCommerce tested up to'
 
   Prepare_release:
@@ -40,7 +40,7 @@ on:
         with:
           version: ${{ github.event.inputs.version }}
           type: ${{ github.event.inputs.type }}
-          wp_version: ${{ github.event.inputs.wp_version }}
-          wc_version: ${{ github.event.inputs.wc_version }}
-          main_branch: 'trunk'
+          wp-version: ${{ github.event.inputs.wp-version }}
+          wc-version: ${{ github.event.inputs.wc-version }}
+          main-branch: 'trunk'
 ```

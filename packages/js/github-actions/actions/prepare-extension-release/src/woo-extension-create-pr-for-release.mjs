@@ -1,13 +1,11 @@
-export default async ( {
-	github,
-	context,
-	base,
-	refName,
-	type,
-	version,
-	wpVersion,
-	wcVersion,
-} ) => {
+export default async ( { context, github, inputs, refName } ) => {
+	const {
+		'main-branch': base,
+		type,
+		version,
+		'wc-version': wcVersion,
+		'wp-version': wpVersion,
+	} = inputs;
 	// Assume the extension package is named as the repo.
 	const extensionPackageName = context.payload.repository.name;
 	// Build repo URL. WooRelease expects HTML one with `https://github.com/…/tree…`.

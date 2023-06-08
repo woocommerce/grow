@@ -9,11 +9,11 @@ inputs:
     description: 'Type of the release (release|hotfix)'
     required: true
     default: 'release'
-  wp_version:
+  wp-version:
     description: 'WordPress tested up to'
-  wc_version:
+  wc-version:
     description: 'WooCommerce tested up to'
-  main_branch:
+  main-branch:
     description: 'Where release branches are merged'
     required: true
     default: 'trunk'
@@ -57,19 +57,17 @@ runs:
         git commit --allow-empty -q -m "Start \`${{ steps.release-vars.outputs.branch }}\`."
         git push --set-upstream origin ${{ steps.release-vars.outputs.branch }}
     - name: Create a pull request for the release
+      id: prepare-release-pr
       uses: actions/github-script@v6
       with:
         script: |
           const action_path = '${{ github.action_path }}';
+          const inputs = ${{ toJSON(inputs) }};
+
           const { default: script } = await import( `${ action_path }/woo-extension-create-pr-for-release.mjs` );
           await script( {
-            github,
             context,
-            base: '${{ inputs.main_branch }}',
-            repository: '${{ github.repository }}',
-            refName: '${{ steps.release-vars.outputs.branch }}',
-            type: '${{ inputs.type }}',
-            version: '${{ inputs.version }}',
-            wpVersion: '${{ inputs.wp_version }}',
-            wcVersion: '${{ inputs.wc_version }}'
+            github,
+            inputs,
+            refName: '${{ steps.release-vars.outputs.branch }}'
           } );
