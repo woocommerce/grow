@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-06-09 (1.7.0)
+### New Features 🎉
+* Add GitHub Action to facilitate producing documentation of WordPress hooks within a codebase. (https://github.com/woocommerce/grow/pull/45)
+
 ## 2023-05-30 (1.6.0)
 ### New Features 🎉
 * Add GH action for release PR & checklist. (https://github.com/woocommerce/grow/pull/56)
