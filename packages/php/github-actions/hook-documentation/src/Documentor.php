@@ -17,6 +17,19 @@ class Documentor {
 	/** @var array */
 	protected array $args;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param array $args {
+	 *     Array of arguments. All arguments are required.
+	 *
+	 *     @type string $github_blob GitHub blob to reference for linking (e.g. a commit or a branch).
+	 *     @type string $base_url    Base URL to use for generating links.
+	 *     @type array  $source_dirs Directories to scan for hooks.
+	 *     @type string $workspace   Workspace directory where the code is checked out.
+	 * }
+	 * @throws RuntimeException If any of the required arguments are missing.
+	 */
 	public function __construct( array $args = [] ) {
 		$defaults = [
 			'github_blob' => '',
