@@ -98,10 +98,14 @@ jobs:
           SOURCE_SHA=$(git rev-parse HEAD);
           TAG_NAME="${{ steps.resolve-tag.outputs.tag_name }}"
 
-          cd ./packages/js/github-actions
+          pushd ./packages/js/github-actions
           npm ci --ignore-scripts
           npm run build
-          cd -
+
+          # Build the PHP actions into .zip files.
+          cd ../../php/github-actions
+          ./build.sh
+          popd
 
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
@@ -109,11 +113,20 @@ jobs:
           git rm -r .
           git commit -q -m "Create the ${TAG_NAME} release build for the \`github-actions\` package."
 
-          git checkout HEAD^ -- ./packages/js/github-actions/actions
+          git checkout HEAD^ -- ./packages/js/github-actions/actions ./packages/php/github-actions
           git restore --staged .
           echo "/packages/js/github-actions/actions/*/src" > .gitignore
           git add ./packages/js/github-actions/actions
           git mv ./packages/js/github-actions/actions/* ./
+
+          # Unzip all of the the PHP actions into the top directory. These were built in a previous step
+          find ./packages/php/github-actions -name "*.zip" -exec unzip -d ./ {} \;
+
+          # Find each of the PHP action directories, and add them to the git index
+          for actionDir in "$(find packages/php/github-actions -mindepth 1 -maxdepth 1 -type d)"; do
+            git add "$(basename $actionDir)"
+          done
+
           tee README.md << END
           # Custom GitHub actions
           ### This is the release build of version \`${TAG_NAME}\`.

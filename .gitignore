@@ -2,4 +2,7 @@
 node_modules/
 
 # Composer
-/vendor/
+vendor/
+
+# All zip files
+*.zip
