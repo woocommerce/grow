@@ -27,11 +27,14 @@ export default async ( { context, github, inputs, refName } ) => {
 
 	const body = `## Checklist
 1. [ ] Check if the version, base, and target branches are as you desire.
-1. [ ] Make sure you have \`woorelease\` installed and set up.${ trimmedPreSteps }
-1. [ ] Simulate the release locally
+1. [ ] Make sure you have \`woorelease\` installed and set up.
+1. [ ] Go to your local repo clone, and check out this PR to be able to commit any potential adjustments.
    \`\`\`sh
    git fetch origin ${ refName }
    git checkout ${ refName }
+   \`\`\`${ trimmedPreSteps }
+1. [ ] Simulate the release locally
+   \`\`\`sh
    woorelease simulate --product_version=${ version } ${ testedVersions } --generate_changelog ${ repoURL }
    \`\`\`
    _Note: Select \`y\` when prompted: "Would you like to add/delete them in the svn working copy?"_
