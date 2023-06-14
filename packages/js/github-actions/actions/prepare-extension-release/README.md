@@ -30,8 +30,9 @@ on:
       wc-version:
         description: 'WooCommerce tested up to'
 
+jobs:
   Prepare_release:
-    name: Prepare release
+    name: 'Prepare release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
