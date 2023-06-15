@@ -9,33 +9,28 @@ inputs:
     description: 'Type of the release (release|hotfix)'
     required: true
     default: 'release'
-  wp_version:
+  wp-version:
     description: 'WordPress tested up to'
-  wc_version:
+  wc-version:
     description: 'WooCommerce tested up to'
-  main_branch:
+  main-branch:
     description: 'Where release branches are merged'
     required: true
     default: 'trunk'
+  pre-steps:
+    description: 'Additional steps to be added before running woorelease'
+    default: ''
+  post-steps:
+    description: 'Additional steps to be added after running woorelease'
+    default: ''
 
 outputs:
-  release-notes:
-    description: The content of release notes.
-
-  release-notes-shell:
-    description: The escaped "release-notes" for use in the shell.
-
-  release-changelog:
-    description: The changelog part in release notes.
-
-  release-changelog-shell:
-    description: The escaped "release-changelog" for use in the shell.
-
-  next-version:
-    description: The next version inferred via the release notes. For example, 2.0.0, 1.5.0 or 1.4.8.
-
-  next-tag:
-    description: The next tag name inferred via the release notes. For example, 2.0.0, v1.5.0 or my-tool-v1.4.8.
+  branch-name:
+    description: "Branch name"
+    value: ${{ steps.release-vars.outputs.branch }}
+  pr:
+    description: "Pull request"
+    value: ${{ steps.prepare-release-pr.outputs.result }}
 
 runs:
   using: composite
@@ -57,19 +52,23 @@ runs:
         git commit --allow-empty -q -m "Start \`${{ steps.release-vars.outputs.branch }}\`."
         git push --set-upstream origin ${{ steps.release-vars.outputs.branch }}
     - name: Create a pull request for the release
+      id: prepare-release-pr
       uses: actions/github-script@v6
       with:
         script: |
           const action_path = '${{ github.action_path }}';
+          const inputs = ${{ toJSON(inputs) }};
+
           const { default: script } = await import( `${ action_path }/woo-extension-create-pr-for-release.mjs` );
-          await script( {
-            github,
+          return await script( {
             context,
-            base: '${{ inputs.main_branch }}',
-            repository: '${{ github.repository }}',
-            refName: '${{ steps.release-vars.outputs.branch }}',
-            type: '${{ inputs.type }}',
-            version: '${{ inputs.version }}',
-            wpVersion: '${{ inputs.wp_version }}',
-            wcVersion: '${{ inputs.wc_version }}'
+            github,
+            inputs,
+            refName: '${{ steps.release-vars.outputs.branch }}'
           } );
+    - name: Generate summary
+      shell: bash
+      run: |
+        echo "Release PR created at ${{  fromJSON(steps.prepare-release-pr.outputs.result).html_url }}" >> $GITHUB_STEP_SUMMARY
+
+
