@@ -97,4 +97,17 @@ export default [
 			json( { compact: true } ),
 		],
 	},
+	{
+		input: './actions/publish-extension-dev-build/src/publish-extension-dev-build.js',
+		output: {
+			file: './actions/publish-extension-dev-build/publish-extension-dev-build.mjs',
+		},
+		plugins: [
+			nodeResolve( {
+				preferBuiltins: true,
+				exportConditions: [ 'node' ],
+			} ),
+			commonjs(),
+		],
+	},
 ];

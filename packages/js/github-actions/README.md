@@ -16,6 +16,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
 - [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
+- [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
 - [`hook-documentation`](/packages/php/github-actions/hook-documentation) - Generate WordPress hook documentation
