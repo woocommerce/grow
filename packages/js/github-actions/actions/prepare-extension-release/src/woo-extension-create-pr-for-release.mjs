@@ -1,13 +1,13 @@
-export default async ( {
-	github,
-	context,
-	base,
-	refName,
-	type,
-	version,
-	wpVersion,
-	wcVersion,
-} ) => {
+export default async ( { context, github, inputs, refName } ) => {
+	const {
+		'main-branch': base,
+		'post-steps': postSteps,
+		'pre-steps': preSteps,
+		type,
+		version,
+		'wc-version': wcVersion,
+		'wp-version': wpVersion,
+	} = inputs;
 	// Assume the extension package is named as the repo.
 	const extensionPackageName = context.payload.repository.name;
 	// Build repo URL. WooRelease expects HTML one with `https://github.com/…/tree…`.
@@ -19,13 +19,22 @@ export default async ( {
 		( wcVersion ? ' --wc_tested=' + wcVersion : '' );
 
 	const title = `${ type } ${ version }`;
+	// We need to add only one newline before the pre-steps to make sure it's rendered as a list.
+	let trimmedPreSteps = preSteps;
+	if ( trimmedPreSteps !== '' ) {
+		trimmedPreSteps = '\n' + trimmedPreSteps.trim();
+	}
+
 	const body = `## Checklist
 1. [ ] Check if the version, base, and target branches are as you desire.
 1. [ ] Make sure you have \`woorelease\` installed and set up.
-1. [ ] Simulate the release locally
+1. [ ] Go to your local repo clone, and check out this PR to be able to commit any potential adjustments.
    \`\`\`sh
    git fetch origin ${ refName }
    git checkout ${ refName }
+   \`\`\`${ trimmedPreSteps }
+1. [ ] Simulate the release locally
+   \`\`\`sh
    woorelease simulate --product_version=${ version } ${ testedVersions } --generate_changelog ${ repoURL }
    \`\`\`
    _Note: Select \`y\` when prompted: "Would you like to add/delete them in the svn working copy?"_
@@ -47,13 +56,15 @@ export default async ( {
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
 1. [ ] Merge \`trunk\` to \`develop\` (if applicable for this repo).
+${ postSteps }
 `;
 
-	await github.rest.pulls.create( {
+	const pull = await github.rest.pulls.create( {
 		...context.repo,
 		base,
 		head: refName,
 		title,
 		body,
 	} );
+	return pull.data;
 };

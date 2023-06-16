@@ -25,13 +25,14 @@ on:
         description: 'Type of the release (release|hotfix)'
         required: true
         default: 'release'
-      wp_version:
+      wp-version:
         description: 'WordPress tested up to'
-      wc_version:
+      wc-version:
         description: 'WooCommerce tested up to'
 
+jobs:
   Prepare_release:
-    name: Prepare release
+    name: 'Prepare release'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -40,7 +41,13 @@ on:
         with:
           version: ${{ github.event.inputs.version }}
           type: ${{ github.event.inputs.type }}
-          wp_version: ${{ github.event.inputs.wp_version }}
-          wc_version: ${{ github.event.inputs.wc_version }}
-          main_branch: 'trunk'
+          wp-version: ${{ github.event.inputs.wp-version }}
+          wc-version: ${{ github.event.inputs.wc-version }}
+          main-branch: 'trunk'
+          pre-steps: |
+            1. [ ] Prepare something more before the release
+          post-steps: |
+            ### Additional post-release checklist
+            1. [ ] Update documentation
+               - [ ] Publish any new required docs
 ```
