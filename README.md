@@ -14,7 +14,7 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 
 ## List of plugins
 
-- [`/plugins/grow-smooth-generator](plugins/grow-smooth-generator/README.md) - A smooth generator for Grow extension data
+- [`/plugins/grow-smooth-generator`](plugins/grow-smooth-generator/README.md) - A smooth generator for Grow extension data
 
 ## List of configs
 - [`/configs/woocommerce-github-sync-labels`](configs/woocommerce-github-sync-labels/README.md) - Config to add extra labels to Grow's repositories.
