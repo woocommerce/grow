@@ -40,7 +40,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 ### Directory structure of source code
 
 ```
-/packages/js/github-actions/  # The root of actions written in JavaScript
+/packages/github-actions/     # The root of actions written in JavaScript
 ├── actions/                  # All actions to be exposed in the release build
 │   ├── prepare-node/         # Composite action
 │   │   ├── action.yml
@@ -48,8 +48,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 │   └── update-version-tags/  # JavaScript action
 │       ├── src/              # Script sources
 │       │   ├── index.js
-│       │   ├── parse-version.js
-│       │   └── repo-tool.js
+│       │   └── parse-version.js
 │       ├── action.yml
 │       └── README.md
 ├── utils/                    # Sources of the shared files
