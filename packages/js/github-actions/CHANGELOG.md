@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-06-19 (1.8.0)
+### New Features 🎉
+* Add pre- & post-steps to extension release PR. (https://github.com/woocommerce/grow/pull/58)
+* Add a new GH custom action for publishing or updating the extension development build via a pre-release on GitHub. (https://github.com/woocommerce/grow/pull/60)
+
 ## 2023-06-09 (1.7.0)
 ### New Features 🎉
 * Add GitHub Action to facilitate producing documentation of WordPress hooks within a codebase. (https://github.com/woocommerce/grow/pull/45)
