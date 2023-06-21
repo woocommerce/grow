@@ -11,6 +11,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`eslint-annotation`](actions/eslint-annotation) - Annotate eslint results via eslint formatter
 - [`get-plugin-releases`](actions/get-plugin-releases) - Get latest releases versions from WordPress or from a plugin.
 - [`get-release-notes`](actions/get-release-notes) - Get release notes via GitHub, infer the next version and tag
+- [`hook-documentation`](actions/hook-documentation) - Generate WordPress hook documentation
 - [`phpcs-diff`](actions/phpcs-diff) - Run PHPCS to the changed lines of code, set error annotations to a pull request
 - [`prepare-extension-release`](actions/prepare-extension-release) - Create the release branch & PR with checklist
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
@@ -19,7 +20,6 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
-- [`hook-documentation`](/packages/php/github-actions/hook-documentation) - Generate WordPress hook documentation
 
 ## Prerequisites
 
@@ -40,34 +40,30 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 ### Directory structure of source code
 
 ```
-/packages/js/github-actions/  # The root of actions written in JavaScript
+/packages/github-actions/     # The root of actions
 ├── actions/                  # All actions to be exposed in the release build
 │   ├── prepare-node/         # Composite action
 │   │   ├── action.yml
 │   │   └── README.md         # How to use this action
-│   └── update-version-tags/  # JavaScript action
+│   ├── update-version-tags/  # JavaScript action
+│   │   ├── src/              # Script sources
+│   │   │   ├── index.js
+│   │   │   └── parse-version.js
+│   │   ├── action.yml
+│   │   └── README.md
+│   └── hook-documentation/   # PHP action
 │       ├── src/              # Script sources
-│       │   ├── index.js
-│       │   ├── parse-version.js
-│       │   └── repo-tool.js
-│       ├── action.yml
-│       └── README.md
+│       ├── tests/            # Unit tests for the action
+│       ├── coverage/         # Directory containg Code coverage report after `composer test:coverage` is run
+│       ├── composer.json     # The necessary file used to identify this as a PHP action
+│       └── action.yml        # The action file
 ├── utils/                    # Sources of the shared files
 │   └── do-something.js
 ├── package.json              # The required dependent packages of the scripts, tests, build, and etc
 └── README.md                 # The overall info about this Github actions package
-
-/packages/php/github-actions/               # The root of actions written in PHP
-├── hook-documentation/                     # PHP action
-│   ├── src/                                # Script sources
-│   ├── bin/
-│   │   ├── generate-hook-documentation.php # The entry point of the action
-│   ├── tests/                              # Unit tests for the action
-│   ├── coverage/                           # Directory containg Code coverage report after `composer test:coverage` is run
-│   ├── action.yml                          # The action file
 ```
 
-- The `src` directories will be skipped in the release build.
+- The `src` directories of JavaScript actions will be skipped in the release build.
 - When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `npm run build`.
 
 ### Directory structure of release build

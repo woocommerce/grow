@@ -20,7 +20,7 @@ it(
 		)->toThrow( RuntimeException::class, $message );
 	}
 )->with( 'constructors' );
-/** @see packages/php/github-actions/hook-documentation/tests/Datasets/Constructors.php */
+/** @see packages/github-actions/actions/hook-documentation/tests/Datasets/Constructors.php */
 
 it(
 	'should correctly replace local path with github url',

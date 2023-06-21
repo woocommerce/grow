@@ -6,10 +6,10 @@ import fs from 'fs';
 /**
  * Internal dependencies
  */
-import PackageTool from '../../packages/js/github-actions/utils/package-tool.js';
+import PackageTool from '../../packages/github-actions/utils/package-tool.js';
 
 export default async ( { github, context, outputJsonPath } ) => {
-	const packageTool = new PackageTool( 'packages/js/github-actions' );
+	const packageTool = new PackageTool( 'packages/github-actions' );
 	const { version } = packageTool.getSettings();
 	const { content } = packageTool.getChangelogByVersion( version );
 	const tag = `actions-v${ version }`;

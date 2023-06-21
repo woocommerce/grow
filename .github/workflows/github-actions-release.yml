@@ -82,10 +82,10 @@ jobs:
           ref: ${{ steps.resolve-tag.outputs.tag_name }}
 
       - name: Prepare node
-        uses: ./packages/js/github-actions/actions/prepare-node
+        uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: 14
-          cache-dependency-path: ./packages/js/github-actions/package-lock.json
+          cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
       - name: Create and commit release build
@@ -98,13 +98,15 @@ jobs:
           SOURCE_SHA=$(git rev-parse HEAD);
           TAG_NAME="${{ steps.resolve-tag.outputs.tag_name }}"
 
-          pushd ./packages/js/github-actions
+          pushd ./packages/github-actions
+
+          # Build the JavaScript actions.
           npm ci --ignore-scripts
           npm run build
 
           # Build the PHP actions into .zip files.
-          cd ../../php/github-actions
-          ./build.sh
+          ./build-php-actions.sh
+
           popd
 
           git config user.name github-actions[bot]
@@ -113,24 +115,27 @@ jobs:
           git rm -r .
           git commit -q -m "Create the ${TAG_NAME} release build for the \`github-actions\` package."
 
-          git checkout HEAD^ -- ./packages/js/github-actions/actions ./packages/php/github-actions
+          git checkout HEAD^ -- ./packages/github-actions/actions
           git restore --staged .
-          echo "/packages/js/github-actions/actions/*/src" > .gitignore
-          git add ./packages/js/github-actions/actions
-          git mv ./packages/js/github-actions/actions/* ./
+          echo "/packages/github-actions/actions/*/src" > .gitignore
 
-          # Unzip all of the the PHP actions into the top directory. These were built in a previous step
-          find ./packages/php/github-actions -name "*.zip" -exec unzip -d ./ {} \;
-
-          # Find each of the PHP action directories, and add them to the git index
-          for actionDir in "$(find packages/php/github-actions -mindepth 1 -maxdepth 1 -type d)"; do
-            git add "$(basename $actionDir)"
+          # Unzip all of the PHP actions and replace them.
+          for zipFile in $(find ./packages/github-actions/actions -name "*.zip" -mindepth 1 -maxdepth 1) ; do
+            actionDir="${zipFile%.*}"
+            rm -rf $actionDir
+            unzip $zipFile -d ./packages/github-actions/actions
+            rm $zipFile
+            echo "${actionDir}/src" | sed -e "s/^\.\//!/g" >> .gitignore
           done
+
+          # Move all actions to the top directory.
+          git add ./packages/github-actions/actions
+          git mv ./packages/github-actions/actions/* ./
 
           tee README.md << END
           # Custom GitHub actions
           ### This is the release build of version \`${TAG_NAME}\`.
-          ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${SOURCE_SHA}/packages/js/github-actions).
+          ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${SOURCE_SHA}/packages/github-actions).
           END
           git add README.md
           git commit -q --amend -C HEAD
@@ -138,7 +143,7 @@ jobs:
           git push origin HEAD:refs/heads/tmp-gha-release-build
           git push -d origin tmp-gha-release-build
 
-          git checkout HEAD^ -- ./packages/js/github-actions/actions
+          git checkout HEAD^ -- ./packages/github-actions/actions
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update version tags

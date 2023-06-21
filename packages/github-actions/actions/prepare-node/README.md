@@ -60,7 +60,7 @@ steps:
     uses: woocommerce/grow/prepare-node@actions-v1
     with:
       node-version: 16
-      cache-dependency-path: "./packages/js/github-actions"
+      cache-dependency-path: "./packages/github-actions"
 ```
 
 #### Skip the `npm ci`
