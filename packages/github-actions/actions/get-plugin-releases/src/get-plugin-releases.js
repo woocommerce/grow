@@ -63,11 +63,7 @@ function parsePluginVersions( releases = {} ) {
 			.sort( semverCompare );
 
 		for ( const version of versions ) {
-			const releasesAdded = output.filter(
-				( release ) => ! isRC( release )
-			);
-
-			if ( releasesAdded.length === numberOfReleases ) {
+			if ( output.length === numberOfReleases ) {
 				break;
 			}
 
