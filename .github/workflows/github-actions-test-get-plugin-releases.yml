@@ -10,25 +10,25 @@ jobs:
     steps:
       - name: Get Release versions from WooCommerce
         id: wc-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v1
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.8.2-pre
         with:
           slug: woocommerce
 
       - name: Get Release versions from WordPress
         id: wp-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v1
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.8.2-pre
         with:
           slug: wordpress
 
       - name: Get Release versions from GLA
         id: gla-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v1
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.8.2-pre
         with:
           slug: google-listings-and-ads
 
       - name: Get L-5 Release versions from WC including RC and Patches
         id: wc-versions-l5-rc
-        uses: woocommerce/grow/get-plugin-releases@actions-v1
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.8.2-pre
         with:
           slug: woocommerce
           releases: 5
@@ -37,7 +37,7 @@ jobs:
 
       - name: Get L-5 Release versions from WC including only patches
         id: wc-versions-patches
-        uses: woocommerce/grow/get-plugin-releases@actions-v1
+        uses: woocommerce/grow/get-plugin-releases@actions-v1.8.2-pre
         with:
           slug: woocommerce
           releases: 5
