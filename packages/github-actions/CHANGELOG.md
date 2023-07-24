@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-07-24 (1.9.0)
+### New Features 🎉
+* Add automerge-released-trunk action. (https://github.com/woocommerce/grow/pull/64)
+
 ## 2023-07-24 (1.8.1)
 ### Bug Fixes 🐛
 * Get Plugin releases Action: Fix error counting RC releases. (https://github.com/woocommerce/grow/pull/66)
