@@ -4,6 +4,8 @@ description: Automatically merge trunk to develop after a release.
 runs:
   using: composite
   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: "Merge the release to develop"
       shell: bash
       if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') && github.event.pull_request.user.login == 'github-actions[bot]' }}

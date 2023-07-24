@@ -24,6 +24,5 @@ jobs:
   automerge_trunk:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: woocommerce/grow/automerge-released-trunk@actions-v1
 ```
