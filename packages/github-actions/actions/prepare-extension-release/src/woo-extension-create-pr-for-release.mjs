@@ -18,7 +18,7 @@ export default async ( { context, github, inputs, refName } ) => {
 		( wpVersion ? ' --wp_tested=' + wpVersion : '' ) +
 		( wcVersion ? ' --wc_tested=' + wcVersion : '' );
 
-	const title = `${ type } ${ version }`;
+	const title = `${ type.charAt(0).toUpperCase() + type.slice(1) } ${ version }`;
 	// We need to add only one newline before the pre-steps to make sure it's rendered as a list.
 	let trimmedPreSteps = preSteps;
 	if ( trimmedPreSteps !== '' ) {
