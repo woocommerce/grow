@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-07-24 (1.8.1)
+### Bug Fixes 🐛
+* Get Plugin releases Action: Fix error counting RC releases. (https://github.com/woocommerce/grow/pull/66)
+### Tweaked 🔧
+* Reorganize the package directory structure for the GitHub custom actions. (https://github.com/woocommerce/grow/pull/61)
+
 ## 2023-06-19 (1.8.0)
 ### New Features 🎉
 * Add pre- & post-steps to extension release PR. (https://github.com/woocommerce/grow/pull/58)
