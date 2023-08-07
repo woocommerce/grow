@@ -6,12 +6,14 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
+- [`automerge-released-trunk`](actions/automerge-released-trunk) - Merge `trunk` to `develop` after an extension release
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
 - [`coverage-report`](actions/coverage-report) - Add a clover coverage report as a PR comment
 - [`eslint-annotation`](actions/eslint-annotation) - Annotate eslint results via eslint formatter
 - [`get-plugin-releases`](actions/get-plugin-releases) - Get latest releases versions from WordPress or from a plugin.
 - [`get-release-notes`](actions/get-release-notes) - Get release notes via GitHub, infer the next version and tag
 - [`hook-documentation`](actions/hook-documentation) - Generate WordPress hook documentation
+- [`merge-trunk-develop-pr`](actions/merge-trunk-develop-pr) - Create a PR to merge `trunk` to `develop` after an extension release
 - [`phpcs-diff`](actions/phpcs-diff) - Run PHPCS to the changed lines of code, set error annotations to a pull request
 - [`prepare-extension-release`](actions/prepare-extension-release) - Create the release branch & PR with checklist
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
