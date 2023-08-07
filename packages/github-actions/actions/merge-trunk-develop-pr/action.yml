@@ -4,15 +4,6 @@ description: Create a PR to merge `trunk` to `develop` after a release
 runs:
   using: composite
   steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: "Set up git config"
-      shell: bash
-      # Use the github-actions bot account to commit.
-      # https://api.github.com/users/github-actions%5Bbot%5D
-      run: |
-        git config user.name github-actions[bot]
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
     - name: "Make the PR"
       if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') && github.event.pull_request.user.login == 'github-actions[bot]' }}
       uses: actions/github-script@v6
