@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-08-07 (1.9.1)
+### Tweaked 🔧
+* Remove `trunk`->`develop` merge step from the release checklist of `automerge-released-trunk` action. (https://github.com/woocommerce/grow/pull/69)
+* Capitalized title of release PR. (https://github.com/woocommerce/grow/pull/70)
+
 ## 2023-07-24 (1.9.0)
 ### New Features 🎉
 * Add automerge-released-trunk action. (https://github.com/woocommerce/grow/pull/64)
