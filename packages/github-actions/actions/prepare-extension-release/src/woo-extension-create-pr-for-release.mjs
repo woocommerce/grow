@@ -57,6 +57,7 @@ export default async ( { context, github, inputs, refName } ) => {
    When prompted for changelog entries, double-check and apply any changes if needed.
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
+1. [ ] Merge \`trunk\` to \`develop\` (PR), if applicable for this repo.
 ${ postSteps }
 `;
 
