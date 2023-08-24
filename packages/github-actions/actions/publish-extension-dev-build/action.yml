@@ -16,7 +16,7 @@ inputs:
 
   release-title:
     description: The release title.
-    default: "Latest devlopment build"
+    default: "Latest development build"
 
 runs:
   using: composite
@@ -47,7 +47,7 @@ runs:
 
           inputs[ 'extension-asset-content-type' ] ??= 'application/zip';
           inputs[ 'tag-name' ] ??= 'gha-dev-build';
-          inputs[ 'release-title' ] ??= 'Latest devlopment build';
+          inputs[ 'release-title' ] ??= 'Latest development build';
 
           await script( {
             github,
