@@ -323,6 +323,29 @@ class WCCompatibility extends CompatCheck {
 	}
 
 	/**
+	 * Adds notice for untested WooCommerce.
+	 */
+	public function wc_untested() {
+		$plugin_name    = $this->plugin_data['Name'];
+		$wc_version     = $this->get_wc_version();
+		$plugin_version = $this->plugin_data['Version'];
+
+		$message = sprintf(
+			/* translators: %1$s - Plugin Name, %2$s - Plugin version, %3$s - WooCommerce version number */
+			esc_html__( '%1$s - %2$s is untested with WooCommerce %3$s.', 'woogrow-compat-checker' ),
+			'<strong>' . $plugin_name . '</strong>',
+			$plugin_version,
+			$wc_version
+		);
+
+		$this->add_admin_notice(
+			'woocommerce-untested',
+			'warning',
+			$message
+		);
+	}
+
+	/**
 	 * Run all compatibility checks.
 	 */
 	protected function run_checks() {
