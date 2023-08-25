@@ -119,6 +119,24 @@ abstract class CompatCheck {
 	}
 
 	/**
+	 * Sets the plugin data.
+	 *
+	 * @param array $plugin_data The plugin data.
+	 */
+	protected function set_plugin_data( $plugin_data ) {
+		$defaults          = array(
+			'Name'        => '',
+			'Version'     => '',
+			'RequiresWP'  => '',
+			'RequiresPHP' => '',
+			'RequiresWC'  => '',
+			'TestedWP'    => '',
+			'TestedWC'    => '',
+		);
+		$this->plugin_data = wp_parse_args( $plugin_data, $defaults );
+	}
+
+	/**
 	 * Determines if the plugin is WooCommerce compatible.
 	 *
 	 * @param array $plugin_data The plugin data.
@@ -126,8 +144,15 @@ abstract class CompatCheck {
 	 * @return bool
 	 */
 	public function is_compatible( $plugin_data ) {
-		$this->plugin_data = $plugin_data;
+		$this->set_plugin_data( $plugin_data );
 		add_action( 'admin_notices', array( $this, 'display_admin_notices' ), 20 );
-		return $this->run_checks();
+		try {
+			$this->run_checks();
+			$is_compatible = true;
+		} catch ( IncompatibleException $e ) {
+			$is_compatible = false;
+		}
+
+		return $is_compatible;
 	}
 }
