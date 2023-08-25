@@ -119,6 +119,10 @@ class WCCompatibility extends CompatCheck {
 			throw new IncompatibleException( esc_html__( 'WooCommerce version not compatible.', 'woogrow-compat-checker' ) );
 		}
 
+		if ( ! $this->is_wc_untested() ) {
+			add_action( 'admin_notices', array( $this, 'wc_untested' ) );
+		}
+
 		return true;
 	}
 
