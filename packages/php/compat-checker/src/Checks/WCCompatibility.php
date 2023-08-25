@@ -38,10 +38,9 @@ class WCCompatibility extends CompatCheck {
 	 * @return bool
 	 */
 	private function is_wc_installed() {
-		$plugin            = 'woocommerce/woocommerce.php';
 		$installed_plugins = get_plugins();
 
-		return isset( $installed_plugins[ $plugin ] );
+		return isset( $installed_plugins[ self::WC_PLUGIN_FILE ] );
 	}
 
 	/**
