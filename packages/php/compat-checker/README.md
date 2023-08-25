@@ -1,7 +1,5 @@
 # Compat Checker for WooCommerce Extensions
 
-## About
-
 A simple library to run compatibility checks for WooCommerce extensions.
 
 ## Getting Started
