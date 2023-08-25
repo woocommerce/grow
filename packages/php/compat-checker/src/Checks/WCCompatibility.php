@@ -70,7 +70,7 @@ class WCCompatibility extends CompatCheck {
 		$wc_version          = $this->get_wc_version();
 		$wc_version_required = $this->plugin_data['RequiresWC'];
 
-		if ( ! empty( $wc_version_required ) ) {
+		if ( empty( $wc_version_required ) ) {
 			return true;
 		}
 
