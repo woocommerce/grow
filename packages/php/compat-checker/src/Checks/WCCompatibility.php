@@ -232,6 +232,17 @@ class WCCompatibility extends CompatCheck {
 	 * @return bool
 	 */
 	private function check_wc_upgrade_recommendation() {
+		// Bail if there is no definied versions to compare.
+		if ( empty( $this->min_wc_semver ) || ! is_numeric( $this->min_wc_semver ) ) {
+			return;
+		}
+
+		$current_wc_version   = $this->get_wc_version();
+		$supported_wc_version = $this->get_supported_wc_version();
+
+		if ( ! $this->compare_major_version( $current_wc_version, $supported_wc_version, '>=' ) ) {
+			add_action( 'admin_notices', array( $this, 'make_upgrade_recommendation' ) );
+		}
 		return true;
 	}
 
