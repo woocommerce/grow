@@ -346,6 +346,34 @@ class WCCompatibility extends CompatCheck {
 	}
 
 	/**
+	 * Adds notice for WooCommerce upgrade recommendation.
+	 */
+	public function make_upgrade_recommendation() {
+		// Bail if the user does not have the update plugins capability.
+		if ( ! current_user_can( 'update_plugins' ) ) {
+			return;
+		}
+
+		$plugin_name        = $this->plugin_data['Name'];
+		$current_wc_version = $this->get_wc_version();
+
+		$message = sprintf(
+			/* translators: Placeholders: %1$s - plugin name, %2$s - WooCommerce version number, %3$s - opening <a> HTML link tag, %4$s - closing </a> HTML link tag */
+			esc_html__( 'Heads up! %1$s will soon discontinue support for WooCommerce %2$s. Please %3$supdate WooCommerce%4$s to take advantage of the latest updates and features.', 'woogrow-compat-checker' ),
+			'<strong>' . $plugin_name . '</strong>',
+			$current_wc_version,
+			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
+			'</a>'
+		);
+
+		$this->add_admin_notice(
+			'woocommerce-upgrade-recommendation',
+			'warning',
+			$message
+		);
+	}
+
+	/**
 	 * Run all compatibility checks.
 	 */
 	protected function run_checks() {
