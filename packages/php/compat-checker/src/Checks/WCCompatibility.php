@@ -78,6 +78,22 @@ class WCCompatibility extends CompatCheck {
 	}
 
 	/**
+	 * Determines if the WooCommerce version is untested.
+	 *
+	 * @return bool
+	 */
+	private function is_wc_untested() {
+		if ( empty( $this->plugin_data['TestedWC'] ) ) {
+			return false;
+		}
+
+		$wc_version             = $this->get_wc_version();
+		$wc_version_tested_upto = $this->plugin_data['TestedWC'];
+
+		return $this->compare_major_version( $wc_version, $wc_version_tested_upto, '<=' );
+	}
+
+	/**
 	 * Check WooCommerce installation and activation.
 	 *
 	 * @return bool
