@@ -175,22 +175,9 @@ class WCCompatibility extends CompatCheck {
 	/**
 	 * Run all compatibility checks.
 	 */
-	private function run_checks() {
-		try {
-			$this->check_wc_installation_and_activation();
-			$this->check_wc_version();
-			$this->check_wc_upgrade_recommendation();
-			return true;
-		} catch ( IncompatibleException $e ) {
-			return false;
-		}
-	}
-
-	/**
-	 * Determins if the plugin is WooCommerce compatible.
-	 */
-	public function is_compatible() {
-		add_action( 'admin_notices', array( $this, 'display_admin_notices' ), 20 );
-		return $this->run_checks();
+	protected function run_checks() {
+		$this->check_wc_installation_and_activation();
+		$this->check_wc_version();
+		$this->check_wc_upgrade_recommendation();
 	}
 }
