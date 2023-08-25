@@ -29,6 +29,20 @@ abstract class CompatCheck {
 	private static $instances = array();
 
 	/**
+	 * The plugin data.
+	 *
+	 * @var array
+	 */
+	protected $plugin_data = array();
+
+	/**
+	 * Run checks
+	 *
+	 * @return bool
+	 */
+	abstract protected function run_checks();
+
+	/**
 	 * Get the instance of the CompatCheck object.
 	 *
 	 * @return CompatCheck
@@ -102,5 +116,18 @@ abstract class CompatCheck {
 				wp_kses( $message, $allowed_tags )
 			);
 		}
+	}
+
+	/**
+	 * Determines if the plugin is WooCommerce compatible.
+	 *
+	 * @param array $plugin_data The plugin data.
+	 *
+	 * @return bool
+	 */
+	public function is_compatible( $plugin_data ) {
+		$this->plugin_data = $plugin_data;
+		add_action( 'admin_notices', array( $this, 'display_admin_notices' ), 20 );
+		return $this->run_checks();
 	}
 }
