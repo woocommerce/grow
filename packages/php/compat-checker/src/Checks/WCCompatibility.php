@@ -16,6 +16,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class WCCompatibility extends CompatCheck {
 
+	/**
+	 * WooCommerce plugin file path.
+	 *
+	 * @var string
+	 */
+	const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
+
 	/** @var int|float The miniumum supported WooCommerce versions before the latest. */
 	private $min_wc_semver = 2; // By default, the last 2 major versions behind the latest published are supported.
 
