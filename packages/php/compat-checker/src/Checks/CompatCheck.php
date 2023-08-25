@@ -14,10 +14,18 @@ defined( 'ABSPATH' ) || exit;
  */
 abstract class CompatCheck {
 
-	/** @var array Array of admin notices. */
+	/**
+	 * Array of admin notices.
+	 *
+	 * @var array
+	 */
 	protected $notices = array();
 
-	/** @var array Array of CompatCheck instances. */
+	/**
+	 * Array of CompatCheck instances.
+	 *
+	 * @var array
+	 */
 	private static $instances = array();
 
 	/**
