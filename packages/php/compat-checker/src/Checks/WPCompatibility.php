@@ -7,8 +7,6 @@
 
 namespace Automattic\WooCommerce\Grow\Tools\Checks;
 
-use Automattic\WooCommerce\Grow\Tools\Exception\IncompatibleException;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -53,15 +51,8 @@ class WPCompatibility extends CompatCheck {
 
 	/**
 	 * Run all compatibility checks.
-	 *
-	 * @return bool
 	 */
 	protected function run_checks() {
-		try {
-			$this->check_wp_version();
-			return true;
-		} catch ( IncompatibleException $e ) {
-			return false;
-		}
+		$this->check_wp_version();
 	}
 }
