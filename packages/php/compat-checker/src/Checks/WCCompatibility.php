@@ -67,14 +67,14 @@ class WCCompatibility extends CompatCheck {
 	 * @return bool
 	 */
 	private function is_wc_compatible() {
-		$wc_version = '8.0.2'; // TODO: Get WooCommerce version.
-		$wc_version_required = '8.0.4'; // TODO: Get minimum required WooCommerce version from plugin file.
+		$wc_version          = $this->get_wc_version();
+		$wc_version_required = $this->plugin_data['RequiresWC'];
 
 		if ( ! $wc_version_required ) {
 			return true;
 		}
 
-		return defined( 'WC_VERSION' ) && version_compare( WC_VERSION, $wc_version_required, '>=' );
+		return version_compare( $wc_version, $wc_version_required, '>=' );
 	}
 
 	/**
