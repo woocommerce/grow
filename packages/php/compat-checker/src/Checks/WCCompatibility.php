@@ -177,6 +177,56 @@ class WCCompatibility extends CompatCheck {
 	}
 
 	/**
+	 * Get the L-n version of WooCommerce.
+	 *
+	 * @return string
+	 */
+	private function get_supported_wc_version() {
+
+		$latest_wc_versions = $this->get_latest_wc_versions();
+
+		if ( empty( $latest_wc_versions ) ) {
+			return '';
+		}
+
+		$latest_wc_version    = current( $latest_wc_versions );
+		$supported_wc_version = $latest_wc_version;
+
+		$latest_semver    = explode( '.', $latest_wc_version );
+		$supported_semver = explode( '.', (string) $this->min_wc_semver );
+		$supported_major  = max( 0, (int) $latest_semver[0] - (int) $supported_semver[0] );
+		$supported_minor  = isset( $supported_semver[1] ) ? (int) $supported_semver[1] : 0;
+		$previous_minor   = null;
+
+		// Loop known WooCommerce versions from the most recent until we get the oldest supported one.
+		foreach ( $latest_wc_versions as $older_wc_version ) {
+			// As we loop through the versions, the latest one before we break the loop will be the minimum supported version.
+			$supported_wc_version = $older_wc_version;
+
+			$older_semver = explode( '.', $older_wc_version );
+			$older_major  = (int) $older_semver[0];
+			$older_minor  = isset( $older_semver[1] ) ? (int) $older_semver[1]: 0;
+
+			// if major is ignored, skip; if the minor hasn't changed (patch must be), skip.
+			if ( $older_major > $supported_major || $older_minor === $previous_minor ) {
+				continue;
+			}
+
+			// We reached the maximum number of supported minor versions.
+			if ( $supported_minor <= 0 ) {
+				break;
+			}
+
+			// Store the previous minor while we loop patch versions, which we ignore.
+			$previous_minor = $older_minor;
+
+			$supported_minor--;
+		}
+
+		return $supported_wc_version;
+	}
+
+	/**
 	 * Check for WooCommerce upgrade recommendation.
 	 *
 	 * @return bool
