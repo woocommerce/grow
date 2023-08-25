@@ -146,13 +146,6 @@ abstract class CompatCheck {
 	public function is_compatible( $plugin_data ) {
 		$this->set_plugin_data( $plugin_data );
 		add_action( 'admin_notices', array( $this, 'display_admin_notices' ), 20 );
-		try {
-			$this->run_checks();
-			$is_compatible = true;
-		} catch ( IncompatibleException $e ) {
-			$is_compatible = false;
-		}
-
-		return $is_compatible;
+		return $this->run_checks();
 	}
 }

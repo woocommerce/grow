@@ -377,8 +377,13 @@ class WCCompatibility extends CompatCheck {
 	 * Run all compatibility checks.
 	 */
 	protected function run_checks() {
-		$this->check_wc_installation_and_activation();
-		$this->check_wc_version();
-		$this->check_wc_upgrade_recommendation();
+		try {
+			$this->check_wc_installation_and_activation();
+			$this->check_wc_version();
+			$this->check_wc_upgrade_recommendation();
+			return true;
+		} catch ( IncompatibleException $e ) {
+			return false;
+		}
 	}
 }
