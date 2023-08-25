@@ -9,7 +9,7 @@ jobs:
     name: Publish Compat Checker package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@trunk
+    - uses: actions/checkout@v3
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop
