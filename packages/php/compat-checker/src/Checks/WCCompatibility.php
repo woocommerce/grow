@@ -53,6 +53,15 @@ class WCCompatibility extends CompatCheck {
 	}
 
 	/**
+	 * Gets the version of the currently installed WooCommerce.
+	 *
+	 * @return string|null Woocommerce version number or null if undetermined.
+	 */
+	public static function get_wc_version() {
+		return defined( 'WC_VERSION' ) && WC_VERSION ? WC_VERSION : null;
+	}
+
+	/**
 	 * Determines if the WooCommerce compatible.
 	 *
 	 * @return bool
