@@ -23,8 +23,14 @@ class WCCompatibility extends CompatCheck {
 	 */
 	const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
 
-	/** @var int|float The miniumum supported WooCommerce versions before the latest. */
-	private $min_wc_semver = 2; // By default, the last 2 major versions behind the latest published are supported.
+	/**
+	 * Define the L-n support policy here.
+	 *
+	 * @var int|float The miniumum supported WooCommerce versions before the latest.
+	 *
+	 * @see https://woocommerce.com/support-policy/
+	 */
+	private $min_wc_semver = 0.2; // By default, the latest minus two version.
 
 	/**
 	 * Determins if WooCommerce is installed.
