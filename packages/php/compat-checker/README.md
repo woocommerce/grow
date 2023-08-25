@@ -1,1 +1,39 @@
 # Compat Checker for WooCommerce Extensions
+
+A simple library to run compatibility checks for WooCommerce extensions.
+
+## Getting Started
+
+1. Include this library in your WooCommerce plugin's `composer.json` like shown below:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/woocommerce/grow"
+        }
+    ],
+    "require": {
+        "woocommerce/grow": "dev-compat-checker"
+    }
+}
+```
+
+2. In your main plugin file that contains the plugin header, add the compatibility check like the below example:
+
+```php
+require __DIR__ . '/vendor/autoload.php';
+
+use Automattic\WooCommerce\Grow\Tools\CompatChecker;
+
+add_action( 'plugins_loaded', 'wc_plugin_init' );
+
+function wc_plugin_init() {
+    if ( ! CompatChecker::instance()->is_compatible( __FILE__ ) ) {
+		return;
+	}
+
+    // Continue initializing the plugin.
+}
+```
