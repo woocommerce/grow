@@ -54,5 +54,6 @@ class WPCompatibility extends CompatCheck {
 	 */
 	protected function run_checks() {
 		$this->check_wp_version();
+        return true;
 	}
 }
