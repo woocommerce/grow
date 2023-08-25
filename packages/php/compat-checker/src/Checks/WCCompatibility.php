@@ -250,15 +250,14 @@ class WCCompatibility extends CompatCheck {
 	 * Add notices for WooCommerce not being installed or activated.
 	 */
 	public function wc_fail_load() {
-		$plugin = 'woocommerce/woocommerce.php';
-		$plugin_name = 'WooCommerce Brands'; // TODO: Get plugin name from plugin file.
+		$plugin_name = $this->plugin_data['Name'];
 
 		if ( $this->is_wc_installed() ) {
 			if ( ! current_user_can( 'activate_plugins' ) ) {
 				return;
 			}
 
-			$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin );
+			$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . self::WC_PLUGIN_FILE . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . self::WC_PLUGIN_FILE );
 			$message        = sprintf(
 				/* translators: %1$s - Plugin Name, %2$s - activate WooCommerce link open, %3$s - activate WooCommerce link close. */
 				esc_html__( '%1$s requires WooCommerce to be activated. Please %2$sactivate WooCommerce%3$s.', 'woogrow-compat-checker' ),
