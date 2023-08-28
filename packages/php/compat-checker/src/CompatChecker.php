@@ -36,9 +36,10 @@ class CompatChecker {
 	/**
 	 * Parses the plugin contents to retrieve plugin's metadata.
 	 *
-	 * @param string $plugin_file The Absolute path to the main plugin file.
+	 * @param string $plugin_file  The Absolute path to the main plugin file.
+	 * @param string $file_version The plugin file version. Can be the same as the plugin version.
 	 */
-	public function get_plugin_data( $plugin_file ) {
+	public function get_plugin_data( $plugin_file, $file_version ) {
 		$default_headers = array(
 			'Name'        => 'Plugin Name',
 			'Version'     => 'Version',
@@ -49,17 +50,26 @@ class CompatChecker {
 			'TestedWC'    => 'WC tested up to',
 		);
 
-		return get_file_data( $plugin_file, $default_headers, 'plugin' );
+		$transient_key = 'wc_grow_compat_checker_' . $plugin_file . $file_version;
+		$plugin_data   = get_transient( $transient_key );
+
+		if ( false === $plugin_data ) {
+			$plugin_data = get_file_data( $plugin_file, $default_headers, 'plugin' );
+			set_transient( $transient_key, $plugin_data, YEAR_IN_SECONDS );
+		}
+
+		return $plugin_data;
 	}
 
 	/**
 	 * Runs all compatibility checks.
 	 *
 	 * @param string $plugin_file_path The Absolute path to the main plugin file.
+	 * @param string $file_version     The plugin file version. Can be the same as the plugin version.
 	 *
 	 * @return bool
 	 */
-	public function is_compatible( $plugin_file_path ) {
+	public function is_compatible( $plugin_file_path, $file_version ) {
 		$checks      = array(
 			WPCompatibility::class,
 			WCCompatibility::class,
