@@ -232,8 +232,8 @@ class WCCompatibility extends CompatCheck {
 	 * @return bool
 	 */
 	private function check_wc_upgrade_recommendation() {
-		// Bail if there is no definied versions to compare.
-		if ( empty( $this->min_wc_semver ) || ! is_numeric( $this->min_wc_semver ) ) {
+		// Bail on frontend requests or if there is no definied versions to compare.
+		if ( ! is_admin() || empty( $this->min_wc_semver ) || ! is_numeric( $this->min_wc_semver ) ) {
 			return;
 		}
 
