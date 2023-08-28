@@ -30,7 +30,9 @@ use Automattic\WooCommerce\Grow\Tools\CompatChecker;
 add_action( 'plugins_loaded', 'wc_plugin_init' );
 
 function wc_plugin_init() {
-    if ( ! CompatChecker::instance()->is_compatible( __FILE__ ) ) {
+    define( 'WC_BRANDS_VERSION', '1.6.56' ); // WRCS: DEFINED_VERSION.
+
+    if ( ! CompatChecker::instance()->is_compatible( __FILE__, WC_BRANDS_VERSION ) ) {
 		return;
 	}
 
