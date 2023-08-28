@@ -3,7 +3,7 @@
     "description": "Compatibility checker for Woo Grow extensions",
     "version": "0.0.1",
     "license": "GPL-3.0",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
