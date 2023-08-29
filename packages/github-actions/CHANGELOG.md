@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-08-29 (1.10.1)
+### Tweaked 🔧
+* Fix typos in the `publish-extension-dev-build` action. (https://github.com/woocommerce/grow/pull/76)
+
 ## 2023-08-08 (1.10.0)
 ### New Features 🎉
 * Add merge-trunk-develop-pr action. (https://github.com/woocommerce/grow/pull/71)
