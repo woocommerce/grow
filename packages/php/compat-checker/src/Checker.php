@@ -74,7 +74,7 @@ class Checker {
 			WPCompatibility::class,
 			WCCompatibility::class,
 		);
-		$plugin_data = $this->get_plugin_data( $plugin_file_path );
+		$plugin_data = $this->get_plugin_data( $plugin_file_path, $file_version );
 
 		foreach ( $checks as $compatibility ) {
 			if ( ! $compatibility::instance()->is_compatible( $plugin_data ) ) {
