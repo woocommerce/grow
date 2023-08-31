@@ -5,25 +5,25 @@
  * @package Automattic/WooCommerce/Grow/Tools
  */
 
-namespace Automattic\WooCommerce\Grow\Tools;
+namespace Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1;
 
-use Automattic\WooCommerce\Grow\Tools\Checks\WPCompatibility;
-use Automattic\WooCommerce\Grow\Tools\Checks\WCCompatibility;
+use Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checks\WPCompatibility;
+use Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checks\WCCompatibility;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * The CompatChecker class.
+ * The CompatChecker main class.
  */
-class CompatChecker {
+class Checker {
 
-	/** @var CompatChecker The class instance. */
+	/** @var Checker The class instance. */
 	private static $instance;
 
 	/**
 	 * The Plugin instance.
 	 *
-	 * @return CompatChecker
+	 * @return Checker
 	 */
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {

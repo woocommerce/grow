@@ -25,14 +25,14 @@ A simple library to run compatibility checks for WooCommerce extensions.
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-use Automattic\WooCommerce\Grow\Tools\CompatChecker;
+use Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checker;
 
 add_action( 'plugins_loaded', 'wc_plugin_init' );
 
 function wc_plugin_init() {
     define( 'WC_BRANDS_VERSION', '1.6.56' ); // WRCS: DEFINED_VERSION.
 
-    if ( ! CompatChecker::instance()->is_compatible( __FILE__, WC_BRANDS_VERSION ) ) {
+    if ( ! Checker::instance()->is_compatible( __FILE__, WC_BRANDS_VERSION ) ) {
 		return;
 	}
 

@@ -5,9 +5,9 @@
  * @package Automattic/WooCommerce/Grow/Tools
  */
 
-namespace Automattic\WooCommerce\Grow\Tools\Checks;
+namespace Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checks;
 
-use Automattic\WooCommerce\Grow\Tools\Exception\IncompatibleException;
+use Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Exception\IncompatibleException;
 
 defined( 'ABSPATH' ) || exit;
 

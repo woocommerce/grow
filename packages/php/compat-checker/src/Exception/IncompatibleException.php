@@ -5,7 +5,7 @@
  * @package Automattic/WooCommerce/Grow/Tools
  */
 
-namespace Automattic\WooCommerce\Grow\Tools\Exception;
+namespace Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Exception;
 
 use \Exception;
 

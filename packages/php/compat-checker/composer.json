@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Automattic\\WooCommerce\\Grow\\Tools\\": "src/"
+            "Automattic\\WooCommerce\\Grow\\Tools\\CompatChecker\\v0_0_1\\": "src/"
         }
     },
     "require-dev": {
