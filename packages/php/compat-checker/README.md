@@ -19,8 +19,9 @@ A simple library to run compatibility checks for WooCommerce extensions.
     }
 }
 ```
+2. Run `composer update` to include the `woocommerce/grow` repo in the `vendor` folder.
 
-2. In your main plugin file that contains the plugin header, add the compatibility check like the below example:
+3. In the main plugin file that contains the plugin header, add the compatibility check like the below example:
 
 ```php
 require __DIR__ . '/vendor/autoload.php';
