@@ -303,13 +303,12 @@ class WCCompatibility extends CompatCheck {
 		$plugin_name         = $this->plugin_data['Name'];
 		$wc_version_required = $this->plugin_data['RequiresWC'];
 
-		$update_url = wp_nonce_url( self_admin_url( 'update.php?action=upgrade-plugin&plugin=' . self::WC_PLUGIN_FILE ), 'upgrade-plugin_' . self::WC_PLUGIN_FILE );
 		$message    = sprintf(
 			/* translators: %1$s - Plugin Name, %2$s - minimum WooCommerce version, %3$s - update WooCommerce link open, %4$s - update WooCommerce link close, %5$s - download minimum WooCommerce link open, %6$s - download minimum WooCommerce link close. */
 			esc_html__( '%1$s requires WooCommerce version %2$s or higher. Please %3$supdate WooCommerce%4$s to the latest version, or %5$sdownload the minimum required version &raquo;%6$s', 'woogrow-compat-checker' ),
 			'<strong>' . $plugin_name . '</strong>',
 			$wc_version_required,
-			'<a href="' . esc_url( $update_url ) . '">',
+			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '#update-plugins-table">',
 			'</a>',
 			'<a href="' . esc_url( 'https://downloads.wordpress.org/plugin/woocommerce.' . $wc_version_required . '.zip' ) . '">',
 			'</a>'
