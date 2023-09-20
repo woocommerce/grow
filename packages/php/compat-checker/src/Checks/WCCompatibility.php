@@ -362,7 +362,7 @@ class WCCompatibility extends CompatCheck {
 			esc_html__( 'Heads up! %1$s will soon discontinue support for WooCommerce %2$s. Please %3$supdate WooCommerce%4$s to take advantage of the latest updates and features.', 'woogrow-compat-checker' ),
 			'<strong>' . $plugin_name . '</strong>',
 			$current_wc_version,
-			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '">',
+			'<a href="' . esc_url( admin_url( 'update-core.php' ) ) . '#update-plugins-table">',
 			'</a>'
 		);
 
