@@ -50,7 +50,7 @@ class Checker {
 			'TestedWC'    => 'WC tested up to',
 		);
 
-		$transient_key = 'wc_grow_compat_checker_' . $plugin_file . $file_version;
+		$transient_key = 'wc_grow_compat_checker_' . plugin_basename( $plugin_file ) . $file_version;
 		$plugin_data   = get_transient( $transient_key );
 
 		if ( false === $plugin_data ) {
