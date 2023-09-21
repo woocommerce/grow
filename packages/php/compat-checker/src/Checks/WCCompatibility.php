@@ -339,7 +339,7 @@ class WCCompatibility extends CompatCheck {
 
 		$this->add_admin_notice(
 			'woocommerce-untested',
-			'warning',
+			'warning is-dismissible',
 			$message
 		);
 	}
@@ -367,7 +367,7 @@ class WCCompatibility extends CompatCheck {
 
 		$this->add_admin_notice(
 			'woocommerce-upgrade-recommendation',
-			'warning',
+			'warning is-dismissible',
 			$message
 		);
 	}

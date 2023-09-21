@@ -44,7 +44,7 @@ class WPCompatibility extends CompatCheck {
 
 		$this->add_admin_notice(
 			'wordpress-untested',
-			'warning',
+			'warning is-dismissible',
 			$message
 		);
 	}
