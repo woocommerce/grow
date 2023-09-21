@@ -301,7 +301,7 @@ class WCCompatibility extends CompatCheck {
 		}
 
 		$plugin_name         = $this->plugin_data['Name'];
-		$wc_version_required = $this->plugin_data['RequiresWC'];
+		$wc_version_required = ( 1 === substr_count( $this->plugin_data['RequiresWC'], '.' ) ) ? $this->plugin_data['RequiresWC'] . '.0' : $this->plugin_data['RequiresWC'] ; // Pad .0 if the min required WC version is not in semvar format.
 
 		$message    = sprintf(
 			/* translators: %1$s - Plugin Name, %2$s - minimum WooCommerce version, %3$s - update WooCommerce link open, %4$s - update WooCommerce link close, %5$s - download minimum WooCommerce link open, %6$s - download minimum WooCommerce link close. */
