@@ -1,0 +1,153 @@
+name: Run QIT for a given extensions
+
+# **What it does**: Runs a set of QIT tests for a given extension.
+# **Why we have it**: To reuse across other repos, to make a full test of a single extension.
+
+on:
+  workflow_call:
+    inputs:
+      # Basic params.
+      extension:
+        description: Extension to test
+        required: true
+        type: string
+      version:
+        description: |
+          Version to be tested: `latest` or `dev`.
+          The `dev` option will make the action look up for an `{extension}.zip` file in the root
+          of the repository under the `gha-dev-build` tag.
+        required: true
+        default: 'latest'
+        type: string
+
+      # Customize which types to run.
+      test-activation:
+        description: 'Should activation be tested?'
+        default: true
+        type: boolean
+      test-security:
+        description: 'Should security be tested?'
+        default: true
+        type: boolean
+      test-phpstan:
+        description: 'Should PHPStan be tested?'
+        default: true
+        type: boolean
+      test-api:
+        description: 'Should API be tested?'
+        default: true
+        type: boolean
+      test-e2e:
+        description: 'Should E2E be tested?'
+        default: true
+        type: boolean
+
+      # Advanced customization.
+      options:
+        description: 'Additional options for `qit` command, like `--optional_features=hpos`'
+        type: string
+
+    outputs:
+        statuses:
+            description: "Statuses of all tests. Array of integers."
+            value: ${{ jobs.qit-tests.outputs.statuses }}
+
+
+jobs:
+    qit-tests:
+        name: Run QIT Tests
+        runs-on: ubuntu-20.04
+        env:
+            QIT_DISABLE_ONBOARDING: yes
+            dev_build: ${{ inputs.version == 'dev' && format('{0}.zip', inputs.extension) || '' }}
+        outputs:
+            statuses: ${{ toJSON( steps.*.outputs.status ) }}
+        steps:
+
+            # Checkout repository to reuse local action. To be removed once we switch to the published action.
+            - uses: actions/checkout@v3
+              with:
+                fetch-depth: 2
+                path: 'this-repo'
+
+            - name: Download plugins
+              if: ${{ env.dev_build != '' }}
+              uses: robinraju/release-downloader@v1.8
+              with:
+                repository: "woocommerce/${{ inputs.extension }}"
+                tag: 'gha-dev-build'
+                fileName: ${{ env.dev_build }}
+                token: ${{ secrets.BOT_GH_TOKEN }}
+
+            - name: Install QIT via composer
+              run: composer require woocommerce/qit-cli
+            - name: Add Partner
+              run: |
+                ./vendor/bin/qit partner:add \
+                  --user='${{ secrets.QIT_PARTNER_USER }}' \
+                  --application_password='${{ secrets.QIT_PARTNER_SECRET }}'
+
+            - name: Create results dir
+              run: mkdir -p ./qit-results/${{ inputs.extension }}
+
+            - name: Activation test
+              id: activation-test
+              if: ${{ inputs.test-activation == true }}
+              # Switch to published action once released.
+              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              timeout-minutes: 5
+              with:
+                type: activation
+                extension: ${{ inputs.extension }}
+                extension-file: ${{ env.dev_build }}
+                options: ${{ inputs.options }}
+
+            - name: Security test
+              id: security-test
+              if: ${{ inputs.test-security == true }}
+              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              timeout-minutes: 5
+              with:
+                type: security
+                extension: ${{ inputs.extension }}
+                extension-file: ${{ env.dev_build }}
+                options: ${{ inputs.options }}
+
+            - name: PHPStan test
+              id: phpstan-test
+              if: ${{ inputs.test-phpstan == true }}
+              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              timeout-minutes: 5
+              with:
+                type: phpstan
+                extension: ${{ inputs.extension }}
+                extension-file: ${{ env.dev_build }}
+                options: ${{ inputs.options }}
+
+            - name: API test
+              id: api-test
+              if: ${{ inputs.test-api == true }}
+              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              timeout-minutes: 5
+              with:
+                type: api
+                extension: ${{ inputs.extension }}
+                extension-file: ${{ env.dev_build }}
+                options: ${{ inputs.options }}
+
+            - name: E2E test
+              id: e2e-test
+              if: ${{ inputs.test-e2e == true }}
+              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              timeout-minutes: 30
+              with:
+                type: e2e
+                extension: ${{ inputs.extension }}
+                extension-file: ${{ env.dev_build }}
+                options: ${{ inputs.options }}
+
+            - name: Upload results
+              uses: actions/upload-artifact@v1
+              with:
+                  name: ${{ inputs.extension }}
+                  path: ./qit-results/${{ inputs.extension }}

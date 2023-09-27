@@ -1,0 +1,94 @@
+name: Run QIT test
+description: Runs QIT test and annotates the results.
+
+# **What it does**: Runs a single QIT test and annotates the results.
+# **Why we have it**: To reuse across other workflows to test extensions.
+
+inputs:
+  # Basic params.
+  extension:
+    description: Extension to test
+    required: true
+  extension-file:
+    description: Custom build of the extension to test. If not given, the latest release will be used.
+    required: false
+  type:
+    description: Type of test to run
+    required: false
+    default: activation
+  # Advanced customization.
+  options:
+    description: Options to pass to the qit command
+    required: false
+    default: ''
+  results-filename:
+    description: Custom file name for results
+    required: false
+  results-folder:
+    description: Folder to store results
+    required: false
+    default: qit-results
+
+outputs:
+  status:
+    description: "Exit code of the test. May be used, for example, to fail the workflow if the test fails."
+    value: ${{ steps.run-test.outputs.status }}
+  summary:
+    description: "Short summary of the test"
+    value: ${{ steps.read-summary.outputs.summary }}
+  resultsURL:
+    description: "URL to the results of the test"
+    value: ${{ steps.read-summary.outputs.resultURL }}
+
+branding:
+  icon: 'award'
+  color: 'purple'
+
+runs:
+  using: composite
+  steps:
+    - name: Run test
+      id: run-test
+      # Do not fail when the `qit` fails, so we can annotate the results.
+      shell: bash --noprofile --norc {0}
+      continue-on-error: true
+      env:
+        # If the custom build is provided, pass it to the `zip` param.
+        zip: ${{ inputs.extension-file &&  format('--zip={0}', inputs.extension-file) || '' }}
+        report_file: ${{ inputs.results-filename || format( '{0}/{1}/{2}/{3}.txt', github.workspace, inputs.results-folder, inputs.extension, inputs.type ) }}
+        status: 0
+      run: |
+        ./vendor/bin/qit run:${{ inputs.type }} ${{ inputs.extension }} \
+          $zip \
+          ${{ inputs.options }} \
+          --wait \
+          > $report_file || status=$?
+        echo "status=$status" >> "$GITHUB_OUTPUT"
+        echo "report_file=$report_file" >> "$GITHUB_OUTPUT"
+        cat $report_file
+
+    # Parse the report file, to fetch the essential information.
+    - name: Read summary
+      id: read-summary
+      shell: bash
+      if: '!cancelled()'
+      run: |
+        summary=`grep -Po "(?<=Test Summary)\s+(.*)" ${{ steps.run-test.outputs.report_file }} --color=never`
+        resultURL=`grep -Po "(?<=Result Url)\s+(.*)" ${{ steps.run-test.outputs.report_file }} --color=never`
+        echo "summary=$summary" >> $GITHUB_OUTPUT
+        echo "resultURL=$resultURL" >> $GITHUB_OUTPUT
+
+    # Annotate the results according to the exit code.
+    - name: Annotate
+      if: '!cancelled()'
+      shell: bash
+      run: |
+        summary="${{ inputs.type }}: ${{ steps.read-summary.outputs.summary }} - ${{ steps.read-summary.outputs.resultURL }}";
+        case ${{ steps.run-test.outputs.status }} in
+          0) echo "::notice ::$summary"
+          ;;
+          2) echo "::warning ::$summary"
+          ;;
+          *) echo "::error ::$summary"
+          ;;
+        esac

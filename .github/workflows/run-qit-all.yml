@@ -1,0 +1,78 @@
+name: Run QIT for all extensions
+
+# **What it does**: Runs a suite of tests for all Grow extensions.
+# **Why we have it**: To be able to run tests for all extensions at once. For example when we want to compatibility test a new version of the platform (WP/WC).
+
+on:
+  workflow_dispatch:
+    inputs:
+      # Basic params.
+      version:
+        description: 'Version to be tested'
+        required: true
+        type: choice
+        options:
+        - latest
+        - dev
+
+      # Configure which tests to run.
+      test-activation:
+        description: 'Should activation be tested?'
+        required: true
+        default: true
+        type: boolean
+      test-security:
+        description: 'Should security be tested?'
+        required: true
+        default: true
+        type: boolean
+      test-phpstan:
+        description: 'Should phpstan be tested?'
+        required: true
+        default: true
+        type: boolean
+      test-api:
+        description: 'Should API be tested?'
+        required: true
+        default: true
+        type: boolean
+      test-e2e:
+        description: 'Should E2E be tested? (takes a lot of time)'
+        required: true
+        default: false
+        type: boolean
+
+      # Advanced customization.
+      options:
+        description: 'Additional options for `qit` command, like `--optional_features=hpos`.'
+        required: false
+
+  # Used to test this PR, to be removed after before merging.
+  push:
+    branches:
+      - add/qit-workflows
+
+jobs:
+    qit-tests:
+        name: Run QIT Tests
+        uses: ./.github/workflows/run-qit-extension.yml
+        secrets: inherit
+        strategy:
+          # Allow to test extensions even if one of them fails.
+          fail-fast: false
+          matrix:
+            # List of extensions to be tested.
+            extension: [automatewoo, automatewoo-birthdays, automatewoo-referrals, google-listings-and-ads, woocommerce-google-analytics-integration]
+            # Run both options for PR review purposes.
+            version: [latest, dev]
+        with:
+          # We're running tests for all versions, just for PR review purposes to be replaced before merging.
+          # version: ${{ inputs.version }}
+          version: ${{ matrix.version }}
+          # Conditional statements are here to allow testing on push triggers, without manual input. To be removed before merging.
+          test-activation: ${{ inputs.test-activation || true }}
+          test-security: ${{ inputs.test-security || true }}
+          test-phpstan: ${{ inputs.test-phpstan || true }}
+          test-api: ${{ inputs.test-api || false }}
+          test-e2e: ${{ inputs.test-e2e || false }}
+          extension: ${{ matrix.extension }}
