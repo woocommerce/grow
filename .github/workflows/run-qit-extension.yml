@@ -13,9 +13,11 @@ on:
         type: string
       version:
         description: |
-          Version to be tested: `latest` or `dev`.
-          The `dev` option will make the action look up for an `{extension}.zip` file in the root
-          of the repository under the `gha-dev-build` tag.
+          Version to be tested: `latest`, `dev`, or `local`.
+          `latest` will test latest released version,
+          `dev` will make the action look up for an `{extension}.zip` file in the root
+          of the repository under the `gha-dev-build` tag,
+          `local` will look up for an `{extension}.zip` artifact in the current workflow.
         required: true
         default: 'latest'
         type: string
@@ -59,18 +61,25 @@ jobs:
         runs-on: ubuntu-20.04
         env:
             QIT_DISABLE_ONBOARDING: yes
-            dev_build: ${{ inputs.version == 'dev' && format('{0}.zip', inputs.extension) || '' }}
+            dev_build: ${{ inputs.version != 'latest' && format('{0}.zip', inputs.extension) || '' }}
         outputs:
             statuses: ${{ toJSON( steps.*.outputs.status ) }}
         steps:
-            - name: Download plugins
-              if: ${{ env.dev_build != '' }}
+
+            - name: Download `gha-dev-build`
+              if: ${{ inputs.version == 'dev' }}
               uses: robinraju/release-downloader@v1.8
               with:
                 repository: "woocommerce/${{ inputs.extension }}"
                 tag: 'gha-dev-build'
                 fileName: ${{ env.dev_build }}
                 token: ${{ secrets.BOT_GH_TOKEN }}
+
+            - name: Download artifact
+              if: ${{ inputs.version == 'local' }}
+              uses: actions/download-artifact@v3
+              with:
+                name: ${{ env.dev_build }}
 
             - name: Install QIT via composer
               run: composer require woocommerce/qit-cli
