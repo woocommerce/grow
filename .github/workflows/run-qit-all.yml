@@ -76,3 +76,4 @@ jobs:
           test-api: ${{ inputs.test-api || false }}
           test-e2e: ${{ inputs.test-e2e || false }}
           extension: ${{ matrix.extension }}
+          options: ${{ inputs.options }}
