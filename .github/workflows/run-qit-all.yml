@@ -47,11 +47,6 @@ on:
         description: 'Additional options for `qit` command, like `--optional_features=hpos`.'
         required: false
 
-  # Used to test this PR, to be removed after before merging.
-  push:
-    branches:
-      - add/qit-workflows
-
 jobs:
     qit-tests:
         name: Run QIT Tests
@@ -63,17 +58,13 @@ jobs:
           matrix:
             # List of extensions to be tested.
             extension: [automatewoo, automatewoo-birthdays, automatewoo-referrals, google-listings-and-ads, woocommerce-google-analytics-integration]
-            # Run both options for PR review purposes.
-            version: [latest, dev]
         with:
-          # We're running tests for all versions, just for PR review purposes to be replaced before merging.
-          # version: ${{ inputs.version }}
-          version: ${{ matrix.version }}
           # Conditional statements are here to allow testing on push triggers, without manual input. To be removed before merging.
-          test-activation: ${{ inputs.test-activation || true }}
-          test-security: ${{ inputs.test-security || true }}
-          test-phpstan: ${{ inputs.test-phpstan || true }}
-          test-api: ${{ inputs.test-api || false }}
-          test-e2e: ${{ inputs.test-e2e || false }}
+          version: ${{ inputs.version }}
+          test-activation: ${{ inputs.test-activation }}
+          test-security: ${{ inputs.test-security }}
+          test-phpstan: ${{ inputs.test-phpstan }}
+          test-api: ${{ inputs.test-api }}
+          test-e2e: ${{ inputs.test-e2e }}
           extension: ${{ matrix.extension }}
           options: ${{ inputs.options }}
