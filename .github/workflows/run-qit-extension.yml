@@ -141,5 +141,5 @@ jobs:
             - name: Upload results
               uses: actions/upload-artifact@v1
               with:
-                  name: ${{ inputs.extension }}
+                  name: "qit-results-${{ inputs.extension }}"
                   path: ./qit-results/${{ inputs.extension }}
