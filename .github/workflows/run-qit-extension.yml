@@ -63,13 +63,6 @@ jobs:
         outputs:
             statuses: ${{ toJSON( steps.*.outputs.status ) }}
         steps:
-
-            # Checkout repository to reuse local action. To be removed once we switch to the published action.
-            - uses: actions/checkout@v3
-              with:
-                fetch-depth: 2
-                path: 'this-repo'
-
             - name: Download plugins
               if: ${{ env.dev_build != '' }}
               uses: robinraju/release-downloader@v1.8
@@ -93,8 +86,7 @@ jobs:
             - name: Activation test
               id: activation-test
               if: ${{ inputs.test-activation == true }}
-              # Switch to published action once released.
-              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
               timeout-minutes: 5
               with:
                 type: activation
@@ -105,7 +97,7 @@ jobs:
             - name: Security test
               id: security-test
               if: ${{ inputs.test-security == true }}
-              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
               timeout-minutes: 5
               with:
                 type: security
@@ -116,7 +108,7 @@ jobs:
             - name: PHPStan test
               id: phpstan-test
               if: ${{ inputs.test-phpstan == true }}
-              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
               timeout-minutes: 5
               with:
                 type: phpstan
@@ -127,7 +119,7 @@ jobs:
             - name: API test
               id: api-test
               if: ${{ inputs.test-api == true }}
-              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
               timeout-minutes: 5
               with:
                 type: api
@@ -138,7 +130,7 @@ jobs:
             - name: E2E test
               id: e2e-test
               if: ${{ inputs.test-e2e == true }}
-              uses: ./this-repo/packages/js/github-actions/actions/run-qit-annotate
+              uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
               timeout-minutes: 30
               with:
                 type: e2e
