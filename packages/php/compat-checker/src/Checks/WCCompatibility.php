@@ -331,7 +331,7 @@ class WCCompatibility extends CompatCheck {
 
 		$message = sprintf(
 			/* translators: %1$s - Plugin Name, %2$s - Plugin version, %3$s - WooCommerce version number */
-			esc_html__( '%1$s - %2$s is untested with WooCommerce %3$s.', 'woogrow-compat-checker' ),
+			esc_html__( '%1$s - version %2$s is untested with WooCommerce %3$s.', 'woogrow-compat-checker' ),
 			'<strong>' . $plugin_name . '</strong>',
 			$plugin_version,
 			$wc_version
