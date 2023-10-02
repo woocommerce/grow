@@ -69,6 +69,22 @@ abstract class CompatCheck {
 			return;
 		}
 
+		$screen = get_current_screen();
+		$hidden = array( 'update', 'update-network', 'update-core', 'update-core-network', 'upgrade', 'upgrade-network', 'network' );
+		$show   = isset( $screen->id ) && ! in_array( $screen->id, $hidden, true );
+
+		/**
+		 * The Compat Check filter to show an admin notice.
+		 *
+		 * @since 0.0.1
+		 *
+		 * @param bool   $show Whether to show the admin notice.
+		 * @param string $slug The slug for the notice.
+		 */
+		if ( ! apply_filters( 'wc_grow_compat_check_show_admin_notice', $show, $slug ) ) {
+			return;
+		}
+
 		$this->notices[ $slug ] = array(
 			'class'   => $class,
 			'message' => $message,
