@@ -52,5 +52,4 @@ jobs:
       - name: Echo status
         shell: bash
         run: echo ${{ jobs.security-test.outputs.status }}
-	
 ```
