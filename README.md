@@ -1,26 +1,42 @@
-# Grow Packages
+# Compat Checker for WooCommerce Extensions
 
-[![JavaScript Linting](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml)
+A simple library to run compatibility checks for WooCommerce extensions.
 
-This repository is a container for packages, mostly dev tools to serve the Grow Team.
-The packages here are too experimental or too Grow-specific to be shared Woo-wide.
+## Getting Started
 
-## List of packages
+1. Include this library in your WooCommerce plugin's `composer.json` like shown below:
 
-- [`/packages/github-actions`](packages/github-actions/README.md) - Custom GitHub actions.
-- [`/packages/js/generator-grow`](packages/js/generator-grow/README.md) - Yeoman Generator for extension repository boilerplate.
-- [`/packages/js/storybook`](packages/js/storybook/README.md) - Storybook dependencies and basic scripts
-- [`/packages/js/tracking-jsdoc`](packages/js/tracking-jsdoc/README.md) - `jsdoc` plugin to document Tracking Events in markdown
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/woocommerce/grow"
+        }
+    ],
+    "require": {
+        "woocommerce/grow": "dev-compat-checker"
+    }
+}
+```
+2. Run `composer update` to include the `woocommerce/grow` repo in the `vendor` folder.
 
-## List of plugins
+3. In the main plugin file that contains the plugin header, add the compatibility check like the below example:
 
-- [`/plugins/grow-smooth-generator`](plugins/grow-smooth-generator/README.md) - A smooth generator for Grow extension data
+```php
+require __DIR__ . '/vendor/autoload.php';
 
-## List of configs
-- [`/configs/woocommerce-github-sync-labels`](configs/woocommerce-github-sync-labels/README.md) - Config to add extra labels to Grow's repositories.
+use Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checker;
 
-<p align="center">
-	<br/><br/>
-	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
-	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
-</p>
+add_action( 'plugins_loaded', 'wc_plugin_init' );
+
+function wc_plugin_init() {
+    define( 'WC_BRANDS_VERSION', '1.6.56' ); // WRCS: DEFINED_VERSION.
+
+    if ( ! Checker::instance()->is_compatible( __FILE__, WC_BRANDS_VERSION ) ) {
+		return;
+	}
+
+    // Continue initializing the plugin.
+}
+```
