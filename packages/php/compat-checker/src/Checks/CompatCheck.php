@@ -121,7 +121,7 @@ abstract class CompatCheck {
 		foreach ( $this->notices as $key => $notice ) {
 			$class   = $notice['class'];
 			$message = $notice['message'];
-			echo sprintf(
+			printf(
 				'<div class="notice notice-%1$s"><p>%2$s</p></div>',
 				esc_attr( $class ),
 				wp_kses( $message, $allowed_tags )
