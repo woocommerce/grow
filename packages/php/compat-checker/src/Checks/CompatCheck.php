@@ -64,11 +64,6 @@ abstract class CompatCheck {
 	 * @param string $message The notice message.
 	 */
 	protected function add_admin_notice( $slug, $class, $message ) {
-		// Bail if the user is not a shop manager.
-		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			return;
-		}
-
 		$screen = get_current_screen();
 		$hidden = array( 'update', 'update-network', 'update-core', 'update-core-network', 'upgrade', 'upgrade-network', 'network' );
 		$show   = isset( $screen->id ) && ! in_array( $screen->id, $hidden, true );
