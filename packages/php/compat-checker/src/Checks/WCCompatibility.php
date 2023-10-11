@@ -220,7 +220,7 @@ class WCCompatibility extends CompatCheck {
 			// Store the previous minor while we loop patch versions, which we ignore.
 			$previous_minor = $older_minor;
 
-			$supported_minor--;
+			--$supported_minor;
 		}
 
 		return $supported_wc_version;

@@ -54,7 +54,8 @@ class Checker {
 		$plugin_data   = get_transient( $transient_key );
 
 		if ( false === $plugin_data ) {
-			$plugin_data = get_file_data( $plugin_file, $default_headers, 'plugin' );
+			$plugin_data         = get_file_data( $plugin_file, $default_headers, 'plugin' );
+			$plugin_data['File'] = $plugin_file;
 			set_transient( $transient_key, $plugin_data, MONTH_IN_SECONDS );
 		}
 
