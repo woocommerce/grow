@@ -7,6 +7,8 @@
 
 namespace Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Checks;
 
+use WC_Admin_Notices;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -67,6 +69,7 @@ abstract class CompatCheck {
 		$screen = get_current_screen();
 		$hidden = array( 'update', 'update-network', 'update-core', 'update-core-network', 'upgrade', 'upgrade-network', 'network' );
 		$show   = isset( $screen->id ) && ! in_array( $screen->id, $hidden, true );
+		$slug   = plugin_basename( $this->plugin_data['File'] ) . '-' . $slug;
 
 		/**
 		 * The Compat Check filter to show an admin notice.
@@ -80,10 +83,18 @@ abstract class CompatCheck {
 			return;
 		}
 
-		$this->notices[ $slug ] = array(
-			'class'   => $class,
-			'message' => $message,
-		);
+		// If the notice is a warning and WooCommerce admin notice system is available. Then use it.
+		if ( str_contains( $class, 'warning' ) && class_exists( WC_Admin_Notices::class ) ) {
+			// Do not display the notice if it was dismissed.
+			if ( ! get_user_meta( get_current_user_id(), 'dismissed_' . $slug . '_notice', true ) ) {
+				WC_Admin_Notices::add_custom_notice( $slug, $message );
+			}
+		} else {
+			$this->notices[ $slug ] = array(
+				'class'   => $class,
+				'message' => $message,
+			);
+		}
 	}
 
 	/**
