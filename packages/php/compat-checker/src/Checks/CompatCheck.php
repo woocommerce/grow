@@ -69,7 +69,7 @@ abstract class CompatCheck {
 		$screen = get_current_screen();
 		$hidden = array( 'update', 'update-network', 'update-core', 'update-core-network', 'upgrade', 'upgrade-network', 'network' );
 		$show   = isset( $screen->id ) && ! in_array( $screen->id, $hidden, true );
-		$slug   = plugin_basename( $this->plugin_data['File'] ) . '-' . $slug;
+		$slug   = isset( $this->plugin_data['File'] ) ? plugin_basename( $this->plugin_data['File'] ) . '-' . $slug : $slug;
 
 		/**
 		 * The Compat Check filter to show an admin notice.
