@@ -190,7 +190,7 @@ class Bulk extends Command {
 				continue;
 			}
 
-			[ $slug, $version, $branch, $source ] = array_pad( explode( "\t", $line ), 4, null );
+			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 4, null );
 			$toRelease[ $slug ] = [
 				'name'           => $extensions[ $slug ]['name'],
 				'repo'           => $extensions[ $slug ]['repoSlug'],
