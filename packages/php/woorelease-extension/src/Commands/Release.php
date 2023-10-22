@@ -7,6 +7,8 @@
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
+use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +21,7 @@ use WR\Tools\Logger;
 use WR\Tools\Product;
 use WR\Tools\Utils;
 use WR\Tools\WP_Org;
+use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
 
 /**
  * Class for implementing the release command.
@@ -35,7 +38,8 @@ class Release extends WooReleaseRelease {
 		parent::configure();
 		$this
 			->addOption( 'nvm_use', null, InputOption::VALUE_NONE, 'If specified, the release will use `nvm use`' )
-			->addOption( 'create_release_branch', null, InputOption::VALUE_OPTIONAL, 'If specified, the release branch will be created.' );
+			->addOption( 'create_release_branch', null, InputOption::VALUE_NONE, 'If specified, the release branch will be created.' )
+			->addOption( 'default_branch', null, InputOption::VALUE_OPTIONAL, 'If specified, the release branch will be created from it.' );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ) {
@@ -49,19 +53,66 @@ class Release extends WooReleaseRelease {
 			$generate_changelog    = $input->getOption( 'generate_changelog' );
 			$nvm_use               = $input->getOption( 'nvm_use' );
 			$create_release_branch = $input->getOption( 'create_release_branch' );
+			$default_branch        = $input->getOption( 'default_branch' );
 			$release               = ! $this->simulate;
 			$reauth                = false !== $input->getOption( 'svn_reauth' );
-			$editor                = Utils::get_config( 'core.editor', false );
 
 			list( $product, $gh_org, $branch ) = Utils::parse_product_info( $github_url );
 
 			$logger->notice( 'Processing product {product}...', array( 'product' => $product ) );
 
-			$gh_token = Utils::get_config( 'github.token' );
-			$gh_api   = new GitHub_API( $gh_token, $gh_org, $product, $branch );
+			$folder = '';
+
+			// Prepare the release: check release/branch to exist.
+			$repository_url    = sprintf( 'https://github.com/%1$s/%2$s', $gh_org, $product );
+			$is_release_branch = WooGrowGit::is_branch_exists( $repository_url, $branch );
+			if ( ! $is_release_branch ) {
+				$output->writeln( sprintf( "\n<info>Release branch %s does not exist.</info>\n", $branch ) );
+				if ( $create_release_branch && Utils::yes_no( sprintf(
+					'You are trying to release from %s which does not exist. Do you want to create it from %s?',
+					$branch,
+					$default_branch
+				) ) ) {
+					try {
+						// 1. Clone the repository locally.
+						$folder = Git::clone_product( $product, $default_branch, $gh_org );
+
+						// 2. Create the release branch and push to remote.
+						WooGrowGit::create_branch( $repository_url, $branch );
+					} catch ( Exception $e ) {
+						if ( ! Utils::yes_no( sprintf(
+							'Branch %s has failed to create. Do you want to release from the %s branch?',
+							$branch,
+							$default_branch
+						) ) ) {
+							throw new Exception( 'Release cancelled.' );
+						}
+					}
+				} else {
+					if ( ! Utils::yes_no( sprintf(
+						'You\'ve decided not to create %s branch. Do you want to release from the %s branch?',
+						$branch,
+						$default_branch
+					) ) ) {
+						throw new Exception( 'Release cancelled.' );
+					}
+				}
+			}
 
 			// Clone product.
-			$folder = Git::clone_product( $product, $branch, $gh_org );
+			if ( empty( $folder ) ) {
+				$folder = Git::clone_product( $product, $branch, $gh_org );
+			}
+
+			if ( empty( $folder ) ) {
+				$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $product ) );
+				throw new Exception( sprintf( 'Cloning %s repository branch %s have failed.', $product, $branch ) );
+			}
+
+			// Run `nvm use` if specified to switch to the correct node version for the product repo.
+			if ( $nvm_use ) {
+				Nvm::use();
+			}
 
 			// If $version is not supplied, use current and bump the patch version.
 			if ( ! isset( $version ) ) {
