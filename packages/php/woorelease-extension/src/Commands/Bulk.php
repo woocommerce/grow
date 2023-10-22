@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use WR\Application;
-use WR\Command\Release;
 
 /**
  * Class Bulk
@@ -54,8 +53,9 @@ class Bulk extends Command {
 		if ( ! $command instanceof Release ) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'Command "%s" is not an instance of %s',
+					'Command "%s" (%s) is not an instance of %s',
 					$command->getName(),
+					get_class( $command ),
 					Release::class
 				)
 			);
@@ -120,6 +120,40 @@ class Bulk extends Command {
 				]
 			);
 
+			// Prepare the release: check release/branch to exist.
+			/*try {
+				$repositoryUrl = sprintf( 'https://github.com/%1$s/%2$s/tree/%3$s', $item['organization'], $item['repo'] );
+				Utils::exec_sprintf( 'git ls-remote --exit-code --heads %s %s', $repositoryUrl, $item['branch'] );
+			} catch ( Exception $e ) {
+				try {
+					$output->writeln( sprintf( "\n<info>Release branch %s does not exist.</info>\n", $item['name'] ) );
+					if ( Utils::yes_no( sprintf(
+						'You are trying to release from %s which does not exist. Do you want to create %s from %s first?',
+						$item['branch'],
+						$item['branch'],
+						$item['source']
+					) ) ) {
+						// Create release branch.
+						Utils::exec_sprintf( 'git ls-remote --exit-code --heads %s %s', $repositoryUrl, $item['branch'] );
+					} else {
+						// Ask to release from the default branch for the given repository.
+						if ( ! Utils::yes_no( sprintf(
+							'You\'ve decided not to create %s branch. Do you still want to release from the %s branch?',
+							$item['branch'],
+							$item['source']
+						) ) ) {
+							throw new \Exception( 'Release cancelled.' );
+						}
+					}
+				} catch ( Exception $e ) {
+					$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $item['name'] ) );
+					$output->writeln( sprintf( "\n<error>Branch %s does not exist for %s. The default branch %s was also declined.</error>\n", $item['branch'], $item['name'], $item['source'] ) );
+
+					$errors[] = $item['name'];
+					continue;
+				}
+			}*/
+
 			$result = $releaseCommand->run( new ArrayInput( $args ), $output );
 			if ( static::SUCCESS !== $result ) {
 				$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $item['name'] ) );
@@ -183,13 +217,14 @@ class Bulk extends Command {
 				continue;
 			}
 
-			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 3, null );
+			[ $slug, $version, $branch, $source ] = array_pad( explode( "\t", $line ), 4, null );
 			$toRelease[ $slug ] = [
 				'name'         => $extensions[ $slug ]['name'],
 				'repo'         => $extensions[ $slug ]['repoSlug'],
 				'version'      => $version,
 				'organization' => $extensions[ $slug ]['githubOrganization'] ?? $githubOrganization,
 				'branch'       => $branch ?? $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
+				'source'       => $source ?? $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
 			];
 		}
 

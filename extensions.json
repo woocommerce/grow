@@ -14,11 +14,13 @@
 		},
 		{
 			"name": "Points & Rewards",
-			"repoSlug": "woocommerce-points-and-rewards"
+			"repoSlug": "woocommerce-points-and-rewards",
+			"defaultBranch": "develop"
 		},
 		{
 			"name": "Brands",
-			"repoSlug": "woocommerce-brands"
+			"repoSlug": "woocommerce-brands",
+			"defaultBranch": "develop"
 		},
 		{
 			"name": "Drip",
@@ -26,7 +28,8 @@
 		},
 		{
 			"name": "Product Filters",
-			"repoSlug": "woocommerce-product-filters"
+			"repoSlug": "woocommerce-product-filters",
+			"defaultBranch": "develop"
 		},
 		{
 			"name": "Sales Report Email",
@@ -42,7 +45,8 @@
 		},
 		{
 			"name": "Coupon Campaigns",
-			"repoSlug": "woocommerce-coupon-campaigns"
+			"repoSlug": "woocommerce-coupon-campaigns",
+			"defaultBranch": "develop"
 		}
 	],
 	"retiredExtensions": [

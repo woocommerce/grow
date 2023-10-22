@@ -3,6 +3,7 @@
 
 use Automattic\WooCommerce\Grow\WR\Commands\Bulk;
 use Automattic\WooCommerce\Grow\WR\Commands\VersionReplace;
+use Automattic\WooCommerce\Grow\WR\Commands\Release;
 use WR\Application;
 
 $rootDir = dirname(__DIR__);
@@ -41,6 +42,7 @@ $app->addCommands(
 	[
 		new Bulk(),
 		new VersionReplace(),
+		new Release(),
 	]
 );
 
