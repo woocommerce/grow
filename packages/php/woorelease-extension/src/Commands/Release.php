@@ -16,7 +16,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use WR\Command\Release as WooReleaseRelease;
 use WR\Tools\Git;
-use WR\Tools\GitHub_API;
 use WR\Tools\Logger;
 use WR\Tools\Product;
 use WR\Tools\Utils;
