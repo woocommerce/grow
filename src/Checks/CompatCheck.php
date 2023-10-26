@@ -47,15 +47,17 @@ abstract class CompatCheck {
 	/**
 	 * Get the instance of the CompatCheck object.
 	 *
+	 * @param string $plugin_basename The basename of the plugin.
+	 *
 	 * @return CompatCheck
 	 */
-	public static function instance() {
+	public static function instance( $plugin_basename ) {
 		$class = get_called_class();
-		if ( ! isset( self::$instances[ $class ] ) ) {
-			self::$instances[ $class ] = new $class();
+		if ( ! isset( self::$instances[ $class ][ $plugin_basename ] ) ) {
+			self::$instances[ $class ][ $plugin_basename ] = new $class();
 		}
 
-		return self::$instances[ $class ];
+		return self::$instances[ $class ][ $plugin_basename ];
 	}
 
 	/**

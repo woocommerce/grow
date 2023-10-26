@@ -71,14 +71,15 @@ class Checker {
 	 * @return bool
 	 */
 	public function is_compatible( $plugin_file_path, $file_version ) {
-		$checks      = array(
+		$checks          = array(
 			WPCompatibility::class,
 			WCCompatibility::class,
 		);
-		$plugin_data = $this->get_plugin_data( $plugin_file_path, $file_version );
+		$plugin_data     = $this->get_plugin_data( $plugin_file_path, $file_version );
+		$plugin_basename = plugin_basename( $plugin_file_path );
 
 		foreach ( $checks as $compatibility ) {
-			if ( ! $compatibility::instance()->is_compatible( $plugin_data ) ) {
+			if ( ! $compatibility::instance( $plugin_basename )->is_compatible( $plugin_data ) ) {
 				return false;
 			}
 		}
