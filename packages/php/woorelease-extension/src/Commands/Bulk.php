@@ -123,7 +123,7 @@ class Bulk extends Command {
 				]
 			);
 
-			if ( Nvm::is_nvm_exists() ) {
+			if ( Nvm::does_nvm_exist() ) {
 				$args['--nvm_use'] = '';
 			}
 

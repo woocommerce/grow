@@ -22,7 +22,7 @@ class Nvm {
 	 *
 	 * @return bool True if `nvm` is installed, false otherwise.
 	 */
-	public static function is_nvm_exists() {
+	public static function does_nvm_exist() {
 		try {
 			Utils::exec_sprintf( 'nvm -v' );
 			return true;

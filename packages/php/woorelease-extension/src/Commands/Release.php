@@ -7,6 +7,7 @@
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
+use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
 use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +21,6 @@ use WR\Tools\Logger;
 use WR\Tools\Product;
 use WR\Tools\Utils;
 use WR\Tools\WP_Org;
-use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
 
 /**
  * Class for implementing the release command.
@@ -60,47 +60,19 @@ class Release extends WooReleaseRelease {
 
 			$logger->notice( 'Processing product {product}...', array( 'product' => $product ) );
 
-			$folder = '';
-
-			// Prepare the release: check release/branch to exist.
-			$repository_url    = sprintf( 'https://github.com/%1$s/%2$s', $gh_org, $product );
-			$is_release_branch = WooGrowGit::is_branch_exists( $repository_url, $branch );
-			if ( ! $is_release_branch ) {
-				$output->writeln( sprintf( "\n<info>Release branch %s does not exist.</info>\n", $branch ) );
-				if ( $create_release_branch && Utils::yes_no( sprintf(
-					'You are trying to release from %s which does not exist. Do you want to create it from %s?',
-					$branch,
-					$default_branch
-				) ) ) {
-					try {
-						// 1. Clone the repository locally.
-						$folder = Git::clone_product( $product, $default_branch, $gh_org );
-
-						// 2. Create the release branch and push to remote.
-						WooGrowGit::create_branch( $repository_url, $branch );
-					} catch ( Exception $e ) {
-						if ( ! Utils::yes_no( sprintf(
-							'Branch %s has failed to create. Do you want to release from the %s branch?',
-							$branch,
-							$default_branch
-						) ) ) {
-							throw new Exception( 'Release cancelled.' );
-						}
-					}
-				} else {
-					if ( ! Utils::yes_no( sprintf(
-						'You\'ve decided not to create %s branch. Do you want to release from the %s branch?',
-						$branch,
-						$default_branch
-					) ) ) {
-						throw new Exception( 'Release cancelled.' );
-					}
-				}
-			}
-
 			// Clone product.
-			if ( empty( $folder ) ) {
-				$folder = Git::clone_product( $product, $branch, $gh_org );
+			$folder = Git::clone_product( $product, $branch, $gh_org );
+
+			// Call branch command to create release branch or release from default.
+			$command   = $this->getApplication()->find( 'branch' );
+			$arguments = array(
+				'github_url'     => $github_url,
+				'default_branch' => $default_branch,
+				'--release'      => $release,
+			);
+
+			if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
+				return Command::FAILURE;
 			}
 
 			if ( empty( $folder ) ) {
@@ -219,7 +191,7 @@ class Release extends WooReleaseRelease {
 			}
 
 			// Create GitHub release with command gh:release.
-			if ( ! $this->simulate ) {
+			if ( $release ) {
 				$command   = $this->getApplication()->find( 'gh:release' );
 				$arguments = array(
 					'github_url'        => $github_url,
@@ -236,7 +208,7 @@ class Release extends WooReleaseRelease {
 				$logger->notice( 'Simulation mode. Skipping upload of asset {asset} to GH release.', array( 'asset' => $zip_file ) );
 			}
 
-			if ( ! $this->simulate ) {
+			if ( $release ) {
 				if ( empty( $version ) ) {
 					$logger->warning( 'Could not auto-detect version, optional translation trigger was not executed.' );
 				} else {
@@ -256,7 +228,7 @@ class Release extends WooReleaseRelease {
 			}
 
 			// End simulation mode.
-			if ( $this->simulate ) {
+			if ( ! $release ) {
 				Git::output_diff( $folder );
 				$logger->notice( WOORELEASE_PRODUCT_NAME . ' simulation finished.' );
 				Utils::display_release_command();
