@@ -1,26 +1,22 @@
 {
-	"defaultBranch": "trunk",
+	"defaultBranch": "develop",
 	"githubOrganization": "woocommerce",
 	"extensions": [
 		{
 			"name": "Facebook for WooCommerce",
 			"repoSlug": "facebook-for-woocommerce",
-			"defaultBranch": "develop"
 		},
 		{
 			"name": "Pinterest for WooCommerce",
 			"repoSlug": "pinterest-for-woocommerce",
-			"defaultBranch": "develop"
 		},
 		{
 			"name": "Points & Rewards",
 			"repoSlug": "woocommerce-points-and-rewards",
-			"defaultBranch": "develop"
 		},
 		{
 			"name": "Brands",
 			"repoSlug": "woocommerce-brands",
-			"defaultBranch": "develop"
 		},
 		{
 			"name": "Drip",
@@ -29,7 +25,6 @@
 		{
 			"name": "Product Filters",
 			"repoSlug": "woocommerce-product-filters",
-			"defaultBranch": "develop"
 		},
 		{
 			"name": "Sales Report Email",
@@ -46,7 +41,6 @@
 		{
 			"name": "Coupon Campaigns",
 			"repoSlug": "woocommerce-coupon-campaigns",
-			"defaultBranch": "develop"
 		}
 	],
 	"retiredExtensions": [
