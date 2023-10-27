@@ -7,7 +7,6 @@
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
-use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
 use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -26,12 +25,6 @@ use WR\Tools\WP_Org;
  * Class for implementing the release command.
  */
 class Release extends WooReleaseRelease {
-
-	protected static $defaultName = 'release';
-
-	public function __construct( string $name = null ) {
-		parent::__construct( $name );
-	}
 
 	protected function configure() {
 		parent::configure();
