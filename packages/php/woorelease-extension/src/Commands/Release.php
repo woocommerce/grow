@@ -30,7 +30,6 @@ class Release extends WooReleaseRelease {
 		parent::configure();
 		$this
 			->addOption( 'nvm_use', null, InputOption::VALUE_NONE, 'If specified, the release will use `nvm use`' )
-			->addOption( 'create_release_branch', null, InputOption::VALUE_NONE, 'If specified, the release branch will be created.' )
 			->addOption( 'default_branch', null, InputOption::VALUE_OPTIONAL, 'If specified, the release branch will be created from it.' );
 	}
 
@@ -44,7 +43,6 @@ class Release extends WooReleaseRelease {
 			$prerelease            = $input->getOption( 'prerelease' );
 			$generate_changelog    = $input->getOption( 'generate_changelog' );
 			$nvm_use               = $input->getOption( 'nvm_use' );
-			$create_release_branch = $input->getOption( 'create_release_branch' );
 			$default_branch        = $input->getOption( 'default_branch' );
 			$release               = ! $this->simulate;
 			$reauth                = false !== $input->getOption( 'svn_reauth' );

@@ -52,7 +52,7 @@ class Branch extends Command {
 			$is_release_branch = WooGrowGit::does_branch_exist( $repository_url, $branch );
 			if ( ! $is_release_branch ) {
 				$output->writeln( sprintf( "\n<info>Release branch %s does not exist.</info>\n", $branch ) );
-				if ( $create_release_branch && Utils::yes_no( sprintf(
+				if ( Utils::yes_no( sprintf(
 						'You are trying to release from %s which does not exist. Do you want to create it from %s?',
 						$branch,
 						$default_branch
