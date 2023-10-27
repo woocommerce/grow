@@ -4,19 +4,19 @@
 	"extensions": [
 		{
 			"name": "Facebook for WooCommerce",
-			"repoSlug": "facebook-for-woocommerce",
+			"repoSlug": "facebook-for-woocommerce"
 		},
 		{
 			"name": "Pinterest for WooCommerce",
-			"repoSlug": "pinterest-for-woocommerce",
+			"repoSlug": "pinterest-for-woocommerce"
 		},
 		{
 			"name": "Points & Rewards",
-			"repoSlug": "woocommerce-points-and-rewards",
+			"repoSlug": "woocommerce-points-and-rewards"
 		},
 		{
 			"name": "Brands",
-			"repoSlug": "woocommerce-brands",
+			"repoSlug": "woocommerce-brands"
 		},
 		{
 			"name": "Drip",
@@ -24,7 +24,7 @@
 		},
 		{
 			"name": "Product Filters",
-			"repoSlug": "woocommerce-product-filters",
+			"repoSlug": "woocommerce-product-filters"
 		},
 		{
 			"name": "Sales Report Email",
@@ -40,7 +40,7 @@
 		},
 		{
 			"name": "Coupon Campaigns",
-			"repoSlug": "woocommerce-coupon-campaigns",
+			"repoSlug": "woocommerce-coupon-campaigns"
 		}
 	],
 	"retiredExtensions": [
