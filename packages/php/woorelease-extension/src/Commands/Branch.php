@@ -1,8 +1,8 @@
 <?php
 /**
- * Woorelease main command.
+ * Class Branch.
  *
- * @package WR\Command
+ * @package Automattic\WooCommerce\Grow\WR\Commands
  */
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
@@ -14,20 +14,17 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use WR\Tools\Git;
 use WR\Tools\Logger;
 use WR\Tools\Utils;
 
 /**
- * Class for implementing the release command.
+ * Class Branch.
+ *
+ * An implementation of the branch command.
  */
 class Branch extends Command {
 
 	protected static $defaultName = 'branch';
-
-	public function __construct( string $name = null ) {
-		parent::__construct( $name );
-	}
 
 	protected function configure() {
 		$this
@@ -38,6 +35,14 @@ class Branch extends Command {
 			->addOption( 'release', null, InputOption::VALUE_NONE, 'If specified, it will do an actual release branch creation instead of a simulation.' );
 	}
 
+	/**
+	 * Executes the command.
+	 *
+	 * @param InputInterface  $input  Input.
+	 * @param OutputInterface $output Output.
+	 *
+	 * @return int Exit code.
+	 */
 	protected function execute( InputInterface $input, OutputInterface $output ) {
 		try {
 			$logger         = Logger::instance( $output );
