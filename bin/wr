@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+use Automattic\WooCommerce\Grow\WR\Commands\Branch;
 use Automattic\WooCommerce\Grow\WR\Commands\Bulk;
+use Automattic\WooCommerce\Grow\WR\Commands\Release;
 use Automattic\WooCommerce\Grow\WR\Commands\Simulate;
 use Automattic\WooCommerce\Grow\WR\Commands\VersionReplace;
-use Automattic\WooCommerce\Grow\WR\Commands\Release;
-use Automattic\WooCommerce\Grow\WR\Commands\Branch;
 use WR\Application;
 
 $rootDir = dirname(__DIR__);
