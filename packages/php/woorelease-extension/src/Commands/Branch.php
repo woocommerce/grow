@@ -57,20 +57,29 @@ class Branch extends Command {
 			$is_release_branch = WooGrowGit::does_branch_exist( $repository_url, $branch );
 			if ( ! $is_release_branch ) {
 				$output->writeln( sprintf( "\n<info>Release branch %s does not exist.</info>\n", $branch ) );
-				if ( Utils::yes_no( sprintf(
+
+				$do_create_release_branch = Utils::yes_no(
+					sprintf(
 						'You are trying to release from %s which does not exist. Do you want to create it from %s?',
 						$branch,
 						$default_branch
-				) ) ) {
+					)
+				);
+
+				if ( $do_create_release_branch ) {
 					$create = WooGrowGit::create_branch( $branch );
 					if ( $release ) {
 						$push = $create && WooGrowGit::push_branch( $repository_url, $branch );
 						if ( ! $push ) {
-							if ( ! Utils::yes_no( sprintf(
-								'Branch %s has failed to create. Do you want to release from the %s branch?',
-								$branch,
-								$default_branch
-							) ) ) {
+							$do_release_from_default = Utils::yes_no(
+								sprintf(
+									'Branch %s has failed to create. Do you want to release from default %s branch?',
+									$branch,
+									$default_branch
+								)
+							);
+
+							if ( ! $do_release_from_default ) {
 								throw new Exception( 'Release cancelled.' );
 							}
 						}
@@ -78,18 +87,23 @@ class Branch extends Command {
 						$logger->notice( 'Simulation mode. Creating local branch {branch}. In simulation mode branch won\'t be pushed to remote.', array( 'branch' => $branch ) );
 					}
 				} else {
-					if ( ! Utils::yes_no( sprintf(
-						'You\'ve decided not to create %s branch. Do you want to release from the %s branch?',
-						$branch,
-						$default_branch
-					) ) ) {
+					$branch                  = $default_branch;
+					$do_release_from_default = Utils::yes_no(
+						sprintf(
+							'You\'ve decided not to create %s branch. Do you want to release from the %s branch?',
+							$branch,
+							$default_branch
+						)
+					);
+
+					if ( ! $do_release_from_default ) {
 						throw new Exception( 'Release cancelled.' );
 					}
 				}
 			}
 
 			// End release.
-			$logger->notice( WOORELEASE_PRODUCT_NAME . ' finished.' );
+			$logger->notice( sprintf( 'Release branch %s is ready.', $branch ) );
 
 			return Command::SUCCESS;
 		} catch ( \Exception $e ) {
