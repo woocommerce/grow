@@ -1,15 +1,16 @@
-#! /bin/bash
+#!/bin/bash
 
 source ~/.nvm/nvm.sh
+nvm use
 
 case $1 in
-	pnpm) echo 'pnpm'
-		nvm use && pnpm install && pnpm run build
+	pnpm)
+		pnpm install && pnpm run build
 		;;
-	npm) echo 'npm'
-		nvm use && npm install && npm run build
+	npm)
+		npm install && npm run build
 		;;
-	*) echo 'default'
-		nvm use && $1
+	*)
+		eval $1
 		;;
 esac

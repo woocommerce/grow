@@ -70,6 +70,13 @@ class Release extends WooReleaseRelease {
 			if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
 				return Command::FAILURE;
 			}
+			// Get current active branch name after the branch command.
+			$active_branch = $this->getApplication()->get_meta( "{$product}_branch" ) ?? $branch;
+			// Update $branch and $github_url with currently active branch name.
+			if ( $branch !== $active_branch ) {
+				$branch     = $active_branch;
+				$github_url = sprintf( 'https://github.com/%1$s/%2$s/tree/%3$s', $gh_org, $product, $branch );
+			}
 
 			if ( empty( $folder ) ) {
 				$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $product ) );
@@ -227,10 +234,10 @@ class Release extends WooReleaseRelease {
 					'default_branch' => $default_branch,
 					'--cleanup'      => true,
 				);
-				if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
-					$logger->error( 'Simulation mode. Cleaning up the release branch has failed. Please cleanup manually.' );
+				if ( Command::SUCCESS === $command->run( new ArrayInput( $arguments ), $output ) ) {
+					$logger->notice( 'Simulation mode. Release branch cleanup has succeeded.' );
 				} else {
-					$logger->notice( 'Simulation mode. Cleaning up the release branch succeeded.' );
+					$logger->error( 'Simulation mode. Release branch cleanup has failed. Please cleanup `{branch}` branch manually.', [ 'branch' => $branch ] );
 				}
 			}
 

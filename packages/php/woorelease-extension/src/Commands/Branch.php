@@ -53,10 +53,16 @@ class Branch extends Command {
 			list( $product, $gh_org, $branch ) = Utils::parse_product_info( $github_url );
 
 			// Prepare the release: check release/branch to exist.
-			$repository_url    = sprintf( 'https://github.com/%1$s/%2$s', $gh_org, $product );
+			$repository_url = sprintf( 'https://github.com/%1$s/%2$s', $gh_org, $product );
 
 			if ( $cleanup ) {
-				return $this->cleanup( $repository_url, $branch );
+				// Not to delete the default repo's branch.
+				if ( $branch !== $default_branch ) {
+					$output->write( sprintf( "\n<info>Cleaning up `%s` branch ...</info>\n", $branch ) );
+					return $this->cleanup( $repository_url, $branch );
+				}
+				$output->write( sprintf( "\n<info>Default branch `%s` cannot be deleted.</info>\n", $branch ) );
+				return Command::SUCCESS;
 			}
 
 			$is_release_branch = WooGrowGit::does_branch_exist( $repository_url, $branch );
@@ -73,24 +79,20 @@ class Branch extends Command {
 
 				if ( $do_create_release_branch ) {
 					$create = WooGrowGit::create_branch( $branch );
-					/*if ( $release ) {*/
-						$push = $create && WooGrowGit::push_branch( $repository_url, $branch );
-						if ( ! $push ) {
-							$do_release_from_default = Utils::yes_no(
-								sprintf(
-									'Branch %s has failed to create. Do you want to release from default %s branch?',
-									$branch,
-									$default_branch
-								)
-							);
+					$push   = $create && WooGrowGit::push_branch( $repository_url, $branch );
+					if ( ! $push ) {
+						$do_release_from_default = Utils::yes_no(
+							sprintf(
+								'Branch %s has failed to create. Do you want to release from default %s branch?',
+								$branch,
+								$default_branch
+							)
+						);
 
-							if ( ! $do_release_from_default ) {
-								throw new Exception( 'Release cancelled.' );
-							}
+						if ( ! $do_release_from_default ) {
+							throw new Exception( 'Release cancelled.' );
 						}
-					/*} else {
-						$logger->notice( 'Simulation mode. Creating local branch {branch}. In simulation mode branch won\'t be pushed to remote.', array( 'branch' => $branch ) );
-					}*/
+					}
 				} else {
 					$branch                  = $default_branch;
 					$do_release_from_default = Utils::yes_no(
@@ -109,6 +111,9 @@ class Branch extends Command {
 
 			// End release.
 			$logger->notice( sprintf( 'Release branch %s is ready.', $branch ) );
+
+			// Setting active branch name to the output.
+			$this->getApplication()->set_meta( "{$product}_branch", $branch );
 
 			return Command::SUCCESS;
 		} catch ( \Exception $e ) {

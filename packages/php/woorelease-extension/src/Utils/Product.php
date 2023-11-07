@@ -22,9 +22,10 @@ class Product {
 		$logger = Logger::default();
 		if ( $use_nvm ) {
 			$logger->notice( 'Attempting to use the product\'s recommended node version.' );
-			static::build( $grow_root_path, $product, $folder );
+			return static::build( $grow_root_path, $product, $folder );
+		} else {
+			return \WR\Tools\Product::build( $product, $folder );
 		}
-		return \WR\Tools\Product::build( $product, $folder );
 	}
 
 	/**
@@ -51,7 +52,7 @@ class Product {
 		}
 
 		if ( $build_step ) {
-			shell_exec( "{$grow_root_path}/bin/build {$build_step}" );
+			shell_exec( "{$grow_root_path}/bin/build '{$build_step}'" );
 		} elseif ( $use_pnpm ) {
 			shell_exec( "{$grow_root_path}/bin/build pnpm" );
 		} else {
