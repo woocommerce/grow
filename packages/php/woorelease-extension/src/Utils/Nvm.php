@@ -20,25 +20,13 @@ class Nvm {
 	/**
 	 * Checks if `nvm` is installed.
 	 *
+	 * @param string $grow_root_path Path to the root of the Grow project.
+	 *
 	 * @return bool True if `nvm` is installed, false otherwise.
 	 */
-	public static function does_nvm_exist() {
+	public static function does_nvm_exist( $grow_root_path ) {
 		try {
-			Utils::exec_sprintf( './nvm -e' );
-			return true;
-		} catch ( Exception $e ) {
-			return false;
-		}
-	}
-
-	/**
-	 * Runs `nvm use` command.
-	 *
-	 * @return bool True if `nvm use` succeeded, false otherwise.
-	 */
-	public static function use() {
-		try {
-			Utils::exec_sprintf( './nvm -u' );
+			Utils::exec_sprintf( "{$grow_root_path}/bin/nvm -e" );
 			return true;
 		} catch ( Exception $e ) {
 			return false;

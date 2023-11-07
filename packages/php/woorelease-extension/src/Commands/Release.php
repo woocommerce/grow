@@ -8,7 +8,7 @@
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
 use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
-use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
+use Automattic\WooCommerce\Grow\WR\Utils\Product as WooGrowProduct;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -18,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use WR\Command\Release as WooReleaseRelease;
 use WR\Tools\Git;
 use WR\Tools\Logger;
-use WR\Tools\Product;
 use WR\Tools\Utils;
 use WR\Tools\WP_Org;
 
@@ -75,13 +74,6 @@ class Release extends WooReleaseRelease {
 			if ( empty( $folder ) ) {
 				$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $product ) );
 				throw new Exception( sprintf( 'Cloning %s repository branch %s have failed.', $product, $branch ) );
-			}
-
-			// Run `nvm use` if specified to switch to the correct node version for the product repo.
-			$logger->notice( sprintf( "Should use the extension's node version: %s.", $nvm_use ? 'true' : 'false' ) );
-			if ( $nvm_use ) {
-				$logger->notice( 'Switching to the correct node version for the product repo.' );
-				Nvm::use();
 			}
 
 			// If $version is not supplied, use current and bump the patch version.
@@ -160,7 +152,8 @@ class Release extends WooReleaseRelease {
 			}
 
 			$logger->notice( 'Building product' );
-			$zip_file = Product::build( $product, $folder );
+			$grow_root_path = $this->getApplication()->get_meta( 'root_dir' );
+			$zip_file       = WooGrowProduct::maybe_build_with_nvm( $nvm_use, $grow_root_path, $product, $folder );
 
 			// Call wccom:release or wporg:release command.
 			$wp_org_slug = WP_Org::maybe_get_slug( $product, $folder );

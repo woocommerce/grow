@@ -125,7 +125,8 @@ class Bulk extends Command {
 				]
 			);
 
-			if ( Nvm::does_nvm_exist() ) {
+			$grow_root_path = $this->getApplication()->get_meta( 'root_dir' );
+			if ( Nvm::does_nvm_exist( $grow_root_path ) ) {
 				$args['--nvm_use'] = true;
 			}
 
