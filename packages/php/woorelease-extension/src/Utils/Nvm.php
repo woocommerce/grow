@@ -24,7 +24,7 @@ class Nvm {
 	 */
 	public static function does_nvm_exist() {
 		try {
-			Utils::exec_sprintf( 'nvm -v' );
+			Utils::exec_sprintf( './nvm -e' );
 			return true;
 		} catch ( Exception $e ) {
 			return false;
@@ -38,7 +38,7 @@ class Nvm {
 	 */
 	public static function use() {
 		try {
-			Utils::exec_sprintf( 'nvm use' );
+			Utils::exec_sprintf( './nvm -u' );
 			return true;
 		} catch ( Exception $e ) {
 			return false;

@@ -51,7 +51,10 @@ class Bulk extends Command {
 	protected function initialize( InputInterface $input, OutputInterface $output ) {
 		// This throws an exception if the command is not found, which we want to allow.
 		$command = $this->getApplication()->get( $input->getArgument( 'release-command' ) );
-		if ( ! $command instanceof Release ) {
+
+		$is_not_release  = ! $command instanceof Release;
+		$is_not_simulate = ! $command instanceof Simulate;
+		if ( $is_not_release && $is_not_simulate ) {
 			throw new InvalidArgumentException(
 				sprintf(
 					'Command "%s" (%s) is not an instance of %s',
@@ -118,13 +121,12 @@ class Bulk extends Command {
 				[
 					'github_url'              => $gitHubUrl,
 					'--product_version'       => $item['version'],
-					'--create_release_branch' => '', // A flag to create release/x.x.x branch if it doesn't exist.
 					'--default_branch'        => $item['default_branch'],
 				]
 			);
 
 			if ( Nvm::does_nvm_exist() ) {
-				$args['--nvm_use'] = '';
+				$args['--nvm_use'] = true;
 			}
 
 			$result = $releaseCommand->run( new ArrayInput( $args ), $output );

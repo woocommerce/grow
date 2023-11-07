@@ -7,6 +7,7 @@
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
+use Automattic\WooCommerce\Grow\WR\Utils\Git as WooGrowGit;
 use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -25,6 +26,12 @@ use WR\Tools\WP_Org;
  * Class for implementing the release command.
  */
 class Release extends WooReleaseRelease {
+	/**
+	 * The default command name.
+	 *
+	 * @var string|null
+	 */
+	protected static $defaultName = 'release'; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 
 	protected function configure() {
 		parent::configure();
@@ -52,14 +59,13 @@ class Release extends WooReleaseRelease {
 			$logger->notice( 'Processing product {product}...', array( 'product' => $product ) );
 
 			// Clone product.
-			$folder = Git::clone_product( $product, $branch, $gh_org );
+			$folder = WooGrowGit::clone_product_release_or_default( $product, $branch, $default_branch, $gh_org );
 
 			// Call branch command to create release branch or release from default.
 			$command   = $this->getApplication()->find( 'branch' );
 			$arguments = array(
 				'github_url'     => $github_url,
 				'default_branch' => $default_branch,
-				'--release'      => $release,
 			);
 
 			if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
@@ -72,7 +78,9 @@ class Release extends WooReleaseRelease {
 			}
 
 			// Run `nvm use` if specified to switch to the correct node version for the product repo.
+			$logger->notice( sprintf( "Should use the extension's node version: %s.", $nvm_use ? 'true' : 'false' ) );
 			if ( $nvm_use ) {
+				$logger->notice( 'Switching to the correct node version for the product repo.' );
 				Nvm::use();
 			}
 
@@ -216,6 +224,21 @@ class Release extends WooReleaseRelease {
 				}
 			} else {
 				$logger->notice( 'Simulation mode. Skipping optional translations trigger.' );
+			}
+
+			// Cleaning up the mess after simulations.
+			if ( ! $release ) {
+				$command   = $this->getApplication()->find( 'branch' );
+				$arguments = array(
+					'github_url'     => $github_url,
+					'default_branch' => $default_branch,
+					'--cleanup'      => true,
+				);
+				if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
+					$logger->error( 'Simulation mode. Cleaning up the release branch has failed. Please cleanup manually.' );
+				} else {
+					$logger->notice( 'Simulation mode. Cleaning up the release branch succeeded.' );
+				}
 			}
 
 			// End simulation mode.

@@ -4,6 +4,7 @@
 use Automattic\WooCommerce\Grow\WR\Commands\Branch;
 use Automattic\WooCommerce\Grow\WR\Commands\Bulk;
 use Automattic\WooCommerce\Grow\WR\Commands\Release;
+use Automattic\WooCommerce\Grow\WR\Commands\Simulate;
 use Automattic\WooCommerce\Grow\WR\Commands\VersionReplace;
 use WR\Application;
 
@@ -44,6 +45,7 @@ $app->addCommands(
 		new Bulk(),
 		new VersionReplace(),
 		new Release(),
+		new Simulate(),
 		new Branch(),
 	]
 );

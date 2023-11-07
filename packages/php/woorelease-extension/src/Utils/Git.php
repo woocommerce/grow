@@ -74,11 +74,49 @@ class Git extends \WR\Tools\Git {
 		} catch ( Exception $e ) {
 			try {
 				// Cleanup if the branch was created but not pushed.
-				Utils::exec_sprintf( 'git push origin --delete %s', $branch );
+				static::delete_branch( $repository_url, $branch );
 			} catch ( Exception $e ) {
 				return false;
 			}
 			return false;
+		}
+	}
+
+	/**
+	 * Deletes a branch to the remote repository.
+	 *
+	 * @param string $repository_url The remote repository URL.
+	 * @param string $branch         The branch name.
+	 *
+	 * @return bool True if the branch was deleted, false otherwise.
+	 */
+	public static function delete_branch( $repository_url, $branch ) {
+		try {
+			if ( self::does_branch_exist( $repository_url, $branch ) ) {
+				Utils::exec_sprintf( 'git push origin --delete %s', $branch );
+			}
+			return true;
+		} catch ( Exception $e ) {
+			return false;
+		}
+	}
+
+	/**
+	 * Attempt to clone the product and checkout the specific version which, if failed, tries to clone the default version.
+	 *
+	 * @param string $product         Product name.
+	 * @param string $branch          Git branch.
+	 * @param string $default_branch  Git branch.
+	 * @param string $gh_org          Git organization.
+	 *
+	 * @throws \Exception On error.
+	 * @return string Product folder.
+	 */
+	public static function clone_product_release_or_default( $product, $branch, $default_branch, $gh_org ) {
+		try {
+			return parent::clone_product( $product, $branch, $gh_org );
+		} catch ( Exception $e ) {
+			return parent::clone_product( $product, $default_branch, $gh_org );
 		}
 	}
 }
