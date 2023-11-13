@@ -14,10 +14,9 @@ export default class GitHubGenerator extends Generator {
 			},
 			{
 				type: 'input',
-				name: 'ideasboard',
-				message:
-					"What's the plugin ideas board's category number? (leave empty if none)",
-				default: '',
+				name: 'slug',
+				message: "What's the plugin slug for feature requests page?",
+				default: this.appname.replace( /\s+/g, '-' ).toLowerCase(),
 			},
 		] );
 	}
