@@ -28,7 +28,7 @@ class WCCompatibility extends CompatCheck {
 	 *
 	 * @var int|float The miniumum supported WooCommerce versions before the latest.
 	 *
-	 * @see https://woocommerce.com/support-policy/
+	 * @see https://woo.com/support-policy/
 	 */
 	private $min_wc_semver = 0.2; // By default, the latest minus two version.
 
