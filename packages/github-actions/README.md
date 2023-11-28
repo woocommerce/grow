@@ -68,6 +68,17 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - The `src` directories of JavaScript actions will be skipped in the release build.
 - When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `npm run build`.
 
+### Create a test build
+
+Create a test build on the given branch and commit it to a separate branch with the `-test-build` suffix to facilitate testing and development.
+
+1. Go to Workflow [GitHub Actions - Create Test Build](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-test-build.yml)
+1. Manually run the workflow with the target branch.
+1. Wait for the triggered workflow run to complete.
+1. View the summary of the workflow run to use the test build.
+1. Take the branch name `add/my-action` and action path `greet-visitor` as an example. After a test build is created, it should be able to test the custom action by `woocommerce/grow/greet-visitor@add/my-action-test-build`
+1. Delete the test branch once it is no longer needed.
+
 ### Directory structure of release build
 
 ```
@@ -129,7 +140,7 @@ gitGraph
 
 ## Release
 
-### Official release
+### Official release process
 
 1. :technologist: Create the specific branch `release/actions` onto the target revision on `trunk` branch.
 1. :octocat: When the branch `release/actions` is created, will continue to commit the release content to `release/actions` branch.
@@ -153,7 +164,9 @@ gitGraph
 1. :technologist: Check if both release workflows are run successfully.
 1. :technologist: Merge the release PR.
 
-### Testing release
+### Testing the release process
+
+:bulb: To create a test build based on a branch, please refer to the [Create a test build](#create-a-test-build) section.
 
 1. Create a new release with a **prerelease version tag**. For example `actions-vX.Y.Z-pre`.
 1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
