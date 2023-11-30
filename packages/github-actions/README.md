@@ -76,8 +76,9 @@ Create a test build on the given branch and commit it to a separate branch with 
 1. Manually run the workflow with the target branch.
 1. Wait for the triggered workflow run to complete.
 1. View the summary of the workflow run to use the test build.
-1. Take the branch name `add/my-action` and action path `greet-visitor` as an example. After a test build is created, it should be able to test the custom action by `woocommerce/grow/greet-visitor@add/my-action-test-build`
-1. Delete the test branch once it is no longer needed.
+1. Take the branch name `add/my-action` and action path `greet-visitor` as an example:
+   - After a test build is created, it should be able to test the custom action by `woocommerce/grow/greet-visitor@add/my-action-test-build`.
+   - After the `add/my-action` branch is deleted, the Workflow [GitHub Actions - Delete Test Build](https://github.com/woocommerce/grow/actions/workflows/github-actions-delete-test-build.yml) will delete the `my-action-test-build` branch.
 
 ### Directory structure of release build
 
