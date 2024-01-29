@@ -12,6 +12,10 @@ inputs:
   extension-file:
     description: Custom build of the extension to test. If not given, the latest release will be used.
     required: false
+  ignore-fail:
+    description: Should pass even if awaited tests fails.
+    required: false
+    default: false
   type:
     description: Type of test to run
     required: false
@@ -21,24 +25,17 @@ inputs:
     description: Options to pass to the qit command
     required: false
     default: ''
-  results-filename:
-    description: Custom file name for results
-    required: false
-  results-folder:
-    description: Folder to store results
-    required: false
-    default: qit-results
 
 outputs:
   status:
-    description: "Exit code of the test. May be used, for example, to fail the workflow if the test fails."
-    value: ${{ steps.run-test.outputs.status }}
+    description: "Status of the test run. May be used, for example, to fail the workflow if the test fails."
+    value: ${{ steps.read-summary.outputs.status }}
   summary:
     description: "Short summary of the test"
     value: ${{ steps.read-summary.outputs.summary }}
-  resultsURL:
-    description: "URL to the results of the test"
-    value: ${{ steps.read-summary.outputs.resultURL }}
+  test_run_id:
+    description: "ID of the QIT test run"
+    value: ${{ steps.read-summary.outputs.test_run_id }}
 
 branding:
   icon: 'award'
@@ -47,47 +44,46 @@ branding:
 runs:
   using: composite
   steps:
+    # Run the qit command.
     - name: Run test
       id: run-test
       # Do not fail when the `qit` fails, so we can annotate the results.
       shell: bash --noprofile --norc {0}
-      continue-on-error: true
       env:
         # If the custom build is provided, pass it to the `zip` param.
         zip: ${{ inputs.extension-file &&  format('--zip={0}', inputs.extension-file) || '' }}
-        report_file: ${{ inputs.results-filename || format( '{0}/{1}/{2}/{3}.txt', github.workspace, inputs.results-folder, inputs.extension, inputs.type ) }}
-        status: 0
+        ignore_fail: ${{ inputs.ignore-fail == 'true' && '--ignore-fail' || '' }}
       run: |
-        ./vendor/bin/qit run:${{ inputs.type }} ${{ inputs.extension }} \
-          $zip \
-          ${{ inputs.options }} \
-          --wait \
-          > $report_file || status=$?
-        echo "status=$status" >> "$GITHUB_OUTPUT"
-        echo "report_file=$report_file" >> "$GITHUB_OUTPUT"
-        cat $report_file
+        json=`./vendor/bin/qit run:${{ inputs.type }} \
+         ${{ inputs.extension }} \
+         $zip \
+         ${{ inputs.options }} \
+         $ignore_fail \
+         -n \
+         --json | jq '. | {test_run_id, status, test_summary}'`
+        echo $json | jq
+        echo "result="$json"" >> "$GITHUB_OUTPUT"
 
-    # Parse the report file, to fetch the essential information.
+    # Parse the result json to populate GHA outputs.
     - name: Read summary
       id: read-summary
       shell: bash
-      if: '!cancelled()'
       run: |
-        summary=`grep -Po "(?<=Test Summary)\s+(.*)" ${{ steps.run-test.outputs.report_file }} --color=never`
-        resultURL=`grep -Po "(?<=Result Url)\s+(.*)" ${{ steps.run-test.outputs.report_file }} --color=never`
-        echo "summary=$summary" >> $GITHUB_OUTPUT
-        echo "resultURL=$resultURL" >> $GITHUB_OUTPUT
+        echo "test_run_id=${{fromJson(steps.run-test.outputs.result).test_run_id}}" >> $GITHUB_OUTPUT
+        echo "status=${{fromJson(steps.run-test.outputs.result).status}}" >> $GITHUB_OUTPUT
+        echo "summary=${{fromJson(steps.run-test.outputs.result).test_summary}}" >> $GITHUB_OUTPUT
 
-    # Annotate the results according to the exit code.
+    # Annotate the results according to the status.
     - name: Annotate
-      if: '!cancelled()'
       shell: bash
       run: |
-        summary="${{ inputs.type }}: ${{ steps.read-summary.outputs.summary }} - ${{ steps.read-summary.outputs.resultURL }}";
-        case ${{ steps.run-test.outputs.status }} in
-          0) echo "::notice ::$summary"
+        summary="${{ inputs.type }} (${{ steps.read-summary.outputs.test_run_id }}): ${{ steps.read-summary.outputs.status }} - ${{ steps.read-summary.outputs.summary }} \`qit get ${{ steps.read-summary.outputs.test_run_id }}\`";
+        case ${{ steps.read-summary.outputs.status }} in
+          "success") echo "::notice ::$summary"
           ;;
-          2) echo "::warning ::$summary"
+          "pending") echo "::notice ::$summary"
+          ;;
+          "warning") echo "::warning ::$summary"
           ;;
           *) echo "::error ::$summary"
           ;;
