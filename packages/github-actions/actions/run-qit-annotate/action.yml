@@ -13,7 +13,7 @@ inputs:
     description: Custom build of the extension to test. If not given, the latest release will be used.
     required: false
   ignore-fail:
-    description: Should pass even if awaited tests fails.
+    description: Should pass even if the awaited test fails.
     required: false
     default: false
   type:
@@ -51,8 +51,7 @@ runs:
     # Run the qit command.
     - name: Run test
       id: run-test
-      # Do not fail when the `qit` fails, so we can annotate the results.
-      shell: bash --noprofile --norc {0}
+      shell: bash
       env:
         # If the custom build is provided, pass it to the `zip` param.
         zip: ${{ inputs.extension-file &&  format('--zip={0}', inputs.extension-file) || '' }}
