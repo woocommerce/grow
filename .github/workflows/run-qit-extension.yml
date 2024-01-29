@@ -89,9 +89,6 @@ jobs:
                   --user='${{ secrets.QIT_PARTNER_USER }}' \
                   --application_password='${{ secrets.QIT_PARTNER_SECRET }}'
 
-            - name: Create results dir
-              run: mkdir -p ./qit-results/${{ inputs.extension }}
-
             - name: Activation test
               id: activation-test
               if: ${{ inputs.test-activation == true }}

@@ -1,5 +1,5 @@
 name: Run QIT for a given extension
-description: Runs QIT tests and annotates the results for a given extension.
+description: Runs many types of QIT tests and annotates the results for a given extension.
 
 # **What it does**: Runs a set of QIT tests for a given extension.
 # **Why we have it**: To reuse across other repos, to make a full test of a single extension.
@@ -19,6 +19,10 @@ inputs:
   extension:
     description: Extension to test
     required: true
+  ignore-fail:
+    description: Should pass even if any awaited test fails.
+    required: false
+    default: false
   version:
     description: |
       Version to be tested: `latest`, `dev`, or `local`.
@@ -28,6 +32,10 @@ inputs:
       `local` will look up for an `{extension}.zip` artifact in the current workflow.
     required: true
     default: 'latest'
+  wait:
+    description: Wait for the test to finish
+    required: false
+    default: false
 
   # Customize which types to run.
   test-activation:
@@ -82,62 +90,57 @@ runs:
           --user='${{ inputs.qit-partner-user }}' \
           --application_password='${{ inputs.qit-partner-secret }}'
 
-    - name: Create results dir
-      shell: bash
-      run: mkdir -p ./qit-results/${{ inputs.extension }}
-
     - name: Activation test
-      id: activation-test
+      id: activation
       if: ${{ inputs.test-activation == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
+      uses: woocommerce/grow/run-qit-annotate@add/qit-workflows-test-build
       with:
         type: activation
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
         options: ${{ inputs.options }}
 
     - name: Security test
-      id: security-test
+      id: security
       if: ${{ inputs.test-security == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
+      uses: woocommerce/grow/run-qit-annotate@add/qit-workflows-test-build
       with:
         type: security
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
         options: ${{ inputs.options }}
 
     - name: PHPStan test
-      id: phpstan-test
+      id: phpstan
       if: ${{ inputs.test-phpstan == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
+      uses: woocommerce/grow/run-qit-annotate@add/qit-workflows-test-build
       with:
         type: phpstan
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
         options: ${{ inputs.options }}
 
     - name: API test
-      id: api-test
+      id: api
       if: ${{ inputs.test-api == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
+      uses: woocommerce/grow/run-qit-annotate@add/qit-workflows-test-build
       with:
         type: api
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
         options: ${{ inputs.options }}
 
     - name: E2E test
-      id: e2e-test
+      id: e2e
       if: ${{ inputs.test-e2e == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v1.10.2-pre
+      uses: woocommerce/grow/run-qit-annotate@add/qit-workflows-test-build
       with:
         type: e2e
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
         options: ${{ inputs.options }}
-
-    - name: Upload results
-      uses: actions/upload-artifact@v1
-      with:
-        name: "qit-results-${{ inputs.extension }}"
-        path: ./qit-results/${{ inputs.extension }}
