@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-grow-github-actions",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
   "type": "module",
   "scripts": {
@@ -15,12 +15,13 @@
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.0.3",
     "node-fetch": "^3.3.1",
-    "semver": "^7.3.7"
+    "semver": "^7.5.4"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0"
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rollup": "^3.29.4"
   },
   "eslintConfig": {
     "settings": {

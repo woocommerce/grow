@@ -1,0 +1,33 @@
+name: GitHub Actions - Delete Test Build
+
+on:
+  delete:
+
+jobs:
+  DeleteTestBuild:
+    name: Delete Test Build
+    runs-on: ubuntu-latest
+    if: github.event.ref_type == 'branch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: trunk
+
+      - name: Delete test build branch
+        run: |
+          BRANCH_NAME="${{ github.event.ref }}-test-build"
+          REMOTE_BRANCH_NAME="origin/${BRANCH_NAME}"
+
+          git fetch --prune --no-tags --depth=1 origin
+
+          # Check if the test build branch exists.
+          if [ -n "$(git branch --list --remote "$REMOTE_BRANCH_NAME")" ]; then
+            AUTHOR_INFO=$(git show --no-patch --pretty=format:"%an %ae" "${REMOTE_BRANCH_NAME}")
+
+            # Check if the author of the last commit is the github-actions bot account.
+            # https://api.github.com/users/github-actions%5Bbot%5D
+            if [[ "$AUTHOR_INFO" == 'github-actions[bot] 41898282+github-actions[bot]@users.noreply.github.com' ]]; then
+              git push -d origin "$BRANCH_NAME"
+            fi
+          fi

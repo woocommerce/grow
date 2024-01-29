@@ -11,6 +11,7 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 - [`/packages/js/generator-grow`](packages/js/generator-grow/README.md) - Yeoman Generator for extension repository boilerplate.
 - [`/packages/js/storybook`](packages/js/storybook/README.md) - Storybook dependencies and basic scripts
 - [`/packages/js/tracking-jsdoc`](packages/js/tracking-jsdoc/README.md) - `jsdoc` plugin to document Tracking Events in markdown
+- [`/packages/php/compat-checker`](packages/php/compat-checker/README.md) - Library to run compatibility checks for WooCommerce extensions.
 
 ## List of plugins
 
@@ -21,6 +22,6 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 
 <p align="center">
 	<br/><br/>
-	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
-	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
+	Made with 💜 by <a href="https://woo.com/">Woo</a>.<br/>
+	<a href="https://woo.com/careers/">We're hiring</a>! Come work with us!
 </p>

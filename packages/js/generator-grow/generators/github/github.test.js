@@ -22,7 +22,7 @@ describe( ':github', function () {
 	} );
 	it( 'generate `.github/workflows/branch-labels.yml` file', async function () {
 		await helpers.run( githubPath ).then( function () {
-			assert.file( '.github/worflows/branch-labels.yml' );
+			assert.file( '.github/workflows/branch-labels.yml' );
 		} );
 	} );
 	it( 'Should use given project title in CONTRIBUTING.md', async function () {
@@ -62,25 +62,28 @@ describe( ':github', function () {
 			);
 		} );
 	} );
-	it( 'When ideasboard id is given, should generate ideas board link to the category.', async function () {
+	it( 'When slug is given, should generate feature requests page link.', async function () {
 		await helpers
 			.run( githubPath )
-			.withPrompts( { ideasboard: 1234567 } )
+			.withPrompts( { slug: 'foo-bar' } )
 			.then( function () {
 				assert.fileContent(
 					'.github/CONTRIBUTING.md',
-					'https://ideas.woocommerce.com/forums/133476-woocommerce?category_id=1234567'
+					'https://woo.com/feature-requests/foo-bar'
 				);
 			} );
 	} );
-	it( 'If no ideasboard id given, should generate ideas board link with no category specified.', async function () {
+	it( 'If no slug is given, should use app name to generate the link.', async function () {
 		await helpers
 			.run( githubPath )
-			.withPrompts( { ideasboard: '' } )
-			.then( function () {
+			.withPrompts( { slug: '' } )
+			.then( function ( runResult ) {
+				// Appname default to the folder name.
+				const appname = runResult.generator.appname;
+
 				assert.fileContent(
 					'.github/CONTRIBUTING.md',
-					/https\:\/\/ideas\.woocommerce\.com\/forums\/133476-woocommerce[^?]/
+					`https://woo.com/feature-requests/${ appname }`
 				);
 			} );
 	} );

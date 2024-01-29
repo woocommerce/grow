@@ -58,6 +58,10 @@ export default async ( { context, github, inputs, refName } ) => {
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
 1. [ ] Merge \`trunk\` to \`develop\` (PR), if applicable for this repo.
+1. [ ] Update documentation
+   - [ ] Publish any new required docs
+   - [ ] Update triggers/rules/actions listing pages
+1. [ ] Mark related ideas complete [on the feature requests page](https://woo.com/feature-requests/${ extensionPackageName }/).
 ${ postSteps }
 `;
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-11-16 (1.10.2)
+### Bug Fixes 🐛
+* Update rollup to fix -actions build. (https://github.com/woocommerce/grow/pull/90)
+### Tweaked 🔧
+* Add update docs & ideas step to extension release checklist. (https://github.com/woocommerce/grow/pull/89)
+
 ## 2023-08-29 (1.10.1)
 ### Tweaked 🔧
 * Fix typos in the `publish-extension-dev-build` action. (https://github.com/woocommerce/grow/pull/76)
