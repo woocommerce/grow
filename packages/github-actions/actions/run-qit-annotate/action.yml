@@ -20,6 +20,10 @@ inputs:
     description: Type of test to run
     required: false
     default: activation
+  wait:
+    description: Wait for the test to finish
+    required: false
+    default: false
   # Advanced customization.
   options:
     description: Options to pass to the qit command
@@ -52,12 +56,14 @@ runs:
       env:
         # If the custom build is provided, pass it to the `zip` param.
         zip: ${{ inputs.extension-file &&  format('--zip={0}', inputs.extension-file) || '' }}
+        wait: ${{ inputs.wait == 'true' && '--wait' || '' }}
         ignore_fail: ${{ inputs.ignore-fail == 'true' && '--ignore-fail' || '' }}
       run: |
         json=`./vendor/bin/qit run:${{ inputs.type }} \
          ${{ inputs.extension }} \
          $zip \
          ${{ inputs.options }} \
+         $wait \
          $ignore_fail \
          -n \
          --json | jq '. | {test_run_id, status, test_summary}'`
