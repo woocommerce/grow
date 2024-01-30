@@ -67,6 +67,7 @@ runs:
          $ignore_fail \
          -n \
          --json | jq '. | {test_run_id, status, test_summary}'`
+        echo "exitcode=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
         echo $json | jq
         echo "result="$json"" >> "$GITHUB_OUTPUT"
 
@@ -79,8 +80,9 @@ runs:
         echo "status=${{fromJson(steps.run-test.outputs.result).status}}" >> $GITHUB_OUTPUT
         echo "summary=${{fromJson(steps.run-test.outputs.result).test_summary}}" >> $GITHUB_OUTPUT
 
-    # Annotate the results according to the status.
-    - name: Annotate
+
+    # Annotate the results according to the status, forward qit exit code.
+    - name: Annotate and exit
       shell: bash
       run: |
         summary="${{ inputs.type }} (${{ steps.read-summary.outputs.test_run_id }}): ${{ steps.read-summary.outputs.status }} - ${{ steps.read-summary.outputs.summary }} \`qit get ${{ steps.read-summary.outputs.test_run_id }}\`";
@@ -94,3 +96,4 @@ runs:
           *) echo "::error ::$summary"
           ;;
         esac
+        exit ${{ steps.run-test.outputs.exitcode }}
