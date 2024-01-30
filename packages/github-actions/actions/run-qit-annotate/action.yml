@@ -66,8 +66,9 @@ runs:
          $wait \
          $ignore_fail \
          -n \
-         --json | jq '. | {test_run_id, status, test_summary}'`
+         --json`
         echo "exitcode=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+        json=$(echo $json | jq '. | {test_run_id, status, test_summary}')
         echo $json | jq
         echo "result="$json"" >> "$GITHUB_OUTPUT"
 
