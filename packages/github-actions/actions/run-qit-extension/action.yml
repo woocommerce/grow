@@ -99,6 +99,7 @@ runs:
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
         options: ${{ inputs.options }}
 
     - name: Security test
@@ -110,6 +111,7 @@ runs:
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
         options: ${{ inputs.options }}
 
     - name: PHPStan test
@@ -121,6 +123,7 @@ runs:
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
         options: ${{ inputs.options }}
 
     - name: API test
@@ -132,6 +135,7 @@ runs:
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
         options: ${{ inputs.options }}
 
     - name: E2E test
@@ -143,4 +147,5 @@ runs:
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
         options: ${{ inputs.options }}
