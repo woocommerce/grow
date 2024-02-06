@@ -21,6 +21,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
 - [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
 - [`run-qit-annotate`](actions/run-qit-annotate) - Runs QIT test and annotates the results
+- [`run-qit-extension`](actions/run-qit-extension) - Run QIT tests for a given extension
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
 
