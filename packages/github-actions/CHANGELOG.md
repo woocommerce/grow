@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-02-06 (1.11.0)
+### New Features 🎉
+* Add a new workflow to GitHub Actions for creating the test build of Custom GitHub actions. (https://github.com/woocommerce/grow/pull/92)
+* Add a new workflow to GitHub Actions for deleting the test build of Custom GitHub actions. (https://github.com/woocommerce/grow/pull/93)
+* Add actions and workflows for QIT tests. (https://github.com/woocommerce/grow/pull/81)
+
 ## 2023-11-16 (1.10.2)
 ### Bug Fixes 🐛
 * Update rollup to fix -actions build. (https://github.com/woocommerce/grow/pull/90)
