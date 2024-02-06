@@ -1,5 +1,9 @@
 # Changelog
 
+## 2024-02-06 (1.11.1)
+### Bug Fixes 🐛
+* Rename `add/qit-workflows-test-build` to `actions-v1` branch. (https://github.com/woocommerce/grow/pull/96)
+
 ## 2024-02-06 (1.11.0)
 ### New Features 🎉
 * Add a new workflow to GitHub Actions for creating the test build of Custom GitHub actions. (https://github.com/woocommerce/grow/pull/92)
