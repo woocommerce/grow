@@ -88,7 +88,7 @@ runs:
       run: |
         ./vendor/bin/qit partner:add \
           --user='${{ inputs.qit-partner-user }}' \
-          --application_password='${{ inputs.qit-partner-secret }}'
+          --qit_token='${{ inputs.qit-partner-secret }}'
 
     - name: Activation test
       id: activation

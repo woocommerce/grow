@@ -33,7 +33,7 @@ jobs:
         run: |
           ./vendor/bin/qit partner:add \
             --user='${{ secrets.QIT_PARTNER_USER }}' \
-            --application_password='${{ secrets.QIT_PARTNER_SECRET }}'
+            --qit_token='${{ secrets.QIT_PARTNER_SECRET }}'
 
       - name: Security test
         id: security-test
