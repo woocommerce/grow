@@ -2,6 +2,7 @@
 
 namespace Automattic\WooCommerce\Grow\WR\Commands;
 
+use Automattic\WooCommerce\Grow\WR\Utils\Nvm;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\LogicException;
@@ -13,7 +14,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use WR\Application;
-use WR\Command\Release;
 
 /**
  * Class Bulk
@@ -51,11 +51,15 @@ class Bulk extends Command {
 	protected function initialize( InputInterface $input, OutputInterface $output ) {
 		// This throws an exception if the command is not found, which we want to allow.
 		$command = $this->getApplication()->get( $input->getArgument( 'release-command' ) );
-		if ( ! $command instanceof Release ) {
+
+		$is_not_release  = ! $command instanceof Release;
+		$is_not_simulate = ! $command instanceof Simulate;
+		if ( $is_not_release && $is_not_simulate ) {
 			throw new InvalidArgumentException(
 				sprintf(
-					'Command "%s" is not an instance of %s',
+					'Command "%s" (%s) is not an instance of %s',
 					$command->getName(),
+					get_class( $command ),
 					Release::class
 				)
 			);
@@ -115,10 +119,16 @@ class Bulk extends Command {
 			$args = array_merge(
 				$options,
 				[
-					'github_url'        => $gitHubUrl,
-					'--product_version' => $item['version'],
+					'github_url'              => $gitHubUrl,
+					'--product_version'       => $item['version'],
+					'--default_branch'        => $item['default_branch'],
 				]
 			);
+
+			$grow_root_path = $this->getApplication()->get_meta( 'root_dir' );
+			if ( Nvm::does_nvm_exist( $grow_root_path ) ) {
+				$args['--nvm_use'] = true;
+			}
 
 			$result = $releaseCommand->run( new ArrayInput( $args ), $output );
 			if ( static::SUCCESS !== $result ) {
@@ -164,7 +174,7 @@ class Bulk extends Command {
 		}
 
 		$extensionData      = json_decode( file_get_contents( "{$app->get_meta('root_dir')}/extensions.json" ), true );
-		$defaultBranch      = $extensionData['defaultBranch'] ?? 'trunk';
+		$defaultBranch      = $extensionData['defaultBranch'] ?? 'develop';
 		$githubOrganization = $extensionData['githubOrganization'] ?? 'woocommerce';
 		$extensions         = array_column( $extensionData['extensions'] ?? [], null, 'repoSlug' );
 
@@ -183,13 +193,14 @@ class Bulk extends Command {
 				continue;
 			}
 
-			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 3, null );
+			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 4, null );
 			$toRelease[ $slug ] = [
-				'name'         => $extensions[ $slug ]['name'],
-				'repo'         => $extensions[ $slug ]['repoSlug'],
-				'version'      => $version,
-				'organization' => $extensions[ $slug ]['githubOrganization'] ?? $githubOrganization,
-				'branch'       => $branch ?? $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
+				'name'           => $extensions[ $slug ]['name'],
+				'repo'           => $extensions[ $slug ]['repoSlug'],
+				'version'        => $version,
+				'organization'   => $extensions[ $slug ]['githubOrganization'] ?? $githubOrganization,
+				'branch'         => $branch ?? $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
+				'default_branch' => $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
 			];
 		}
 

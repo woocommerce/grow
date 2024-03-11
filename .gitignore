@@ -6,6 +6,3 @@ vendor/
 
 # All zip files
 *.zip
-
-# IDE files
-.vscode/*
