@@ -63,11 +63,11 @@ abstract class CompatCheck {
 	/**
 	 * Adds an admin notice to be displayed.
 	 *
-	 * @param string $slug    The slug for the notice.
-	 * @param string $class   The CSS class for the notice.
-	 * @param string $message The notice message.
+	 * @param string $slug      The slug for the notice.
+	 * @param string $css_class The CSS class for the notice.
+	 * @param string $message   The notice message.
 	 */
-	protected function add_admin_notice( $slug, $class, $message ) {
+	protected function add_admin_notice( $slug, $css_class, $message ) {
 		$screen = get_current_screen();
 		$hidden = array( 'update', 'update-network', 'update-core', 'update-core-network', 'upgrade', 'upgrade-network', 'network' );
 		$show   = isset( $screen->id ) && ! in_array( $screen->id, $hidden, true );
@@ -86,14 +86,14 @@ abstract class CompatCheck {
 		}
 
 		// If the notice is a warning and WooCommerce admin notice system is available. Then use it.
-		if ( str_contains( $class, 'warning' ) && class_exists( WC_Admin_Notices::class ) ) {
+		if ( str_contains( $css_class, 'warning' ) && class_exists( WC_Admin_Notices::class ) ) {
 			// Do not display the notice if it was dismissed.
 			if ( ! get_user_meta( get_current_user_id(), 'dismissed_' . $slug . '_notice', true ) ) {
 				WC_Admin_Notices::add_custom_notice( $slug, $message );
 			}
 		} else {
 			$this->notices[ $slug ] = array(
-				'class'   => $class,
+				'class'   => $css_class,
 				'message' => $message,
 			);
 		}
