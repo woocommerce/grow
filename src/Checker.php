@@ -17,7 +17,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class Checker {
 
-	/** @var Checker The class instance. */
+	/**
+	 * The Checker instance.
+	 *
+	 * @var Checker
+	 */
 	private static $instance;
 
 	/**

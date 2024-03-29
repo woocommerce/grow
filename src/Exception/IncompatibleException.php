@@ -7,7 +7,7 @@
 
 namespace Automattic\WooCommerce\Grow\Tools\CompatChecker\v0_0_1\Exception;
 
-use \Exception;
+use Exception;
 
 defined( 'ABSPATH' ) || exit;
 
