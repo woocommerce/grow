@@ -53,7 +53,7 @@ class VersionReplace {
 				$cleanup = sprintf( 'find ./%1$s -name "*.php.bak" -type f -delete', $path );
 			} else {
 				$command = $sed_command . $local_path;
-				$cleanup = "unlink ${local_path}.bak";
+				$cleanup = sprintf('unlink %s.bak', $local_path);
 			}
 			Utils::exec_sprintf( $command );
 			Utils::exec_sprintf( $cleanup );
