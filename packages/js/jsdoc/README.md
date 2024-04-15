@@ -55,7 +55,7 @@ Plugins implemented elsewhere, that are bundled here for easier use
 
 ### Event emitters descriptions
 [`woocommerce-grow-tracking-jsdoc/fires-description`](https://github.com/woocommerce/grow/tree/add/jsdoc/packages/js/tracking-jsdoc#emitters)
-To document what or when is emitted with `@fires` or `@emmits`.
+To document what or when is emitted with `@fires` or `@emits`.
 #### Imported types
 `jsdoc-plugin-typescript`
 

@@ -39,12 +39,12 @@ You may add any of the following properties to your JSDoc config (`.jsdocrc.json
 Then make sure `jsdoc` uses it, by `jsdoc -r your/source/files/ -c .jsdocrc.json`.
 
 ## Emitters
-If you would like to add some descriptions to `@fires` or `@emmits` tags, for example to specify what data is attached to the event, add `fires-description` to your plugins list:
+If you would like to add some descriptions to `@fires` or `@emits` tags, for example to specify what data is attached to the event, add `fires-description` to your plugins list:
 
 ```json
 {
   "plugins": [
-    // To be able to add descriptions to `@fires` & `@emmits`
+    // To be able to add descriptions to `@fires` & `@emits`
     "woocommerce-grow-tracking-jsdoc/fires-description"
   ],
   // …
