@@ -15,6 +15,9 @@
   "bin": {
     "woocommerce-grow-jsdoc": "bin/jsdoc.mjs"
   },
+  "scripts": {
+    "dev:doc:tracking": "jsdoc ../../../samples/jsdoc -c ./.jsdocrc.dev.json -t ../tracking-jsdoc"
+  },
   "dependencies": {
     "jsdoc": "^3.6.10",
     "jsdoc-advanced-types-plugin": "git+https://github.com/tomalec/jsdoc-advanced-types-plugin#add/return-support",
