@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-grow-jsdoc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Grow's JSDoc bundle to document tracking events",
   "repository": {
     "type": "git",
@@ -19,11 +19,11 @@
     "dev:doc:tracking": "jsdoc ../../../samples/jsdoc -c ./.jsdocrc.dev.json -t ../tracking-jsdoc"
   },
   "dependencies": {
-    "jsdoc": "^3.6.10",
+    "jsdoc": "^4.0.2",
     "jsdoc-advanced-types-plugin": "git+https://github.com/tomalec/jsdoc-advanced-types-plugin#add/return-support",
     "jsdoc-plugin-intersection": "^1.0.4",
-    "jsdoc-plugin-typescript": "^2.0.6",
+    "jsdoc-plugin-typescript": "^2.2.1",
     "shelljs": "^0.8.5",
-    "woocommerce-grow-tracking-jsdoc": "https://gitpkg.now.sh/woocommerce/grow/packages/js/tracking-jsdoc?fecfad52db350afd3550842e2374dee8dbc587ea"
+    "woocommerce-grow-tracking-jsdoc": "https://gitpkg.now.sh/woocommerce/grow/packages/js/tracking-jsdoc?update/tracking-jsdoc-deps"
   }
 }
