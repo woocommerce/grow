@@ -52,7 +52,7 @@ expect()->extend(
 */
 
 /**
- * @param array $source_dirs
+ * @param array ...$source_dirs
  *
  * @return Documentor
  */
