@@ -184,7 +184,8 @@ class Bulk extends Command {
 		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		$resource   = fopen( $file, 'r' );
 		$to_release = [];
-		while ( false !== ( $line = fgets( $resource ) ) ) {
+		while ( ! feof( $resource ) ) {
+			$line = fgets( $resource );
 			$line = trim( $line );
 
 			// Lines starting with # are a comment and should be ignored.
