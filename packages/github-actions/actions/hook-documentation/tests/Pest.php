@@ -56,7 +56,7 @@ expect()->extend(
  *
  * @return Documentor
  */
-function getTestDataDocumentor( ...$source_dirs ): Documentor {
+function get_test_data_documentor( ...$source_dirs ): Documentor {
 	$args = [
 		'base_url'    => 'https://github.com/example/test',
 		'github_blob' => 'abc123',

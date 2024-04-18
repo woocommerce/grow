@@ -8,7 +8,7 @@ use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
 use Closure;
 use RuntimeException;
 
-use function Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\getTestDataDocumentor;
+use function Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\get_test_data_documentor;
 
 it(
 	'should throw an exception for missing constructor args',
@@ -72,7 +72,7 @@ it(
 	'should gracefully handle a non-existent directory',
 	function () {
 		expect(
-			getTestDataDocumentor( 'Data/', 'FakeDir/' )->generate_hooks_docs()
+			get_test_data_documentor( 'Data/', 'FakeDir/' )->generate_hooks_docs()
 		)->not()->toBeEmpty()->toBeString();
 	}
 );
@@ -82,7 +82,7 @@ it(
 	function () {
 		expect(
 			function () {
-				getTestDataDocumentor( 'FakeDir/' )->generate_hooks_docs();
+				get_test_data_documentor( 'FakeDir/' )->generate_hooks_docs();
 			}
 		)->toThrow( RuntimeException::class, 'No hooks found' );
 	}
