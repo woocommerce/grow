@@ -4,8 +4,6 @@ on:
     branches:
       - trunk
     paths:
-      - "**.js"
-      - "**.scss"
       - "packages/php/compat-checker/**"
       - .github/workflows/github-action-publish-compat-checker.yml
 
