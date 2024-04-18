@@ -96,7 +96,7 @@ class Bulk extends Command {
 	 *
 	 * @return int 0 if everything went fine, or an exit code
 	 *
-	 * @throws LogicException When this abstract method is not implemented
+	 * @throws LogicException When this abstract method is not implemented.
 	 *
 	 * @see setCode()
 	 */
