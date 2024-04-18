@@ -21,7 +21,7 @@ class WCCompatibility extends CompatCheck {
 	 *
 	 * @var string
 	 */
-	const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
+	private const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
 
 	/**
 	 * Define the L-n support policy here.
