@@ -48,6 +48,8 @@ class Bulk extends Command {
 	 * @param InputInterface  $input  The input interface, to get options, arguments, etc.
 	 * @param OutputInterface $output The output interface.
 	 *
+	 * @throws InvalidArgumentException When the command is not found.
+	 *
 	 * @see InputInterface::bind()
 	 * @see InputInterface::validate()
 	 */
@@ -156,6 +158,8 @@ class Bulk extends Command {
 	 * Get data from the release.txt file about what extensions to release.
 	 *
 	 * @return array
+	 *
+	 * @throws RuntimeException When the application is not an instance of `Application` or the release.txt file does not exist.
 	 */
 	private function getReleaseData(): array {
 		$app = $this->getApplication();

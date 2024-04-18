@@ -284,6 +284,8 @@ class Documentor {
 
 	/**
 	 * Generate hooks documentation.
+	 *
+	 * @throws RuntimeException When no hooks are found.
 	 */
 	public function generate_hooks_docs(): string {
 		$hook_list = $this->get_hooks( $this->get_files_to_scan() );
@@ -313,6 +315,8 @@ class Documentor {
 	 * @param array $args
 	 *
 	 * @return void
+	 *
+	 * @throws RuntimeException When any arguments are missing.
 	 */
 	protected function validate_args( array $defaults, array $args ): void {
 		$arg_count     = count( $args );
