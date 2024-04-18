@@ -180,8 +180,10 @@ class Bulk extends Command {
 		$github_organization = $extension_data['githubOrganization'] ?? 'woocommerce';
 		$extensions          = array_column( $extension_data['extensions'] ?? [], null, 'repoSlug' );
 
-		$to_release = [];
+		// This woorelease extension is not performed in WordPress.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		$resource   = fopen( $file, 'r' );
+		$to_release = [];
 		while ( false !== ( $line = fgets( $resource ) ) ) {
 			$line = trim( $line );
 
