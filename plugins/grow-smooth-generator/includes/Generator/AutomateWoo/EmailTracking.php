@@ -105,7 +105,7 @@ class EmailTracking extends Generator {
 	 * @return string Date string (Y-m-d)
 	 */
 	protected static function get_date( $assoc_args, $include_time = false ) {
-		$current = date( 'Y-m-d', time() );
+		$current = gmdate( 'Y-m-d', time() );
 		if ( ! empty( $assoc_args['date-start'] ) && empty( $assoc_args['date-end'] ) ) {
 			$start = $assoc_args['date-start'];
 			$end   = $current;
@@ -118,7 +118,7 @@ class EmailTracking extends Generator {
 
 		$date_start = strtotime( $start );
 		$date_end   = strtotime( $end );
-		$date       = date( 'Y-m-d', wp_rand( $date_start, $date_end ) );
+		$date       = gmdate( 'Y-m-d', wp_rand( $date_start, $date_end ) );
 
 		if ( $include_time ) {
 			return $date . ' ' . wp_rand( 0, 23 ) . ':00:00';
