@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "This repository is a container for packages, mostly dev tools to serve the Grow Team. The packages here are too experimental or too Grow-specific to be shared Woo-wide.",
   "scripts": {
-    "lint:js": "wp-scripts lint-js --ext .js,.mjs"
+    "lint:js": "wp-scripts lint-js --ext .js,.mjs",
+    "lint:php": "vendor/bin/phpcs"
   },
   "repository": {
     "type": "git",
