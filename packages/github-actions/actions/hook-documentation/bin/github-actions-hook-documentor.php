@@ -3,13 +3,13 @@
 
 use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
 
-$autoloadPath = dirname( __DIR__ ) . '/vendor/autoload.php';
-if ( ! file_exists( $autoloadPath ) ) {
+$autoload_path = dirname( __DIR__ ) . '/vendor/autoload.php';
+if ( ! file_exists( $autoload_path ) ) {
 	echo "Please run 'composer install'!\n";
 	exit( 1 );
 }
 
-require_once $autoloadPath;
+require_once $autoload_path;
 
 // Set up variables from the environment.
 $env = getenv();

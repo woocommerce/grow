@@ -67,24 +67,24 @@ class Bulk extends Command {
 		}
 
 		// Get the command definition and merge it to this command definition.
-		$newDefinition = new InputDefinition();
-		$newOptions    = [];
+		$new_definition = new InputDefinition();
+		$new_options    = [];
 
-		$commandOptions = $command->getDefinition()->getOptions();
-		foreach ( $commandOptions as $commandOption ) {
+		$command_options = $command->getDefinition()->getOptions();
+		foreach ( $command_options as $command_option ) {
 			// Skip the product_version option.
-			if ( 'product_version' === $commandOption->getName() ) {
+			if ( 'product_version' === $command_option->getName() ) {
 				continue;
 			}
 
-			$newOptions[] = $commandOption;
+			$new_options[] = $command_option;
 		}
 
-		$newDefinition->setArguments( $this->getDefinition()->getArguments() );
-		$newDefinition->setOptions( $this->getDefinition()->getOptions() );
-		$newDefinition->addOptions( $newOptions );
+		$new_definition->setArguments( $this->getDefinition()->getArguments() );
+		$new_definition->setOptions( $this->getDefinition()->getOptions() );
+		$new_definition->addOptions( $new_options );
 
-		$this->setDefinition( $newDefinition );
+		$this->setDefinition( $new_definition );
 		$input->bind( $this->getDefinition() );
 	}
 
@@ -101,8 +101,8 @@ class Bulk extends Command {
 	 * @see setCode()
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ) {
-		/** @var Release $releaseCommand */
-		$releaseCommand = $this->getApplication()->get( $input->getArgument( 'release-command' ) );
+		/** @var Release $release_command */
+		$release_command = $this->getApplication()->get( $input->getArgument( 'release-command' ) );
 
 		// Set up the provided options as flag values.
 		$options = [];
@@ -113,7 +113,7 @@ class Bulk extends Command {
 		$errors = [];
 		foreach ( $this->getReleaseData() as $item ) {
 			$output->writeln( sprintf( '<info>Starting release for %s...</info>', $item['name'] ) );
-			$gitHubUrl = sprintf(
+			$git_hub_url = sprintf(
 				'https://github.com/%1$s/%2$s/tree/%3$s',
 				$item['organization'],
 				$item['repo'],
@@ -123,12 +123,12 @@ class Bulk extends Command {
 			$args = array_merge(
 				$options,
 				[
-					'github_url'        => $gitHubUrl,
+					'github_url'        => $git_hub_url,
 					'--product_version' => $item['version'],
 				]
 			);
 
-			$result = $releaseCommand->run( new ArrayInput( $args ), $output );
+			$result = $release_command->run( new ArrayInput( $args ), $output );
 			if ( static::SUCCESS !== $result ) {
 				$output->writeln( sprintf( "\n<error>Release FAILED for %s</error>\n", $item['name'] ) );
 
@@ -167,19 +167,19 @@ class Bulk extends Command {
 			throw new RuntimeException( sprintf( 'Expected application to be an instance of %s', Application::class ) );
 		}
 
-		$fileSystem = new Filesystem();
-		$file       = "{$app->get_meta('root_dir')}/release.txt";
-		if ( ! $fileSystem->exists( $file ) ) {
+		$file_system = new Filesystem();
+		$file        = "{$app->get_meta('root_dir')}/release.txt";
+		if ( ! $file_system->exists( $file ) ) {
 			throw new RuntimeException( sprintf( 'Release file does not exist. Expected path: %s', $file ) );
 		}
 
-		$extensionData      = json_decode( file_get_contents( "{$app->get_meta('root_dir')}/extensions.json" ), true );
-		$defaultBranch      = $extensionData['defaultBranch'] ?? 'trunk';
-		$githubOrganization = $extensionData['githubOrganization'] ?? 'woocommerce';
-		$extensions         = array_column( $extensionData['extensions'] ?? [], null, 'repoSlug' );
+		$extension_data      = json_decode( file_get_contents( "{$app->get_meta('root_dir')}/extensions.json" ), true );
+		$default_branch      = $extension_data['defaultBranch'] ?? 'trunk';
+		$github_organization = $extension_data['githubOrganization'] ?? 'woocommerce';
+		$extensions          = array_column( $extension_data['extensions'] ?? [], null, 'repoSlug' );
 
-		$toRelease = [];
-		$resource  = fopen( $file, 'r' );
+		$to_release = [];
+		$resource   = fopen( $file, 'r' );
 		while ( false !== ( $line = fgets( $resource ) ) ) {
 			$line = trim( $line );
 
@@ -194,15 +194,15 @@ class Bulk extends Command {
 			}
 
 			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 3, null );
-			$toRelease[ $slug ]          = [
+			$to_release[ $slug ]         = [
 				'name'         => $extensions[ $slug ]['name'],
 				'repo'         => $extensions[ $slug ]['repoSlug'],
 				'version'      => $version,
-				'organization' => $extensions[ $slug ]['githubOrganization'] ?? $githubOrganization,
-				'branch'       => $branch ?? $extensions[ $slug ]['defaultBranch'] ?? $defaultBranch,
+				'organization' => $extensions[ $slug ]['githubOrganization'] ?? $github_organization,
+				'branch'       => $branch ?? $extensions[ $slug ]['defaultBranch'] ?? $default_branch,
 			];
 		}
 
-		return $toRelease;
+		return $to_release;
 	}
 }
