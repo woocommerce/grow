@@ -3,6 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\Data;
 
+// phpcs:ignore Squiz.Classes.ClassFileName.NoMatch
 class SampleClassWithHooks {
 
 	protected string $filtered_value = 'foo';
