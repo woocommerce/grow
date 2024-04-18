@@ -16,9 +16,8 @@ use PHPUnit\Framework\Assert;
 | case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
+| For example: uses( Tests\TestCase::class )->in( 'Feature' );
 */
-
-// uses(Tests\TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +29,6 @@ use PHPUnit\Framework\Assert;
 | to assert different things. Of course, you may extend the Expectation API at any time.
 |
 */
-
-//expect()->extend('toBeOne', function () {
-//    return $this->toBe(1);
-//});
 
 expect()->extend(
 	'toContainCount',
@@ -56,10 +51,6 @@ expect()->extend(
 |
 */
 
-//function something()
-//{
-//    // ..
-//}
 /**
  * @param array $source_dirs
  *
