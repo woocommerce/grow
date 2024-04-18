@@ -20,7 +20,6 @@ class Conversion extends Generator {
 	 * @return WC_Order|false Order object with conversion data populated or false when failed.
 	 */
 	public static function generate( $save = true, $assoc_args = [] ) {
-
 		$workflow = Workflow_Factory::get( $assoc_args['workflow'] );
 		if ( ! $workflow || ! $workflow->is_conversion_tracking_enabled() ) {
 			WP_CLI::error( 'Workflow does not have conversion tracking enabled.' );
@@ -49,5 +48,4 @@ class Conversion extends Generator {
 
 		return $order;
 	}
-
 }

@@ -99,7 +99,7 @@ class Bulk extends Command {
 		// Set up the provided options as flag values.
 		$options = [];
 		foreach ( array_filter( $input->getOptions() ) as $option => $value ) {
-			$options["--{$option}"] = $value;
+			$options[ "--{$option}" ] = $value;
 		}
 
 		$errors = [];
@@ -184,7 +184,7 @@ class Bulk extends Command {
 			}
 
 			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 3, null );
-			$toRelease[ $slug ] = [
+			$toRelease[ $slug ]          = [
 				'name'         => $extensions[ $slug ]['name'],
 				'repo'         => $extensions[ $slug ]['repoSlug'],
 				'version'      => $version,

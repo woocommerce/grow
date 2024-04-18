@@ -21,7 +21,7 @@ $base_url    = $env['BASE_URL'] ?? '';
 
 // Source directories need the full path prepended.
 $source_dirs = array_map(
-	function( $path ) {
+	function ( $path ) {
 		return ltrim( trim( $path ), '/' );
 	},
 	explode( ',', $source_dirs )
@@ -29,7 +29,7 @@ $source_dirs = array_map(
 
 $args = [
 	'github_blob' => $ref,
-	'base_url' => $base_url,
+	'base_url'    => $base_url,
 	'source_dirs' => $source_dirs,
 	'workspace'   => $base_path,
 ];

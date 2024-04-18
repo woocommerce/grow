@@ -37,7 +37,7 @@ use PHPUnit\Framework\Assert;
 
 expect()->extend(
 	'toContainCount',
-	function( string $value, int $count ) {
+	function ( string $value, int $count ) {
 		$result = substr_count( $this->value, $value );
 		Assert::assertEquals( $count, $result );
 

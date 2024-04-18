@@ -20,7 +20,6 @@ class EmailTracking extends Generator {
 	 * @return Log|false Workflow Run log with tracking data populated or false when failed.
 	 */
 	public static function generate( $save = true, $assoc_args = [] ) {
-
 		$workflow = Workflow_Factory::get( $assoc_args['workflow'] );
 		if ( ! $workflow || ! $workflow->is_conversion_tracking_enabled() ) {
 			WP_CLI::error( 'Workflow does not have conversion tracking enabled.' );
@@ -127,5 +126,4 @@ class EmailTracking extends Generator {
 
 		return $date;
 	}
-
 }

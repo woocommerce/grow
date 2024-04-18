@@ -12,9 +12,9 @@ use function Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Tests\g
 
 it(
 	'should throw an exception for missing constructor args',
-	function( array $args, string $message ) {
+	function ( array $args, string $message ) {
 		expect(
-			function() use ( $args ) {
+			function () use ( $args ) {
 				new Documentor( $args );
 			}
 		)->toThrow( RuntimeException::class, $message );
@@ -24,7 +24,7 @@ it(
 
 it(
 	'should correctly replace local path with github url',
-	function() {
+	function () {
 		$workspace   = '/path/to/the/workspace/example-test';
 		$github_repo = 'https://github.com/example/test';
 		$sha         = 'abc123';
@@ -35,13 +35,14 @@ it(
 		];
 
 		// Mock parts of the class that we need with an anonymous class and function.
-		$class = new class( $args ) extends Documentor {
+		// phpcs:ignore Universal.WhiteSpace.AnonClassKeywordSpacing.Incorrect
+		$class = new class ($args) extends Documentor {
 			/** No-op */
 			protected function validate_args( array $defaults, array $args ): void {}
 		};
 
 		$get_file_url = Closure::bind(
-			function( array $file ) {
+			function ( array $file ) {
 				return $this->get_file_url( $file );
 			},
 			$class,
@@ -69,7 +70,7 @@ it(
 
 it(
 	'should gracefully handle a non-existent directory',
-	function() {
+	function () {
 		expect(
 			getTestDataDocumentor( 'Data/', 'FakeDir/' )->generate_hooks_docs()
 		)->not()->toBeEmpty()->toBeString();
@@ -78,9 +79,9 @@ it(
 
 it(
 	'should throw an exception when no hooks were found',
-	function() {
+	function () {
 		expect(
-			function() {
+			function () {
 				getTestDataDocumentor( 'FakeDir/' )->generate_hooks_docs();
 			}
 		)->toThrow( RuntimeException::class, 'No hooks found' );

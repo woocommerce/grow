@@ -45,7 +45,7 @@ class VersionReplace {
 		$sed_command  = sprintf( $sed_command, 'since', 'version', $version );
 		$find_replace = 'find ./%1$s -iname \'*.php\' -exec ' . $sed_command . '{} \;';
 		foreach ( $paths as $path ) {
-			$logger->notice( "Replacing version placeholders in ./{path}", array( 'path' => $path ) );
+			$logger->notice( 'Replacing version placeholders in ./{path}', [ 'path' => $path ] );
 			$local_path = $folder . '/' . $path;
 
 			if ( is_dir( $local_path ) ) {
@@ -53,7 +53,7 @@ class VersionReplace {
 				$cleanup = sprintf( 'find ./%1$s -name "*.php.bak" -type f -delete', $path );
 			} else {
 				$command = $sed_command . $local_path;
-				$cleanup = sprintf('unlink %s.bak', $local_path);
+				$cleanup = sprintf( 'unlink %s.bak', $local_path );
 			}
 			Utils::exec_sprintf( $command );
 			Utils::exec_sprintf( $cleanup );

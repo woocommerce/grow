@@ -146,5 +146,4 @@ class AutomateWoo extends WP_CLI_Command {
 			]
 		);
 	}
-
 }
