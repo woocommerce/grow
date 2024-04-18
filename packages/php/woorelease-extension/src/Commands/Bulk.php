@@ -45,6 +45,9 @@ class Bulk extends Command {
 	 * This is mainly useful when a lot of commands extends one main command
 	 * where some things need to be initialized based on the input arguments and options.
 	 *
+	 * @param InputInterface  $input  The input interface, to get options, arguments, etc.
+	 * @param OutputInterface $output The output interface.
+	 *
 	 * @see InputInterface::bind()
 	 * @see InputInterface::validate()
 	 */
@@ -85,6 +88,9 @@ class Bulk extends Command {
 
 	/**
 	 * Executes the current command.
+	 *
+	 * @param InputInterface  $input  The input interface, to get options, arguments, etc.
+	 * @param OutputInterface $output The output interface.
 	 *
 	 * @return int 0 if everything went fine, or an exit code
 	 *
