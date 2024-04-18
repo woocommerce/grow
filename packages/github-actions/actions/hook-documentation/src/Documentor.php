@@ -102,9 +102,11 @@ class Documentor {
 					continue;
 				}
 
-				$current_file     = $f;
+				// It's a local file.
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$tokens           = token_get_all( file_get_contents( $f ) );
 				$token_type       = false;
+				$current_file     = $f;
 				$current_class    = '';
 				$current_function = '';
 

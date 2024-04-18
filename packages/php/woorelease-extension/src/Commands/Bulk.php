@@ -173,6 +173,8 @@ class Bulk extends Command {
 			throw new RuntimeException( sprintf( 'Release file does not exist. Expected path: %s', $file ) );
 		}
 
+		// It's a local file.
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$extension_data      = json_decode( file_get_contents( "{$app->get_meta('root_dir')}/extensions.json" ), true );
 		$default_branch      = $extension_data['defaultBranch'] ?? 'trunk';
 		$github_organization = $extension_data['githubOrganization'] ?? 'woocommerce';
