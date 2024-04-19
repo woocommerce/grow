@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import path from 'path';
+import path from 'node:path';
 import Generator from 'yeoman-generator';
 
 export default class PhpcsGenerator extends Generator {

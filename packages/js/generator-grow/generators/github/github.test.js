@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { default as path, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { default as path, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'yeoman-assert';
 import helpers from 'yeoman-test';
 
