@@ -39,7 +39,7 @@ describe( ':github', function () {
 	it( 'Should use (package.json).title as the project title in CONTRIBUTING.md', async function () {
 		await helpers
 			.run( githubPath )
-			.on( 'ready', function ( generator ) {
+			.onGenerator( function ( generator ) {
 				generator.fs.write(
 					'package.json',
 					'{ "title": "Package Title" }'
