@@ -2,6 +2,7 @@
  * External dependencies
  */
 import Generator from 'yeoman-generator';
+import path from 'node:path';
 
 /**
  * Internal dependencies
@@ -13,15 +14,18 @@ export default class GrowGenerator extends Generator {
 	usage() {
 		return 'yo grow[:app] [options]';
 	}
-	initializing() {
-		const packageRoot = this.sourceRoot() + '/../';
-		this.composeWith( {
+
+	async initializing() {
+		const packageRoot = path.resolve( this.sourceRoot(), '../..' );
+
+		await this.composeWith( {
 			Generator: GitHubGenerator,
-			path: packageRoot + '../github/index.js',
+			path: path.resolve( packageRoot, 'github/index.js' ),
 		} );
-		this.composeWith( {
+
+		await this.composeWith( {
 			Generator: DotFilesGenerator,
-			path: packageRoot + '../dotfiles/index.js',
+			path: path.resolve( packageRoot, 'dotfiles/index.js' ),
 		} );
 	}
 }
