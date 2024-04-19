@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 
 /**
  * Class operates a package in this repository.
