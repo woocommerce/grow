@@ -21,7 +21,7 @@ class WCCompatibility extends CompatCheck {
 	 *
 	 * @var string
 	 */
-	const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
+	private const WC_PLUGIN_FILE = 'woocommerce/woocommerce.php';
 
 	/**
 	 * Define the L-n support policy here.
@@ -101,7 +101,7 @@ class WCCompatibility extends CompatCheck {
 	 */
 	private function check_wc_installation_and_activation() {
 		if ( ! $this->is_wc_activated() ) {
-			add_action( 'admin_notices', array( $this, 'wc_fail_load' ) );
+			add_action( 'admin_notices', [ $this, 'wc_fail_load' ] );
 			throw new IncompatibleException( esc_html__( 'WooCommerce is not installed or activated.', 'woogrow-compat-checker' ) );
 		}
 		return true;
@@ -115,12 +115,12 @@ class WCCompatibility extends CompatCheck {
 	 */
 	private function check_wc_version() {
 		if ( ! $this->is_wc_compatible() ) {
-			add_action( 'admin_notices', array( $this, 'wc_out_of_date' ) );
+			add_action( 'admin_notices', [ $this, 'wc_out_of_date' ] );
 			throw new IncompatibleException( esc_html__( 'WooCommerce version not compatible.', 'woogrow-compat-checker' ) );
 		}
 
 		if ( ! $this->is_wc_untested() ) {
-			add_action( 'admin_notices', array( $this, 'wc_untested' ) );
+			add_action( 'admin_notices', [ $this, 'wc_untested' ] );
 		}
 
 		return true;
@@ -144,7 +144,7 @@ class WCCompatibility extends CompatCheck {
 			 *
 			 * @link https://codex.wordpress.org/WordPress.org_API
 			 */
-			$wp_org_request = wp_remote_get( 'https://api.wordpress.org/plugins/info/1.0/woocommerce.json', array( 'timeout' => 1 ) );
+			$wp_org_request = wp_remote_get( 'https://api.wordpress.org/plugins/info/1.0/woocommerce.json', [ 'timeout' => 1 ] );
 
 			if ( is_array( $wp_org_request ) && isset( $wp_org_request['body'] ) ) {
 
@@ -152,7 +152,7 @@ class WCCompatibility extends CompatCheck {
 
 				if ( is_array( $plugin_info ) && ! empty( $plugin_info['versions'] ) && is_array( $plugin_info['versions'] ) ) {
 
-					$latest_wc_versions = array();
+					$latest_wc_versions = [];
 
 					// Reverse the array as WordPress supplies oldest version first, newest last.
 					foreach ( array_keys( array_reverse( $plugin_info['versions'] ) ) as $wc_version ) {
@@ -173,7 +173,7 @@ class WCCompatibility extends CompatCheck {
 			}
 		}
 
-		return is_array( $latest_wc_versions ) ? $latest_wc_versions : array();
+		return is_array( $latest_wc_versions ) ? $latest_wc_versions : [];
 	}
 
 	/**
@@ -182,7 +182,6 @@ class WCCompatibility extends CompatCheck {
 	 * @return string
 	 */
 	private function get_supported_wc_version() {
-
 		$latest_wc_versions = $this->get_latest_wc_versions();
 
 		if ( empty( $latest_wc_versions ) ) {
@@ -205,7 +204,7 @@ class WCCompatibility extends CompatCheck {
 
 			$older_semver = explode( '.', $older_wc_version );
 			$older_major  = (int) $older_semver[0];
-			$older_minor  = isset( $older_semver[1] ) ? (int) $older_semver[1]: 0;
+			$older_minor  = isset( $older_semver[1] ) ? (int) $older_semver[1] : 0;
 
 			// if major is ignored, skip; if the minor hasn't changed (patch must be), skip.
 			if ( $older_major > $supported_major || $older_minor === $previous_minor ) {
@@ -241,7 +240,7 @@ class WCCompatibility extends CompatCheck {
 		$supported_wc_version = $this->get_supported_wc_version();
 
 		if ( ! $this->compare_major_version( $current_wc_version, $supported_wc_version, '>=' ) ) {
-			add_action( 'admin_notices', array( $this, 'make_upgrade_recommendation' ) );
+			add_action( 'admin_notices', [ $this, 'make_upgrade_recommendation' ] );
 		}
 		return true;
 	}
@@ -301,7 +300,7 @@ class WCCompatibility extends CompatCheck {
 		}
 
 		$plugin_name         = $this->plugin_data['Name'];
-		$wc_version_required = ( 1 === substr_count( $this->plugin_data['RequiresWC'], '.' ) ) ? $this->plugin_data['RequiresWC'] . '.0' : $this->plugin_data['RequiresWC'] ; // Pad .0 if the min required WC version is not in semvar format.
+		$wc_version_required = ( 1 === substr_count( $this->plugin_data['RequiresWC'], '.' ) ) ? $this->plugin_data['RequiresWC'] . '.0' : $this->plugin_data['RequiresWC']; // Pad .0 if the min required WC version is not in semvar format.
 
 		$message = sprintf(
 			/* translators: %1$s - Plugin Name, %2$s - minimum WooCommerce version, %3$s - update WooCommerce link open, %4$s - update WooCommerce link close, %5$s - download minimum WooCommerce link open, %6$s - download minimum WooCommerce link close. */

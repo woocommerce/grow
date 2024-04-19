@@ -20,7 +20,7 @@ class WPCompatibility extends CompatCheck {
 	private function check_wp_version() {
 		global $wp_version;
 		if ( $this->compare_major_version( $this->plugin_data['TestedWP'], $wp_version, '<' ) ) {
-			add_action( 'admin_notices', array( $this, 'wp_not_tested' ) );
+			add_action( 'admin_notices', [ $this, 'wp_not_tested' ] );
 		}
 		return true;
 	}

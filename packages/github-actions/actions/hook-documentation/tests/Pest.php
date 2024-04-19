@@ -16,9 +16,8 @@ use PHPUnit\Framework\Assert;
 | case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
+| For example: uses( Tests\TestCase::class )->in( 'Feature' );
 */
-
-// uses(Tests\TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +30,9 @@ use PHPUnit\Framework\Assert;
 |
 */
 
-//expect()->extend('toBeOne', function () {
-//    return $this->toBe(1);
-//});
-
 expect()->extend(
 	'toContainCount',
-	function( string $value, int $count ) {
+	function ( string $value, int $count ) {
 		$result = substr_count( $this->value, $value );
 		Assert::assertEquals( $count, $result );
 
@@ -56,16 +51,12 @@ expect()->extend(
 |
 */
 
-//function something()
-//{
-//    // ..
-//}
 /**
- * @param array $source_dirs
+ * @param array ...$source_dirs
  *
  * @return Documentor
  */
-function getTestDataDocumentor( ...$source_dirs ): Documentor {
+function get_test_data_documentor( ...$source_dirs ): Documentor {
 	$args = [
 		'base_url'    => 'https://github.com/example/test',
 		'github_blob' => 'abc123',

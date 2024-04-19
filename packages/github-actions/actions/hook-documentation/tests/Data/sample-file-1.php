@@ -17,7 +17,7 @@ function sample_function_1() {
 }
 
 function sample_function_2() {
-	$some_var = 'foo';
+	$some_var       = 'foo';
 	$some_other_var = new stdClass();
 	/**
 	 * Do another sample action.
