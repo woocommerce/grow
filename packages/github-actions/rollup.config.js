@@ -3,7 +3,6 @@
  */
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
 
 export default [
 	{
@@ -11,7 +10,6 @@ export default [
 		output: {
 			file: './actions/eslint-annotation/eslintFormatter.cjs',
 			format: 'cjs',
-			exports: 'auto',
 		},
 		// This action imports 'eslint' from the caller repo.
 		external: [ 'eslint' ],
@@ -21,14 +19,12 @@ export default [
 		output: {
 			file: './actions/get-release-notes/get-release-notes.mjs',
 		},
-		external: [ 'path', 'fs' ],
 		plugins: [
 			nodeResolve( {
 				preferBuiltins: true,
 				exportConditions: [ 'node' ],
 			} ),
 			commonjs(),
-			json( { compact: true } ),
 		],
 	},
 	{
@@ -36,7 +32,6 @@ export default [
 		output: {
 			file: './actions/phpcs-diff/annotate-phpcs-report.mjs',
 		},
-		external: [ 'fs', 'node:process' ],
 		plugins: [
 			nodeResolve( {
 				preferBuiltins: true,
@@ -50,7 +45,6 @@ export default [
 		output: {
 			file: './actions/stylelint-annotation/stylelintFormatter.cjs',
 			format: 'cjs',
-			exports: 'auto',
 		},
 		// This action imports 'stylelint' from the caller repo.
 		external: [ 'stylelint' ],
@@ -66,14 +60,12 @@ export default [
 				exportConditions: [ 'node' ],
 			} ),
 			commonjs(),
-			json( { compact: true } ),
 		],
 	},
 	{
 		input: './actions/get-plugin-releases/src/get-plugin-releases.js',
 		output: {
 			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
-			inlineDynamicImports: true,
 		},
 		plugins: [
 			nodeResolve( {
@@ -81,7 +73,6 @@ export default [
 				exportConditions: [ 'node' ],
 			} ),
 			commonjs(),
-			json( { compact: true } ),
 		],
 	},
 	{
@@ -94,7 +85,6 @@ export default [
 				preferBuiltins: true,
 				exportConditions: [ 'node' ],
 			} ),
-			json( { compact: true } ),
 		],
 	},
 	{
