@@ -27,7 +27,7 @@ jobs:
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -90,7 +90,7 @@ jobs:
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -141,7 +141,7 @@ jobs:
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"

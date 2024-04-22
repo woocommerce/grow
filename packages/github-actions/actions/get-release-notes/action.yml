@@ -69,5 +69,5 @@ outputs:
     description: The next tag name inferred via the release notes. For example, 2.0.0, v1.5.0 or my-tool-v1.4.8.
 
 runs:
-  using: node16
+  using: node20
   main: get-release-notes.mjs
