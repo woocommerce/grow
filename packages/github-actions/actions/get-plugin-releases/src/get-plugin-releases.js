@@ -60,7 +60,7 @@ function parsePluginVersions( releases = {} ) {
 					version !== 'trunk' &&
 					version !== 'other' &&
 					! version.includes( 'beta' ) &&
-					( includeRC || semverCompare( latest, version ) <= 0 )
+					( isRC( version ) || semverCompare( latest, version ) <= 0 )
 			)
 			.sort( semverCompare );
 
