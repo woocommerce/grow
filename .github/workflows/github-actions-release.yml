@@ -22,7 +22,7 @@ jobs:
       release: ${{ steps.set-result.outputs.release }}
     steps:
       - name: Check tag name or workflow_run conclusion
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const { payload, eventName } = context;
@@ -40,7 +40,7 @@ jobs:
       - name: Get release artifact
         id: set-result
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require( 'fs' );
@@ -77,14 +77,14 @@ jobs:
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.resolve-tag.outputs.tag_name }}
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
         with:
-          node-version: 14
+          node-version: 20
           cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 

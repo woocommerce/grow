@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
         with:
-          node-version: 14
+          node-version: 20
           cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
