@@ -53,12 +53,14 @@ function parsePluginVersions( releases = {} ) {
 	const output = [];
 
 	if ( slug !== 'wordpress' ) {
+		const latest = releases.version;
 		const versions = Object.keys( releases.versions )
 			.filter(
 				( version ) =>
 					version !== 'trunk' &&
 					version !== 'other' &&
-					! version.includes( 'beta' )
+					! version.includes( 'beta' ) &&
+					( isRC( version ) || semverCompare( latest, version ) <= 0 )
 			)
 			.sort( semverCompare );
 
