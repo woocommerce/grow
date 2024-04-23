@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare node
         uses: woocommerce/grow/prepare-node@actions-v2
@@ -41,7 +41,7 @@ Must specify either `node-version` or `node-version-file` option to set the vers
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
 
   - name: Prepare node
     uses: woocommerce/grow/prepare-node@actions-v2
@@ -54,7 +54,7 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
 
   - name: Prepare node
     uses: woocommerce/grow/prepare-node@actions-v2
@@ -68,7 +68,7 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare node
     uses: woocommerce/grow/prepare-node@actions-v2
@@ -85,7 +85,7 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare node
     uses: woocommerce/grow/prepare-node@actions-v2
