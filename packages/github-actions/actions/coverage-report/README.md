@@ -22,16 +22,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare PHP
-        uses: woocommerce/grow/prepare-php@actions-v1
+        uses: woocommerce/grow/prepare-php@actions-v2
 
       - name: Run unit tests (with coverage report)
         run: phpdbg -qrr vendor/bin/phpunit --coverage-clover=tests/coverage/report.xml
 
       - name: PHP unit coverage report
-        uses: woocommerce/grow/coverage-report@actions-v1
+        uses: woocommerce/grow/coverage-report@actions-v2
         with:
           base-branch: trunk
           test-comment: "PHP unit test coverage"
