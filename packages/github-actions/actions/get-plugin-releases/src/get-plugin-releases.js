@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import fetch from 'node-fetch';
 import core from '@actions/core';
 
 /**

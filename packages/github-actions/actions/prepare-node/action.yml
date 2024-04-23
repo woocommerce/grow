@@ -3,7 +3,7 @@ description: Set up Node.js with a specific version, load npm cache, install Nod
 
 inputs:
   node-version:
-    description: "Specify Node.js version. For example: 16, 14.19.1, 14.19, lts/fermium, lts/*, latest, current"
+    description: "Specify Node.js version. For example: 20, 20.12, 20.12.1, lts/iron, lts/*, latest, current"
     default: ""
 
   node-version-file:
@@ -29,7 +29,7 @@ runs:
   using: composite
   steps:
     # Setup node version and caching.
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}

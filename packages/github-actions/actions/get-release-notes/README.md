@@ -23,11 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -86,11 +86,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check created release branch
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             if ( ! context.payload.created ) {
@@ -137,11 +137,11 @@ jobs:
     needs: CheckCreatedBranch
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Get release notes
         id: get-notes
-        uses: woocommerce/grow/get-release-notes@actions-v1
+        uses: woocommerce/grow/get-release-notes@actions-v2
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           tag-template: "v{version}"

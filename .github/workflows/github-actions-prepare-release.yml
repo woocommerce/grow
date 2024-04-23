@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check created release branch
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             if ( ! context.payload.created ) {
@@ -27,12 +27,12 @@ jobs:
     needs: CheckCreatedBranch
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
         with:
-          node-version: 14
+          node-version: 20
           cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
@@ -72,7 +72,7 @@ jobs:
 
           jq ".version=\"${NEXT_VER}\"" package.json > package.json.tmp
           mv package.json.tmp package.json
-          jq ".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
+          jq ".version=\"${NEXT_VER}\" | .packages.\"\".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
           mv package-lock.json.tmp package-lock.json
 
           git config user.name github-actions[bot]
@@ -85,7 +85,7 @@ jobs:
           git push
 
       - name: Create a pull request for release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const workspace = '${{ github.workspace }}';
