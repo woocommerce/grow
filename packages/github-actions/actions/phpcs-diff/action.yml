@@ -16,9 +16,7 @@ runs:
         fetch-depth: 2
 
     # Set up PHP.
-    # - uses: woocommerce/grow/prepare-php@actions-v2
-    # Temporarily using test build
-    - uses: woocommerce/grow/prepare-php@update/108-nodejs-v20-github-actions-external-only-test-build
+    - uses: woocommerce/grow/prepare-php@actions-v2
       with:
         php-version: ${{ inputs.php-version }}
 
