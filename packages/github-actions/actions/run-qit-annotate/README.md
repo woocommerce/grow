@@ -37,7 +37,7 @@ jobs:
 
       - name: Security test
         id: security-test
-        uses: woocommerce/grow/run-qit-annotate@actions-v1
+        uses: woocommerce/grow/run-qit-annotate@actions-v2
         timeout-minutes: 5
         with:
           type: security
