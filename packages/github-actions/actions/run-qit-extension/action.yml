@@ -93,7 +93,9 @@ runs:
     - name: Activation test
       id: activation
       if: ${{ inputs.test-activation == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/run-qit-annotate@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         type: activation
         extension: ${{ inputs.extension }}
@@ -105,7 +107,9 @@ runs:
     - name: Security test
       id: security
       if: ${{ inputs.test-security == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/run-qit-annotate@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         type: security
         extension: ${{ inputs.extension }}
@@ -117,7 +121,9 @@ runs:
     - name: PHPStan test
       id: phpstan
       if: ${{ inputs.test-phpstan == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/run-qit-annotate@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         type: phpstan
         extension: ${{ inputs.extension }}
@@ -129,7 +135,9 @@ runs:
     - name: API test
       id: api
       if: ${{ inputs.test-api == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/run-qit-annotate@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         type: api
         extension: ${{ inputs.extension }}
@@ -141,7 +149,9 @@ runs:
     - name: E2E test
       id: e2e
       if: ${{ inputs.test-e2e == 'true' }}
-      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # uses: woocommerce/grow/run-qit-annotate@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/run-qit-annotate@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         type: e2e
         extension: ${{ inputs.extension }}
