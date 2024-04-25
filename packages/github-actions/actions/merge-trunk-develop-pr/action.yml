@@ -6,7 +6,7 @@ runs:
   steps:
     - name: "Make the PR"
       if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') && github.event.pull_request.user.login == 'github-actions[bot]' }}
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const title = '${{github.event.pull_request.title}} - Merge `trunk` to `develop`';
