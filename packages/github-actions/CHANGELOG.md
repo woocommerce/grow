@@ -1,5 +1,10 @@
 # Changelog
 
+## 2024-04-25 (1.11.2)
+### Tweaked 🔧
+* Add PHP linter and PHP linting in GitHub Actions. (https://github.com/woocommerce/grow/pull/109)
+* Get Plugin Releases - Prevent unstable releases. (https://github.com/woocommerce/grow/pull/102)
+
 ## 2024-02-06 (1.11.1)
 ### Bug Fixes 🐛
 * Rename `add/qit-workflows-test-build` to `actions-v1` branch. (https://github.com/woocommerce/grow/pull/96)
