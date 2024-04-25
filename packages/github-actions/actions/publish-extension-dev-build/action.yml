@@ -23,7 +23,9 @@ runs:
   steps:
     # Get unreleased notes
     - id: unreleased-notes
-      uses: woocommerce/grow/get-release-notes@actions-v2
+      # uses: woocommerce/grow/get-release-notes@actions-v2
+      # Temporarily using test build
+      uses: woocommerce/grow/get-release-notes@update/108-nodejs-v20-github-actions-get-plugin-releases-test-build
       with:
         repo-token: ${{ github.token }}
         tag-template: "{version}"
