@@ -1,0 +1,27 @@
+"changelog: breaking":
+  - head-branch: "^breaking/"
+
+"changelog: add": &head-branch-add
+  - head-branch: "^add/"
+
+"changelog: update":
+  - head-branch: "^update/"
+
+"changelog: fix": &head-branch-fix
+  - head-branch: "^fix/"
+
+"changelog: tweak":
+  - head-branch: "^tweak/"
+
+"changelog: dev":
+  - head-branch: "^dev/"
+
+"changelog: doc": &head-branch-doc
+  - head-branch: "^doc/"
+
+"changelog: none":
+  - head-branch: "^release/"
+
+"type: enhancement": *head-branch-add
+"type: bug": *head-branch-fix
+"type: documentation": *head-branch-doc
