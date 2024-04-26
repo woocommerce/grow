@@ -6,6 +6,8 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
+All actions involving Node.js are run in v20.
+
 - [`automerge-released-trunk`](actions/automerge-released-trunk) - Merge `trunk` to `develop` after an extension release
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
 - [`coverage-report`](actions/coverage-report) - Add a clover coverage report as a PR comment
@@ -25,11 +27,11 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
 
-## Prerequisites
+## Development
 
 ### JavaScript actions
 
-1. Install `node` with version >= 14
+1. Install `node` with version v20 (recommended) or v18 (compatible)
 1. Install node modules `npm i`
 
 ### PHP actions
@@ -38,8 +40,6 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 1. Run `composer install` in the action directory
 1. Write tests as needed for changes to the action(s)
 1. Run `composer test` to run the tests, and `composer test:coverage` to generate an HTML coverage report
-
-## Development
 
 ### Directory structure of source code
 
@@ -135,11 +135,17 @@ gitGraph
   commit id: "Changelog"
   commit id: "Bump version"
   branch tmp/release-build order: 0
-  commit id: "Release build" type: HIGHLIGHT tag: "actions-v1.2.3"
+  commit id: "Release build" type: HIGHLIGHT tag: "actions-v2.2.3"
   checkout trunk
   merge release/actions
 
 ```
+
+### Fix bugs for old versions
+
+Branch off from the old version, set the merge base for fixing PR to be the same as the old version, and run the release process for that version after merging.
+
+- [v1 source branch](https://github.com/woocommerce/grow/tree/source/actions-v1/packages/github-actions)
 
 ## Release
 
@@ -151,19 +157,19 @@ gitGraph
    - Prepend changelog to [CHANGELOG.md](CHANGELOG.md).
    - Update versions to [package.json](package.json) and [package-lock.json](package-lock.json).
    - Creates a release PR from `release/actions` branch with `trunk` as the base branch.
-1. :technologist: Check if the new changelog content and updated version are correct.
-   - For a patch version like fixing bugs, increases the Z number. For example, `actions-v1.4.8`.
-   - For a minor version like adding new features, increases the Y number and reset the Z to 0. For example, `actions-v1.5.0`.
-   - For a major version like having incompatible changes, increases the X number and reset the Y and Z to 0. For example, `actions-v2.0.0`.
+1. :technologist: Check if the new changelog content and updated version are correct. Let's assume the current version is `actions-v2.4.7`.
+   - For a patch version like fixing bugs, increases the patch number. For example, `actions-v2.4.8`.
+   - For a minor version like adding new features, increases the minor number and reset the patch number to 0. For example, `actions-v2.5.0`.
+   - For a major version like having incompatible changes, increases the major number and reset the minor and patch numbers to 0. For example, `actions-v3.0.0`.
    - If something needs to be revised, append the changes in the release PR.
 1. :technologist: If it's all good, approve the release PR to proceed with the next workflow.
 1. :octocat: Once the release PR is approved, a workflow will create a new release with a new version tag.
    - Workflow [GitHub Actions - Create Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-release.yml)
 1. :octocat: After publishing the new release, a workflow will continue to create and commit the release build. And then update the references of the corresponding major and minor version tags onto the new release.
    - Workflow [GitHub Actions - Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml)
-   - When the new release version is `actions-v1.4.8`, it should update the references of `actions-v1` and `actions-v1.4` onto `actions-v1.4.8`.
-   - When the new release version is `actions-v1.5.0`, it should update the reference of `actions-v1` and create `actions-v1.5` tag onto `actions-v1.5.0`.
-   - When the new release version is `actions-v2.0.0`, it should create `actions-v2` and `actions-v2.0` tags onto `actions-v2.0.0`.
+   - When the new release version is `actions-v2.4.8`, it should update the references of `actions-v2` and `actions-v2.4` onto `actions-v2.4.8`.
+   - When the new release version is `actions-v2.5.0`, it should update the reference of `actions-v2` and create `actions-v2.5` tag onto `actions-v2.5.0`.
+   - When the new release version is `actions-v3.0.0`, it should create `actions-v3` and `actions-v3.0` tags onto `actions-v3.0.0`.
 1. :technologist: Check if both release workflows are run successfully.
 1. :technologist: Merge the release PR.
 
