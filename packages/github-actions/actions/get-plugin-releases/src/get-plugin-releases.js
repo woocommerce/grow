@@ -6,15 +6,14 @@ import core from '@actions/core';
 /**
  * Internal dependencies
  */
-import handleActionErrors from '../../../utils/handle-action-errors';
+import handleActionErrors from '../../../utils/handle-action-errors.js';
 
-async function getPluginReleases() {
-	const slug = getInput( 'slug' );
-	const apiEndpoint = getAPIEndpoint( slug );
+async function getPluginReleases( inputs ) {
+	const apiEndpoint = getAPIEndpoint( inputs.slug );
 
 	return fetch( apiEndpoint )
 		.then( ( res ) => res.json() )
-		.then( parsePluginVersions );
+		.then( ( data ) => parsePluginVersions( data, inputs ) );
 }
 
 function getAPIEndpoint( slug ) {
@@ -43,12 +42,8 @@ function setOutput( key, value ) {
 	core.setOutput( key, value );
 }
 
-function parsePluginVersions( releases = {} ) {
-	const slug = getInput( 'slug' );
-	const numberOfReleases = parseInt( getInput( 'releases' ), 10 );
-	const includeRC = getInput( 'includeRC' );
-	const includePatches = getInput( 'includePatches' );
-
+function parsePluginVersions( releases = {}, inputs ) {
+	const { slug, numberOfReleases, includeRC, includePatches } = inputs;
 	const output = [];
 
 	if ( slug !== 'wordpress' ) {
@@ -135,6 +130,16 @@ function semverCompare( a, b ) {
 	);
 }
 
-getPluginReleases()
-	.then( () => core.info( 'Finish getting the release versions.' ) )
-	.catch( handleActionErrors );
+// Directly perform this action if it's running in GitHub Actions.
+if ( process.env.GITHUB_ACTIONS ) {
+	const inputs = {
+		slug: getInput( 'slug' ),
+		numberOfReleases: parseInt( getInput( 'releases' ), 10 ),
+		includeRC: getInput( 'includeRC' ),
+		includePatches: getInput( 'includePatches' ),
+	};
+
+	getPluginReleases( inputs )
+		.then( () => core.info( 'Finish getting the release versions.' ) )
+		.catch( handleActionErrors );
+}
