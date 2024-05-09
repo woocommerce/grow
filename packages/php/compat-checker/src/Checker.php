@@ -85,10 +85,10 @@ class Checker {
 		// Remove dismissable notices on plugin deactivation.
 		register_deactivation_hook(
 			$plugin_file_path,
-			array(
+			[
 				WCCompatibility::instance( $plugin_basename ),
 				'remove_dismissable_notices',
-			)
+			]
 		);
 
 		// Run all compatibility checks.
