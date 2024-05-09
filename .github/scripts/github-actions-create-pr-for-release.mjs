@@ -20,7 +20,7 @@ ${ content }`;
 
 	await github.rest.pulls.create( {
 		...context.repo,
-		base: 'trunk',
+		base: 'source/actions-v1',
 		head: refName,
 		title,
 		body,
