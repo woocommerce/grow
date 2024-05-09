@@ -181,7 +181,7 @@ abstract class CompatCheck {
 			$plugin_basename = plugin_basename( $this->plugin_data['File'] );
 			$all_notices     = WC_Admin_Notices::get_notices();
 			foreach ( $all_notices as $notice_name ) {
-				if ( true === str_starts_with( $notice_name, $plugin_basename ) ) {
+				if ( 0 === strpos( $notice_name, $plugin_basename ) ) {
 					WC_Admin_Notices::remove_notice( $notice_name );
 				}
 			}
