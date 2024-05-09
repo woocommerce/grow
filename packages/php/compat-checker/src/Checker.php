@@ -82,6 +82,16 @@ class Checker {
 		$plugin_data     = $this->get_plugin_data( $plugin_file_path, $file_version );
 		$plugin_basename = plugin_basename( $plugin_file_path );
 
+		// Remove dismissable notices on plugin deactivation.
+		register_deactivation_hook(
+			$plugin_file_path,
+			[
+				WCCompatibility::instance( $plugin_basename ),
+				'remove_dismissable_notices',
+			]
+		);
+
+		// Run all compatibility checks.
 		foreach ( $checks as $compatibility ) {
 			if ( ! $compatibility::instance( $plugin_basename )->is_compatible( $plugin_data ) ) {
 				return false;
