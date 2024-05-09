@@ -31,7 +31,7 @@ All actions involving Node.js are run in v20.
 
 ### JavaScript actions
 
-1. Install `node` with version v20 (recommended) or v18 (compatible)
+1. Install `node` with version v20
 1. Install node modules `npm i`
 
 ### PHP actions
