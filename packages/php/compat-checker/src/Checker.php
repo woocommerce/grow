@@ -81,7 +81,7 @@ class Checker {
 		];
 		$plugin_data     = $this->get_plugin_data( $plugin_file_path, $file_version );
 		$plugin_basename = plugin_basename( $plugin_file_path );
-		
+
 		// Remove dismissable notices on plugin deactivation.
 		register_deactivation_hook(
 			$plugin_file_path,
