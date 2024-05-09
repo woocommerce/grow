@@ -33,10 +33,11 @@ jobs:
 
 #### Permissions:
 
-It's recommended to use the `pull_request_target` event instead of `pull_request` to avoid the issue of not having permission to add labels to pull requests.
+In order to add labels to pull requests, this action requires write permissions on the pull request. However, when the action runs on a pull request from a fork, GitHub only grants read access tokens for the `pull_request` event. Therefore, it's recommended to use the `pull_request_target` event instead of `pull_request` to avoid the issue of not having permission.
 
 Ref:
 - https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target
+- https://github.com/actions/labeler/tree/v5#usage
 - https://github.com/actions/labeler/tree/v5#permissions
 
 ## Migration from v1 to v2:
