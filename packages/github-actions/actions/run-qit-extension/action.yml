@@ -127,11 +127,11 @@ runs:
         options: ${{ inputs.options }}
 
     - name: API test
-      id: woo-api
+      id: api
       if: ${{ inputs.test-api == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
-        type: api
+        type: woo-api
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
