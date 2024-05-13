@@ -131,7 +131,7 @@ runs:
       if: ${{ inputs.test-api == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v2
       with:
-        type: api
+        type: woo-api
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
@@ -143,7 +143,7 @@ runs:
       if: ${{ inputs.test-e2e == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v2
       with:
-        type: e2e
+        type: woo-e2e
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
