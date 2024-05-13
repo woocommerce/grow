@@ -1,5 +1,9 @@
 # Changelog
 
+## 2024-05-13 (1.11.3)
+### Tweaked 🔧
+* Update QIT test types `api` and `e2e` for the `run-qit-extension` action to align with the renamed types. (https://github.com/woocommerce/grow/pull/127)
+
 ## 2024-04-25 (1.11.2)
 ### Tweaked 🔧
 * Add PHP linter and PHP linting in GitHub Actions. (https://github.com/woocommerce/grow/pull/109)
