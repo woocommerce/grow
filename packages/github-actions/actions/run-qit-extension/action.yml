@@ -91,7 +91,6 @@ runs:
           --qit_token='${{ inputs.qit-partner-secret }}'
 
     - name: Activation test
-      id: activation
       if: ${{ inputs.test-activation == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
@@ -103,7 +102,6 @@ runs:
         options: ${{ inputs.options }}
 
     - name: Security test
-      id: security
       if: ${{ inputs.test-security == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
@@ -115,7 +113,6 @@ runs:
         options: ${{ inputs.options }}
 
     - name: PHPStan test
-      id: phpstan
       if: ${{ inputs.test-phpstan == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
@@ -127,7 +124,6 @@ runs:
         options: ${{ inputs.options }}
 
     - name: API test
-      id: api
       if: ${{ inputs.test-api == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
@@ -139,7 +135,6 @@ runs:
         options: ${{ inputs.options }}
 
     - name: E2E test
-      id: e2e
       if: ${{ inputs.test-e2e == 'true' }}
       uses: woocommerce/grow/run-qit-annotate@actions-v1
       with:
