@@ -11,8 +11,9 @@ runs:
   steps:
     # Copy formatter script to the destination file path.
     - shell: bash
+      env:
+        SCRIPT_DEST: ${{ inputs.formatter-dest }}
       run: |
-        SCRIPT_DEST="${{ inputs.formatter-dest }}"
         mkdir -p $(dirname "$SCRIPT_DEST")
         echo '/* eslint-disable */' > "$SCRIPT_DEST"
         cat "${{ github.action_path }}/eslintFormatter.cjs" >> "$SCRIPT_DEST"
