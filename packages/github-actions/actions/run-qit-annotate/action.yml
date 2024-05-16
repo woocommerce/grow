@@ -58,11 +58,14 @@ runs:
         zip: ${{ inputs.extension-file &&  format('--zip={0}', inputs.extension-file) || '' }}
         wait: ${{ inputs.wait == 'true' && '--wait' || '' }}
         ignore_fail: ${{ inputs.ignore-fail == 'true' && '--ignore-fail' || '' }}
+        type: ${{ inputs.type }}
+        extension: ${{ inputs.extension }}
+        options: ${{ inputs.options }}
       run: |
-        json=`./vendor/bin/qit run:${{ inputs.type }} \
-         ${{ inputs.extension }} \
+        json=`./vendor/bin/qit run:${type} \
+         ${extension} \
          $zip \
-         ${{ inputs.options }} \
+         ${options} \
          $wait \
          $ignore_fail \
          -n \
@@ -85,8 +88,10 @@ runs:
     # Annotate the results according to the status, forward qit exit code.
     - name: Annotate and exit
       shell: bash
+      env:
+        type: ${{ inputs.type }}
       run: |
-        summary="${{ inputs.type }} (${{ steps.read-summary.outputs.test_run_id }}): ${{ steps.read-summary.outputs.status }} - ${{ steps.read-summary.outputs.summary }} \`qit get ${{ steps.read-summary.outputs.test_run_id }}\`";
+        summary="${type} (${{ steps.read-summary.outputs.test_run_id }}): ${{ steps.read-summary.outputs.status }} - ${{ steps.read-summary.outputs.summary }} \`qit get ${{ steps.read-summary.outputs.test_run_id }}\`";
         case ${{ steps.read-summary.outputs.status }} in
           "success") echo "::notice ::$summary"
           ;;
