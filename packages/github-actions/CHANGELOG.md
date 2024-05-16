@@ -1,5 +1,19 @@
 # Changelog
 
+## 2024-05-16 (2.0.0)
+### Breaking Changes 🚨
+* Upgrade the fundamental of the `github-actions` package and its `get-release-notes`, `prepare-node`, and `update-version-tags` actions to use Node.js v20. (https://github.com/woocommerce/grow/pull/112)
+* Upgrade the `automerge-released-trunk`, `coverage-report`, and `prepare-php` actions to use Node.js v20. (https://github.com/woocommerce/grow/pull/114)
+* Upgrade the `phpcs-diff` action to use Node.js v20. (https://github.com/woocommerce/grow/pull/116)
+* Upgrade the `eslint-annotation` and `stylelint-annotation` actions to use Node.js v20. (https://github.com/woocommerce/grow/pull/117)
+* Upgrade the `get-plugin-releases` action to use Node.js v20. (https://github.com/woocommerce/grow/pull/119)
+* Upgrade the `run-qit-extension` action to use Node.js v20. (https://github.com/woocommerce/grow/pull/120)
+* Upgrade the `merge-trunk-develop-pr`, `prepare-extension-release`, and `publish-extension-dev-build` actions to use Node.js v20. (https://github.com/woocommerce/grow/pull/121)
+* Upgrade the `branch-label` action to use Node.js v20. (https://github.com/woocommerce/grow/pull/122)
+### Documentation 📚
+* Update the version in docs of the `hook-documentation`, `prepare-mysql`, and `run-qit-annotate` actions to v2. (https://github.com/woocommerce/grow/pull/115)
+* Update the README for the `github-actions` package to be based on Node.js v20. (https://github.com/woocommerce/grow/pull/123)
+
 ## 2024-05-16 (1.11.4)
 ### Bug Fixes 🐛
 * Avoid running malicious inputs as shell commands in Custom GitHub actions and relate workflows. (https://github.com/woocommerce/grow/pull/131)
