@@ -44,11 +44,11 @@ runs:
 
     # Install node dependencies.
     - shell: bash
+      env:
+        INSTALL_DEPS: ${{ inputs.install-deps }}
+        IGNORE_SCRIPTS: ${{ inputs.ignore-scripts }}
       # `actions/setup-node` should update npm cache directory if `package-lock` has changed.
       run: |
-        INSTALL_DEPS="${{ inputs.install-deps }}"
-        IGNORE_SCRIPTS="${{ inputs.ignore-scripts }}"
-
         COLOR_INFO="\033[38;5;39m"
         COLOR_END="\033[0m"
 

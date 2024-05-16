@@ -15,8 +15,9 @@ jobs:
           ref: trunk
 
       - name: Delete test build branch
+        env:
+          BRANCH_NAME: ${{ format('{0}-test-build', github.event.ref) }}
         run: |
-          BRANCH_NAME="${{ github.event.ref }}-test-build"
           REMOTE_BRANCH_NAME="origin/${BRANCH_NAME}"
 
           git fetch --prune --no-tags --depth=1 origin

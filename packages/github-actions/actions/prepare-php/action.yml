@@ -58,8 +58,9 @@ runs:
 
     # Install Composer dependencies.
     - shell: bash
+      env:
+        INSTALL_DEPS: ${{ inputs.install-deps }}
       run: |
-        INSTALL_DEPS="${{ inputs.install-deps }}"
         COMPOSER_VER=$(composer --version | awk '{ print $3 }')
 
         COLOR_INFO="\033[38;5;39m"
