@@ -1,8 +1,8 @@
 /**
  * External dependencies
  */
-import { default as path, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { default as path, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import assert from 'yeoman-assert';
 import helpers from 'yeoman-test';
 
@@ -39,7 +39,7 @@ describe( ':github', function () {
 	it( 'Should use (package.json).title as the project title in CONTRIBUTING.md', async function () {
 		await helpers
 			.run( githubPath )
-			.on( 'ready', function ( generator ) {
+			.onGenerator( function ( generator ) {
 				generator.fs.write(
 					'package.json',
 					'{ "title": "Package Title" }'

@@ -15,5 +15,5 @@ inputs:
       It's required if this action is triggered by a workflow_run event.
 
 runs:
-  using: node16
+  using: node20
   main: update-version-tags.mjs

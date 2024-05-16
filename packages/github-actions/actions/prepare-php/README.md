@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare PHP
-        uses: woocommerce/grow/prepare-php@actions-v1
+        uses: woocommerce/grow/prepare-php@actions-v2
 
       - name: Run unit tests
         run: vendor/bin/phpunit
@@ -37,10 +37,10 @@ jobs:
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v1
+    uses: woocommerce/grow/prepare-php@actions-v2
     with:
       php-version: 8.1
 ```
@@ -50,10 +50,10 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v1
+    uses: woocommerce/grow/prepare-php@actions-v2
     with:
       tools: cs2pr
 
@@ -70,10 +70,10 @@ To use Composer v1, set this parameter with `composer:v1`
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v1
+    uses: woocommerce/grow/prepare-php@actions-v2
     with:
       coverage: xdebug
 ```
@@ -87,10 +87,10 @@ The `coverage` is `"none"` by default to disable both `Xdebug` and `PCOV`.
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v1
+    uses: woocommerce/grow/prepare-php@actions-v2
     with:
       install-deps: "no"
 

@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # Checks out a branch instead of a commit in detached HEAD state
           ref: ${{ github.head_ref }}
@@ -50,7 +50,7 @@ jobs:
         # This generates the documentation string. The `id` property is used to reference the output in the next step.
       - name: Generate hook documentation
         id: generate-hook-docs
-        uses: woocommerce/grow/hook-documentation@actions-v1
+        uses: woocommerce/grow/hook-documentation@actions-v2
         with:
           debug-output: yes
           source-directories: src/,templates/

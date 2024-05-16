@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare MySQL
-        uses: woocommerce/grow/prepare-mysql@actions-v1
+        uses: woocommerce/grow/prepare-mysql@actions-v2
 
       - name: Create database
         run: mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_test;' -u root -proot

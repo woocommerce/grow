@@ -23,13 +23,13 @@ runs:
   steps:
     # Get unreleased notes
     - id: unreleased-notes
-      uses: woocommerce/grow/get-release-notes@actions-v1
+      uses: woocommerce/grow/get-release-notes@actions-v2
       with:
         repo-token: ${{ github.token }}
         tag-template: "{version}"
 
     # Publish the build to GitHub
-    - uses: actions/github-script@v6
+    - uses: actions/github-script@v7
       with:
         # The main action inputs are not accessible within the "script" input of actions/github-script.
         # So it needs to do forwarding.
