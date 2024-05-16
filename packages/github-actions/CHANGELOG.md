@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-05-16 (1.11.4)
+### Bug Fixes 🐛
+* Avoid running malicious inputs as shell commands in Custom GitHub actions and relate workflows. (https://github.com/woocommerce/grow/pull/131)
+### Tweaked 🔧
+* Remove the unused step `id` from the `run-qit-extension` action. (https://github.com/woocommerce/grow/pull/130)
+
 ## 2024-05-13 (1.11.3)
 ### Tweaked 🔧
 * Update QIT test types `api` and `e2e` for the `run-qit-extension` action to align with the renamed types. (https://github.com/woocommerce/grow/pull/127)
