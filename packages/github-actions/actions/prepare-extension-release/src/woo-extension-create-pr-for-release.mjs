@@ -61,7 +61,7 @@ export default async ( { context, github, inputs, refName } ) => {
 1. [ ] Update documentation
    - [ ] Publish any new required docs
    - [ ] Update triggers/rules/actions listing pages
-1. [ ] Mark related ideas complete [on the feature requests page](https://woo.com/feature-requests/${ extensionPackageName }/).
+1. [ ] Mark related ideas complete [on the feature requests page](https://woocommerce.com/feature-requests/${ extensionPackageName }/).
 ${ postSteps }
 `;
 
