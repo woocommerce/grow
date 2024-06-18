@@ -69,7 +69,7 @@ describe( ':github', function () {
 			.then( function () {
 				assert.fileContent(
 					'.github/CONTRIBUTING.md',
-					'https://woo.com/feature-requests/foo-bar'
+					'https://woocommerce.com/feature-requests/foo-bar'
 				);
 			} );
 	} );
@@ -83,7 +83,7 @@ describe( ':github', function () {
 
 				assert.fileContent(
 					'.github/CONTRIBUTING.md',
-					`https://woo.com/feature-requests/${ appname }`
+					`https://woocommerce.com/feature-requests/${ appname }`
 				);
 			} );
 	} );
