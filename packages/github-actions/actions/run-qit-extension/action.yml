@@ -53,6 +53,9 @@ inputs:
   test-e2e:
     description: 'Should E2E be tested?'
     default: 'true'
+  test-plugin-e2e:
+    description: 'Should Plugin E2E be tested?'
+    default: 'false'
 
   # Advanced customization.
   options:
@@ -139,6 +142,17 @@ runs:
       uses: woocommerce/grow/run-qit-annotate@actions-v2
       with:
         type: woo-e2e
+        extension: ${{ inputs.extension }}
+        extension-file: ${{ env.dev_build }}
+        wait: ${{ inputs.wait }}
+        ignore-fail: ${{ inputs.ignore-fail }}
+        options: ${{ inputs.options }}
+
+    - name: Plugin E2E test
+      if: ${{ inputs.test-plugin-e2e == 'true' }}
+      uses: woocommerce/grow/run-qit-annotate@actions-v2
+      with:
+        type: e2e
         extension: ${{ inputs.extension }}
         extension-file: ${{ env.dev_build }}
         wait: ${{ inputs.wait }}
