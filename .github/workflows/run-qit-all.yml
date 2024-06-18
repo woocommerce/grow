@@ -45,6 +45,11 @@ on:
         required: true
         default: false
         type: boolean
+      test-plugin-e2e:
+        description: 'Should Plugin E2E be tested? (takes a lot of time)'
+        required: true
+        default: false
+        type: boolean
 
       # Advanced customization.
       ignore-fail:
