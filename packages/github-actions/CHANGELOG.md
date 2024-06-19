@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-06-19 (2.1.0)
+### New Features 🎉
+* Adding plugin e2e option for QIT action. (https://github.com/woocommerce/grow/pull/137)
+### Tweaked 🔧
+* [Revert] Update woo.com domain, update feature-requests URL in yeoman generator. (https://github.com/woocommerce/grow/pull/136)
+
 ## 2024-05-16 (2.0.0)
 ### Breaking Changes 🚨
 * Upgrade the fundamental of the `github-actions` package and its `get-release-notes`, `prepare-node`, and `update-version-tags` actions to use Node.js v20. (https://github.com/woocommerce/grow/pull/112)
