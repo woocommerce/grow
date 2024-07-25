@@ -55,6 +55,8 @@ export default async ( { context, github, inputs, refName } ) => {
    woorelease release --product_version=${ version } ${ testedVersions }  --generate_changelog ${ repoURL }
    \`\`\`
    When prompted for changelog entries, double-check and apply any changes if needed.
+1. [ ] Confirm the release using the activation link from your email.
+   When releasing to WordPress.org, _“release notifications”_ have been enabled, so each committer will be sent an email with an action link to confirm the release. This must be done after committing in SVN before the release becomes available. See the following page for releases pending notifications: https://wordpress.org/plugins/developers/releases/
 1. [ ] Go to ${ context.payload.repository.html_url }/releases/${ version }, generate GitHub release notes, and paste them as a comment here.
 1. [ ] Merge this PR after the new release is successfully created and the version tags are updated.
 1. [ ] Merge \`trunk\` to \`develop\` (PR), if applicable for this repo.
