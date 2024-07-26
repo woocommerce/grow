@@ -1,5 +1,9 @@
 # Changelog
 
+## 2024-07-26 (2.2.0)
+### Updated ✨
+* Add release confirmation step to extension release PR. (https://github.com/woocommerce/grow/pull/141)
+
 ## 2024-06-19 (2.1.0)
 ### New Features 🎉
 * Adding plugin e2e option for QIT action. (https://github.com/woocommerce/grow/pull/137)
