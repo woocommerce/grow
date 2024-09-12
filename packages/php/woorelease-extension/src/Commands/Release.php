@@ -65,6 +65,7 @@ class Release extends WooReleaseRelease {
 			$arguments = array(
 				'github_url'     => $github_url,
 				'default_branch' => $default_branch,
+				'--folder'       => $folder,
 			);
 
 			if ( Command::SUCCESS !== $command->run( new ArrayInput( $arguments ), $output ) ) {
@@ -232,6 +233,7 @@ class Release extends WooReleaseRelease {
 				$arguments = array(
 					'github_url'     => $github_url,
 					'default_branch' => $default_branch,
+					'--folder'       => $folder,
 					'--cleanup'      => true,
 				);
 				if ( Command::SUCCESS === $command->run( new ArrayInput( $arguments ), $output ) ) {

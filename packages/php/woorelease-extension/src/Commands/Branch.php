@@ -32,6 +32,7 @@ class Branch extends Command {
 			->setHelp( 'This command allows you to create a release branch.' )
 			->addArgument( 'github_url', InputArgument::REQUIRED, 'Full GitHub URL for product to build.' )
 			->addArgument( 'default_branch', InputArgument::REQUIRED, 'Default GitHub project branch name.' )
+			->addOption( 'folder', null, InputOption::VALUE_REQUIRED, 'Folder containing a cloned version of the repository', null )
 			->addOption( 'cleanup', null, InputOption::VALUE_NONE, 'If specified, it will do the branch cleanup.' );
 	}
 
@@ -48,6 +49,7 @@ class Branch extends Command {
 			$logger         = Logger::instance( $output );
 			$github_url     = $input->getArgument( 'github_url' );
 			$default_branch = $input->getArgument( 'default_branch' );
+			$folder         = $input->getOption( 'folder' );
 			$cleanup        = false !== $input->getOption( 'cleanup' );
 
 			list( $product, $gh_org, $branch ) = Utils::parse_product_info( $github_url );
@@ -59,7 +61,7 @@ class Branch extends Command {
 				// Not to delete the default repo's branch.
 				if ( $branch !== $default_branch ) {
 					$output->write( sprintf( "\n<info>Cleaning up `%s` branch ...</info>\n", $branch ) );
-					return $this->cleanup( $repository_url, $branch );
+					return $this->cleanup( $folder, $repository_url, $branch );
 				}
 				$output->write( sprintf( "\n<info>Default branch `%s` cannot be deleted.</info>\n", $branch ) );
 				return Command::SUCCESS;
@@ -78,8 +80,8 @@ class Branch extends Command {
 				);
 
 				if ( $do_create_release_branch ) {
-					$create = WooGrowGit::create_branch( $branch );
-					$push   = $create && WooGrowGit::push_branch( $repository_url, $branch );
+					$create = WooGrowGit::create_branch( $folder, $branch );
+					$push   = $create && WooGrowGit::push_branch( $folder, $repository_url, $branch );
 					if ( ! $push ) {
 						$do_release_from_default = Utils::yes_no(
 							sprintf(
@@ -123,8 +125,8 @@ class Branch extends Command {
 		}
 	}
 
-	protected function cleanup( $repository_url, $branch ) {
-		WooGrowGit::delete_branch( $repository_url, $branch );
+	protected function cleanup( $folder, $repository_url, $branch ) {
+		WooGrowGit::delete_branch( $folder, $repository_url, $branch );
 		return Command::SUCCESS;
 	}
 }
