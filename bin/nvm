@@ -16,5 +16,5 @@ if $do_check; then
 fi
 
 if $do_use; then
-	nvm use
+	nvm use || nvm install $(cat .nvmrc)
 fi
