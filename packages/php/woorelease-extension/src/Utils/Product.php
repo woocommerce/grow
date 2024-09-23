@@ -58,11 +58,11 @@ class Product {
 		}
 
 		if ( $build_step ) {
-			shell_exec( "{$grow_root_path}/bin/build '{$build_step}'" );
+			shell_exec( "{$grow_root_path}/bin/build '{$build_step}'" ); // phpcs:ignore
 		} elseif ( $use_pnpm ) {
-			shell_exec( "{$grow_root_path}/bin/build pnpm" );
+			shell_exec( "{$grow_root_path}/bin/build pnpm" ); // phpcs:ignore
 		} else {
-			shell_exec( "{$grow_root_path}/bin/build npm" );
+			shell_exec( "{$grow_root_path}/bin/build npm" ); // phpcs:ignore
 		}
 
 		$zipfile = '';

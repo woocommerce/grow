@@ -209,7 +209,7 @@ class Bulk extends Command {
 			}
 
 			[ $slug, $version, $branch ] = array_pad( explode( "\t", $line ), 4, null );
-			$to_release[ $slug ] = [
+			$to_release[ $slug ]         = [
 				'name'           => $extensions[ $slug ]['name'],
 				'repo'           => $extensions[ $slug ]['repoSlug'],
 				'version'        => $version,

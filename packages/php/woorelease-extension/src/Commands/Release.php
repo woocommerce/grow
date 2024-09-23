@@ -106,6 +106,7 @@ class Release extends WooReleaseRelease {
 					throw new \Exception( 'Did not find required "package.json" file in product', 2 );
 				}
 
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$version_file = file_get_contents( $folder . '/package.json' );
 
 				$entry_regex = '/^\s*"version":\s*"(?<version>\d+\.\d+\.\d+)"/ms';
