@@ -11,7 +11,7 @@
 		"ext-zip": "*",
 		"phpcompatibility/php-compatibility": "^9.0",
 		"php-parallel-lint/php-parallel-lint": "^1.3.1",
-		"woocommerce/woorelease": "^2.4",
+		"woocommerce/woorelease": "dev-trunk",
 		"yoast/phpunit-polyfills": "^1.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
 		"wp-coding-standards/wpcs": "^3.0"

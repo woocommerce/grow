@@ -1,16 +1,14 @@
 {
-	"defaultBranch": "trunk",
+	"defaultBranch": "develop",
 	"githubOrganization": "woocommerce",
 	"extensions": [
 		{
 			"name": "Facebook for WooCommerce",
-			"repoSlug": "facebook-for-woocommerce",
-			"defaultBranch": "develop"
+			"repoSlug": "facebook-for-woocommerce"
 		},
 		{
 			"name": "Pinterest for WooCommerce",
-			"repoSlug": "pinterest-for-woocommerce",
-			"defaultBranch": "develop"
+			"repoSlug": "pinterest-for-woocommerce"
 		},
 		{
 			"name": "Points & Rewards",

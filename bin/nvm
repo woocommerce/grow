@@ -1,0 +1,20 @@
+#! /bin/bash
+
+do_check=false
+do_use=false
+while getopts eu opt; do
+	case $opt in
+		e) do_check=true;;
+		u) do_use=true;;
+	esac
+done
+
+source ~/.nvm/nvm.sh
+
+if $do_check; then
+	command -v nvm
+fi
+
+if $do_use; then
+	nvm use || nvm install $(cat .nvmrc)
+fi

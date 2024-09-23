@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source ~/.nvm/nvm.sh
+nvm use || nvm install $(cat .nvmrc)
+
+case $1 in
+	pnpm)
+		pnpm install && pnpm run build
+		;;
+	npm)
+		npm install && npm run build
+		;;
+	*)
+		eval $1
+		;;
+esac
