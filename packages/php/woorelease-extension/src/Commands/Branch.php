@@ -29,7 +29,7 @@ class Branch extends Command {
 	 *
 	 * @var string|null
 	 */
-	protected static $defaultName = 'branch';
+	protected static $defaultName = 'branch'; // phpcs:ignore WordPress.NamingConventions.ValidVariableName
 
 	/**
 	 * Configures the current command.
@@ -53,6 +53,7 @@ class Branch extends Command {
 	 * @param OutputInterface $output Output.
 	 *
 	 * @return int Exit code.
+	 * @throws Exception When the command has failed.
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ) {
 		try {

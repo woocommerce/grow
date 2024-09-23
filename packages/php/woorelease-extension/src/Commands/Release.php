@@ -55,17 +55,17 @@ class Release extends WooReleaseRelease {
 	 */
 	protected function execute( InputInterface $input, OutputInterface $output ) {
 		try {
-			$logger                = Logger::instance( $output );
-			$github_url            = $input->getArgument( 'github_url' );
-			$version               = $input->getOption( 'product_version' );
-			$wc_tested             = $input->getOption( 'wc_tested' );
-			$wp_tested             = $input->getOption( 'wp_tested' );
-			$prerelease            = $input->getOption( 'prerelease' );
-			$generate_changelog    = $input->getOption( 'generate_changelog' );
-			$nvm_use               = $input->getOption( 'nvm_use' );
-			$default_branch        = $input->getOption( 'default_branch' );
-			$release               = ! $this->simulate;
-			$reauth                = false !== $input->getOption( 'svn_reauth' );
+			$logger             = Logger::instance( $output );
+			$github_url         = $input->getArgument( 'github_url' );
+			$version            = $input->getOption( 'product_version' );
+			$wc_tested          = $input->getOption( 'wc_tested' );
+			$wp_tested          = $input->getOption( 'wp_tested' );
+			$prerelease         = $input->getOption( 'prerelease' );
+			$generate_changelog = $input->getOption( 'generate_changelog' );
+			$nvm_use            = $input->getOption( 'nvm_use' );
+			$default_branch     = $input->getOption( 'default_branch' );
+			$release            = ! $this->simulate;
+			$reauth             = false !== $input->getOption( 'svn_reauth' );
 
 			list( $product, $gh_org, $branch ) = Utils::parse_product_info( $github_url );
 
