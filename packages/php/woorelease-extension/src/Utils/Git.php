@@ -38,6 +38,7 @@ class Git extends \WR\Tools\Git {
 	/**
 	 * Creates a new local release branch.
 	 *
+	 * @param string $folder Current working repository.
 	 * @param string $branch The branch name.
 	 *
 	 * @return bool True if the branch was created, false otherwise.

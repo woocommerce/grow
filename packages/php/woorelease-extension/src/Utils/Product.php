@@ -1,10 +1,16 @@
 <?php
+/**
+ * Repository class
+ */
 
 namespace Automattic\WooCommerce\Grow\WR\Utils;
 
 use WR\Tools\Logger;
 use WR\Tools\Utils;
 
+/**
+ * Represents a plugin (calls it s Product)
+ */
 class Product {
 
 	/**
@@ -41,7 +47,7 @@ class Product {
 	public static function build( $grow_root_path, $product, $folder ) {
 		$logger       = Logger::default();
 		$package_json = \WR\Tools\Product::get_package_json( $product, $folder );
-		$wp_org_slug  = ! empty( $package_json['config']['wp_org_slug'] ) && $package_json['config']['wp_org_slug'] != $product ? $package_json['config']['wp_org_slug'] : false;
+		$wp_org_slug  = ! empty( $package_json['config']['wp_org_slug'] ) && ( $package_json['config']['wp_org_slug'] !== $product ) ? $package_json['config']['wp_org_slug'] : false;
 		$use_pnpm     = (bool) ( $package_json['config']['use_pnpm'] ?? false );
 		$build_step   = $package_json['config']['build_step'] ?? false;
 
@@ -66,7 +72,7 @@ class Product {
 			$zipfile = realpath( sprintf( '%s.zip', $wp_org_slug ) );
 		}
 		if ( $zipfile ) {
-			$logger->notice( 'Product build: {zipfile}', array( 'zipfile' => $zipfile ) );
+			$logger->notice( 'Product build: {zipfile}', [ 'zipfile' => $zipfile ] );
 			return $zipfile;
 		}
 

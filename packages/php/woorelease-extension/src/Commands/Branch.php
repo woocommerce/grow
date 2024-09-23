@@ -24,8 +24,18 @@ use WR\Tools\Utils;
  */
 class Branch extends Command {
 
+	/**
+	 * The default command name.
+	 *
+	 * @var string|null
+	 */
 	protected static $defaultName = 'branch';
 
+	/**
+	 * Configures the current command.
+	 *
+	 * @return void
+	 */
 	protected function configure() {
 		$this
 			->setDescription( 'Creates a release branch if does not exist.' )
@@ -125,6 +135,14 @@ class Branch extends Command {
 		}
 	}
 
+	/**
+	 * Removes the release branch after the release simulation.
+	 *
+	 * @param string $folder            Current repository path.
+	 * @param string $repository_url    Repository URL.
+	 * @param string $branch            Repository's branch.
+	 * @return int
+	 */
 	protected function cleanup( $folder, $repository_url, $branch ) {
 		WooGrowGit::delete_branch( $folder, $repository_url, $branch );
 		return Command::SUCCESS;
