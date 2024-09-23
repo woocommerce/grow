@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 /**
  * Internal dependencies
  */
-import handleActionErrors from '../../../utils/handle-action-errors';
+import handleActionErrors from '../../../utils/handle-action-errors.js';
 
 export default async ( { github, context, core, changelog, inputs } ) => {
 	const { repos, git } = github.rest;

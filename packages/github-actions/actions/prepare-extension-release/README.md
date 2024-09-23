@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - uses: woocommerce/grow/prepare-extension-release@actions-v1
+        uses: actions/checkout@v4
+      - uses: woocommerce/grow/prepare-extension-release@actions-v2
         with:
           version: ${{ github.event.inputs.version }}
           type: ${{ github.event.inputs.type }}

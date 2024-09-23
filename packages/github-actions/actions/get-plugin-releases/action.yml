@@ -20,5 +20,5 @@ outputs:
     description: The versions array in the format ["7.4","7.5","7.6"]
 
 runs:
-  using: node16
+  using: node20
   main: get-plugin-releases.mjs

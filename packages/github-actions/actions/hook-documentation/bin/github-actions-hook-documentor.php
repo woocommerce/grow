@@ -3,13 +3,13 @@
 
 use Automattic\WooCommerce\Grow\GitHubActions\HookDocumentation\Documentor;
 
-$autoloadPath = dirname( __DIR__ ) . '/vendor/autoload.php';
-if ( ! file_exists( $autoloadPath ) ) {
+$autoload_path = dirname( __DIR__ ) . '/vendor/autoload.php';
+if ( ! file_exists( $autoload_path ) ) {
 	echo "Please run 'composer install'!\n";
 	exit( 1 );
 }
 
-require_once $autoloadPath;
+require_once $autoload_path;
 
 // Set up variables from the environment.
 $env = getenv();
@@ -21,7 +21,7 @@ $base_url    = $env['BASE_URL'] ?? '';
 
 // Source directories need the full path prepended.
 $source_dirs = array_map(
-	function( $path ) {
+	function ( $path ) {
 		return ltrim( trim( $path ), '/' );
 	},
 	explode( ',', $source_dirs )
@@ -29,7 +29,7 @@ $source_dirs = array_map(
 
 $args = [
 	'github_blob' => $ref,
-	'base_url' => $base_url,
+	'base_url'    => $base_url,
 	'source_dirs' => $source_dirs,
 	'workspace'   => $base_path,
 ];

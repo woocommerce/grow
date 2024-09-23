@@ -24,6 +24,6 @@ Or call task separately:
 
 <p align="center">
 	<br/><br/>
-	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
+	Made with 💜 by <a href="https://woocommerce.com/">Woo</a>.<br/>
 	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
 </p>

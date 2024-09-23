@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare node
-        uses: woocommerce/grow/prepare-node@actions-v1
+        uses: woocommerce/grow/prepare-node@actions-v2
         with:
-          node-version: 16
+          node-version: 20
 
       - name: Build bundle
         run: npm run build
@@ -41,10 +41,10 @@ Must specify either `node-version` or `node-version-file` option to set the vers
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v1
+    uses: woocommerce/grow/prepare-node@actions-v2
     with:
       node-version-file: ".nvmrc"
 ```
@@ -54,12 +54,12 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v4
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v1
+    uses: woocommerce/grow/prepare-node@actions-v2
     with:
-      node-version: 16
+      node-version: 18
       cache-dependency-path: "./packages/github-actions"
 ```
 
@@ -68,10 +68,10 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v1
+    uses: woocommerce/grow/prepare-node@actions-v2
     with:
       node-version: "lts/*"
       install-deps: "no"
@@ -85,10 +85,10 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v1
+    uses: woocommerce/grow/prepare-node@actions-v2
     with:
       node-version: "latest"
       ignore-scripts: "no"

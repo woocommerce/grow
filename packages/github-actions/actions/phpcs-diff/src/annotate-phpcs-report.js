@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import fs from 'fs';
+import fs from 'node:fs';
 import { argv } from 'node:process';
 
 /**

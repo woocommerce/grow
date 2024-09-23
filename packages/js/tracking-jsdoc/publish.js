@@ -37,7 +37,7 @@ function getLineLink( symbol, readmeDir ) {
 /**
  * Generate documentation output.
  *
- * @param {Object} data A TaffyDB collection representing
+ * @param {Object} data A Salty instance representing
  *                      all the symbols documented in your code.
  */
 exports.publish = function ( data ) {
@@ -60,9 +60,11 @@ exports.publish = function ( data ) {
 
 	let mdResult = '';
 
+	data.sort( 'name' );
+
 	data( { kind: 'event' } )
-		.order( 'name' )
-		.each( ( symbol ) => {
+		.get()
+		.forEach( ( symbol ) => {
 			// Build the event title with the link to its source.
 			mdResult += `\n### ${ getLineLink( symbol, readmeDir ) }\n`;
 			// description
@@ -94,8 +96,11 @@ exports.publish = function ( data ) {
 
 			// Find all places that fires the event.
 			const emitters = new Map();
-			// TaffyDB#has is buggy https://github.com/typicaljoe/taffydb/issues/19, so let's filter it manually.
-			data( { fires: { isArray: true } } ).each( ( emitter ) => {
+			const matchFires = function () {
+				return Array.isArray( this.fires );
+			};
+
+			data( matchFires ).each( ( emitter ) => {
 				const firesCurrent = emitter.fires.filter(
 					( fires ) => fires.name === 'event:' + symbol.name
 				);

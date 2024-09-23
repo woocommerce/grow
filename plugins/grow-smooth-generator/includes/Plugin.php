@@ -8,10 +8,8 @@ class Plugin {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param string $file Main plugin __FILE__ reference.
 	 */
-	public function __construct( $file ) {
+	public function __construct() {
 		if ( class_exists( 'WP_CLI' ) ) {
 			$cli = new CLI();
 		}

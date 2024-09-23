@@ -3,13 +3,16 @@ on:
   push:
     branches:
       - trunk
+    paths:
+      - "packages/php/compat-checker/**"
+      - .github/workflows/github-action-publish-compat-checker.yml
 
 jobs:
   deploy:
     name: Publish Compat Checker package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Deploy
       uses: s0/git-publish-subdir-action@develop

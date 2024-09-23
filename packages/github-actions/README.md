@@ -6,6 +6,8 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
+All actions involving Node.js are run in v20.
+
 - [`automerge-released-trunk`](actions/automerge-released-trunk) - Merge `trunk` to `develop` after an extension release
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
 - [`coverage-report`](actions/coverage-report) - Add a clover coverage report as a PR comment
@@ -20,14 +22,16 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 - [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
 - [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
+- [`run-qit-annotate`](actions/run-qit-annotate) - Runs QIT test and annotates the results
+- [`run-qit-extension`](actions/run-qit-extension) - Run QIT tests for a given extension
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
 
-## Prerequisites
+## Development
 
 ### JavaScript actions
 
-1. Install `node` with version >= 14
+1. Install `node` with version v20
 1. Install node modules `npm i`
 
 ### PHP actions
@@ -36,8 +40,6 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 1. Run `composer install` in the action directory
 1. Write tests as needed for changes to the action(s)
 1. Run `composer test` to run the tests, and `composer test:coverage` to generate an HTML coverage report
-
-## Development
 
 ### Directory structure of source code
 
@@ -67,6 +69,18 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 - The `src` directories of JavaScript actions will be skipped in the release build.
 - When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `npm run build`.
+
+### Create a test build
+
+Create a test build on the given branch and commit it to a separate branch with the `-test-build` suffix to facilitate testing and development.
+
+1. Go to Workflow [GitHub Actions - Create Test Build](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-test-build.yml)
+1. Manually run the workflow with the target branch.
+1. Wait for the triggered workflow run to complete.
+1. View the summary of the workflow run to use the test build.
+1. Take the branch name `add/my-action` and action path `greet-visitor` as an example:
+   - After a test build is created, it should be able to test the custom action by `woocommerce/grow/greet-visitor@add/my-action-test-build`.
+   - After the `add/my-action` branch is deleted, the Workflow [GitHub Actions - Delete Test Build](https://github.com/woocommerce/grow/actions/workflows/github-actions-delete-test-build.yml) will delete the `my-action-test-build` branch.
 
 ### Directory structure of release build
 
@@ -121,15 +135,21 @@ gitGraph
   commit id: "Changelog"
   commit id: "Bump version"
   branch tmp/release-build order: 0
-  commit id: "Release build" type: HIGHLIGHT tag: "actions-v1.2.3"
+  commit id: "Release build" type: HIGHLIGHT tag: "actions-v2.2.3"
   checkout trunk
   merge release/actions
 
 ```
 
+### Fix bugs for old versions
+
+Branch off from the old version, set the merge base for fixing PR to be the same as the old version, and run the release process for that version after merging.
+
+- [v1 source branch](https://github.com/woocommerce/grow/tree/source/actions-v1/packages/github-actions)
+
 ## Release
 
-### Official release
+### Official release process
 
 1. :technologist: Create the specific branch `release/actions` onto the target revision on `trunk` branch.
 1. :octocat: When the branch `release/actions` is created, will continue to commit the release content to `release/actions` branch.
@@ -137,23 +157,25 @@ gitGraph
    - Prepend changelog to [CHANGELOG.md](CHANGELOG.md).
    - Update versions to [package.json](package.json) and [package-lock.json](package-lock.json).
    - Creates a release PR from `release/actions` branch with `trunk` as the base branch.
-1. :technologist: Check if the new changelog content and updated version are correct.
-   - For a patch version like fixing bugs, increases the Z number. For example, `actions-v1.4.8`.
-   - For a minor version like adding new features, increases the Y number and reset the Z to 0. For example, `actions-v1.5.0`.
-   - For a major version like having incompatible changes, increases the X number and reset the Y and Z to 0. For example, `actions-v2.0.0`.
+1. :technologist: Check if the new changelog content and updated version are correct. Let's assume the current version is `actions-v2.4.7`.
+   - For a patch version like fixing bugs, increases the patch number. For example, `actions-v2.4.8`.
+   - For a minor version like adding new features, increases the minor number and reset the patch number to 0. For example, `actions-v2.5.0`.
+   - For a major version like having incompatible changes, increases the major number and reset the minor and patch numbers to 0. For example, `actions-v3.0.0`.
    - If something needs to be revised, append the changes in the release PR.
 1. :technologist: If it's all good, approve the release PR to proceed with the next workflow.
 1. :octocat: Once the release PR is approved, a workflow will create a new release with a new version tag.
    - Workflow [GitHub Actions - Create Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-release.yml)
 1. :octocat: After publishing the new release, a workflow will continue to create and commit the release build. And then update the references of the corresponding major and minor version tags onto the new release.
    - Workflow [GitHub Actions - Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml)
-   - When the new release version is `actions-v1.4.8`, it should update the references of `actions-v1` and `actions-v1.4` onto `actions-v1.4.8`.
-   - When the new release version is `actions-v1.5.0`, it should update the reference of `actions-v1` and create `actions-v1.5` tag onto `actions-v1.5.0`.
-   - When the new release version is `actions-v2.0.0`, it should create `actions-v2` and `actions-v2.0` tags onto `actions-v2.0.0`.
+   - When the new release version is `actions-v2.4.8`, it should update the references of `actions-v2` and `actions-v2.4` onto `actions-v2.4.8`.
+   - When the new release version is `actions-v2.5.0`, it should update the reference of `actions-v2` and create `actions-v2.5` tag onto `actions-v2.5.0`.
+   - When the new release version is `actions-v3.0.0`, it should create `actions-v3` and `actions-v3.0` tags onto `actions-v3.0.0`.
 1. :technologist: Check if both release workflows are run successfully.
 1. :technologist: Merge the release PR.
 
-### Testing release
+### Testing the release process
+
+:bulb: To create a test build based on a branch, please refer to the [Create a test build](#create-a-test-build) section.
 
 1. Create a new release with a **prerelease version tag**. For example `actions-vX.Y.Z-pre`.
 1. Check if the ["GitHub Actions - Release" workflow](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml) is run successfully.
@@ -161,6 +183,6 @@ gitGraph
 
 <p align="center">
 	<br/><br/>
-	Made with 💜 by <a href="https://woocommerce.com/">WooCommerce</a>.<br/>
+	Made with 💜 by <a href="https://woocommerce.com/">Woo</a>.<br/>
 	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
 </p>

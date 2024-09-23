@@ -22,7 +22,7 @@ jobs:
       release: ${{ steps.set-result.outputs.release }}
     steps:
       - name: Check tag name or workflow_run conclusion
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const { payload, eventName } = context;
@@ -40,7 +40,7 @@ jobs:
       - name: Get release artifact
         id: set-result
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require( 'fs' );
@@ -77,73 +77,29 @@ jobs:
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.resolve-tag.outputs.tag_name }}
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
         with:
-          node-version: 14
+          node-version: 20
           cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
       - name: Create and commit release build
         id: commit-build
-        # Use the github-actions bot account to commit.
-        # https://api.github.com/users/github-actions%5Bbot%5D
-        #
-        # The second `git checkout HEAD^` is to prevent errors from the post jobs like "Prepare node".
         run: |
-          SOURCE_SHA=$(git rev-parse HEAD);
+          REPO_URL="${{ github.server_url }}/${{ github.repository }}"
           TAG_NAME="${{ steps.resolve-tag.outputs.tag_name }}"
 
-          pushd ./packages/github-actions
+          .github/scripts/github-actions-create-and-commit-build.sh "$REPO_URL" "$TAG_NAME"
 
-          # Build the JavaScript actions.
-          npm ci --ignore-scripts
-          npm run build
-
-          # Build the PHP actions into .zip files.
-          ./build-php-actions.sh
-
-          popd
-
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-          git rm -r .
-          git commit -q -m "Create the ${TAG_NAME} release build for the \`github-actions\` package."
-
+          # This `git checkout HEAD^` is to prevent errors from the post jobs like "Prepare node".
           git checkout HEAD^ -- ./packages/github-actions/actions
-          git restore --staged .
-          echo "/packages/github-actions/actions/*/src" > .gitignore
 
-          # Unzip all of the PHP actions and replace them.
-          for zipFile in $(find ./packages/github-actions/actions -name "*.zip" -mindepth 1 -maxdepth 1) ; do
-            actionDir="${zipFile%.*}"
-            rm -rf $actionDir
-            unzip $zipFile -d ./packages/github-actions/actions
-            rm $zipFile
-            echo "${actionDir}/src" | sed -e "s/^\.\//!/g" >> .gitignore
-          done
-
-          # Move all actions to the top directory.
-          git add ./packages/github-actions/actions
-          git mv ./packages/github-actions/actions/* ./
-
-          tee README.md << END
-          # Custom GitHub actions
-          ### This is the release build of version \`${TAG_NAME}\`.
-          ### :pushpin: Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/${SOURCE_SHA}/packages/github-actions).
-          END
-          git add README.md
-          git commit -q --amend -C HEAD
-
-          git push origin HEAD:refs/heads/tmp-gha-release-build
-          git push -d origin tmp-gha-release-build
-
-          git checkout HEAD^ -- ./packages/github-actions/actions
+          # Set output for the next step
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update version tags

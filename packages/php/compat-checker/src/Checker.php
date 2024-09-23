@@ -17,7 +17,11 @@ defined( 'ABSPATH' ) || exit;
  */
 class Checker {
 
-	/** @var Checker The class instance. */
+	/**
+	 * The Checker instance.
+	 *
+	 * @var Checker
+	 */
 	private static $instance;
 
 	/**
@@ -40,7 +44,7 @@ class Checker {
 	 * @param string $file_version The plugin file version. Can be the same as the plugin version.
 	 */
 	public function get_plugin_data( $plugin_file, $file_version ) {
-		$default_headers = array(
+		$default_headers = [
 			'Name'        => 'Plugin Name',
 			'Version'     => 'Version',
 			'RequiresWP'  => 'Requires at least',
@@ -48,7 +52,7 @@ class Checker {
 			'RequiresWC'  => 'WC requires at least',
 			'TestedWP'    => 'Tested up to',
 			'TestedWC'    => 'WC tested up to',
-		);
+		];
 
 		$transient_key = 'wc_grow_compat_checker_' . plugin_basename( $plugin_file ) . $file_version;
 		$plugin_data   = get_transient( $transient_key );
@@ -71,14 +75,25 @@ class Checker {
 	 * @return bool
 	 */
 	public function is_compatible( $plugin_file_path, $file_version ) {
-		$checks      = array(
+		$checks          = [
 			WPCompatibility::class,
 			WCCompatibility::class,
-		);
-		$plugin_data = $this->get_plugin_data( $plugin_file_path, $file_version );
+		];
+		$plugin_data     = $this->get_plugin_data( $plugin_file_path, $file_version );
+		$plugin_basename = plugin_basename( $plugin_file_path );
 
+		// Remove dismissable notices on plugin deactivation.
+		register_deactivation_hook(
+			$plugin_file_path,
+			[
+				WCCompatibility::instance( $plugin_basename ),
+				'remove_dismissable_notices',
+			]
+		);
+
+		// Run all compatibility checks.
 		foreach ( $checks as $compatibility ) {
-			if ( ! $compatibility::instance()->is_compatible( $plugin_data ) ) {
+			if ( ! $compatibility::instance( $plugin_basename )->is_compatible( $plugin_data ) ) {
 				return false;
 			}
 		}

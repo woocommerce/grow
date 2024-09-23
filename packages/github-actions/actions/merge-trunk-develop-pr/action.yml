@@ -6,14 +6,14 @@ runs:
   steps:
     - name: "Make the PR"
       if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/') && github.event.pull_request.user.login == 'github-actions[bot]' }}
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
-          const title = '${{github.event.pull_request.title}} - Merge `trunk` to `develop`';
+          const title = `${ context.payload.pull_request.title } - Merge \`trunk\` to \`develop\``;
           const opts = await github.rest.pulls.create( {
             ...context.repo,
             base: 'develop',
             head: 'trunk',
             title,
-            body: '${{ github.event.pull_request.html_url }}',
+            body: context.payload.pull_request.html_url,
           } );

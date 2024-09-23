@@ -102,9 +102,11 @@ class Documentor {
 					continue;
 				}
 
-				$current_file     = $f;
+				// It's a local file.
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$tokens           = token_get_all( file_get_contents( $f ) );
 				$token_type       = false;
+				$current_file     = $f;
 				$current_class    = '';
 				$current_function = '';
 
@@ -139,7 +141,7 @@ class Documentor {
 								// Keep adding to hook until we find a comma or colon.
 								$loop = 0;
 								do {
-									$loop++;
+									++$loop;
 									$prev_hook = is_string( $tokens[ $index + $loop - 1 ] )
 										? $tokens[ $index + $loop - 1 ] : $tokens[ $index + $loop - 1 ][1];
 									$next_hook = is_string( $tokens[ $index + $loop ] ) ? $tokens[ $index + $loop ]
@@ -259,7 +261,7 @@ class Documentor {
 	 * @param array $hook_list List of hooks.
 	 */
 	protected function get_delimited_list_output( array $hook_list ): string {
-		$output = "# Hooks Reference\n\n";
+		$output  = "# Hooks Reference\n\n";
 		$output .= "A list of hooks, e.g. \`actions\` and \`filters\`, that are defined or used in this project.\n\n";
 
 		foreach ( $hook_list as $hooks ) {
@@ -269,7 +271,7 @@ class Documentor {
 					$link_list[] = "- {$this->get_file_link( $file )}";
 				}
 
-				$links  = implode( "\n", $link_list );
+				$links   = implode( "\n", $link_list );
 				$output .= sprintf(
 					"## %s\n\n**Type**: %s\n\n**Used in**:\n\n%s\n\n",
 					$hook,
@@ -284,6 +286,8 @@ class Documentor {
 
 	/**
 	 * Generate hooks documentation.
+	 *
+	 * @throws RuntimeException When no hooks are found.
 	 */
 	public function generate_hooks_docs(): string {
 		$hook_list = $this->get_hooks( $this->get_files_to_scan() );
@@ -313,6 +317,8 @@ class Documentor {
 	 * @param array $args
 	 *
 	 * @return void
+	 *
+	 * @throws RuntimeException When any arguments are missing.
 	 */
 	protected function validate_args( array $defaults, array $args ): void {
 		$arg_count     = count( $args );
