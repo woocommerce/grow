@@ -22,7 +22,7 @@ See [action.yml](action.yml)
 jobs:
   qit-test:
     name: Run QIT Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       QIT_DISABLE_ONBOARDING: yes
     steps:

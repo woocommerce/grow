@@ -22,7 +22,7 @@ See [action.yml](action.yml)
 jobs:
   qit-test:
     name: Run QIT Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:    
       - name: Delegate QIT Tests
         uses: woocommerce/grow/run-qit-extension@actions-v2
