@@ -1,5 +1,12 @@
 # Changelog
 
+## 2025-06-05 (2.2.2)
+### Tweaked 🔧
+* Recreate package-lock in the `github-actions` package to resolve some vulnerabilities of npm packages. (https://github.com/woocommerce/grow/pull/160)
+* Bump undici from 5.28.5 to 5.29.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/166)
+### Documentation 📚
+* Change the runners in the examples of QIT actions in the `github-actions` package to ubuntu-latest. (https://github.com/woocommerce/grow/pull/162)
+
 ## 2025-01-22 (2.2.1)
 ### Tweaked 🔧
 * Bump undici from 5.28.4 to 5.28.5 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/154)
