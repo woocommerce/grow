@@ -1,7 +1,0 @@
-Description:
-	Generates a bunch of files and configs based on the selected options to be used in repos maintained by the Grow Team.
-
-Example:
-	yo grow
-
-	This will compose `yo grow:github` and `yo grow:dotfiles` that could be as well used separately.
