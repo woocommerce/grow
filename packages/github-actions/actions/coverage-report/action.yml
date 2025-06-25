@@ -42,7 +42,7 @@ runs:
 
     # Download coverage report artifact
     - if: github.event_name == 'pull_request'
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@09f2f74827fd3a8607589e5ad7f9398816f540fe # v3.1.4
       continue-on-error: true
       with:
         workflow: ${{ inputs.workflow }}
@@ -59,7 +59,7 @@ runs:
 
     # Coverage report as PR comment
     - if: github.event_name == 'pull_request'
-      uses: lucassabreu/comment-coverage-clover@main
+      uses: lucassabreu/comment-coverage-clover@6da350e7fff3254235663a409af8739e9d289d63 # v0.15.4
       with:
         file: "${{ inputs.report-path }}/${{ inputs.report-file }}"
         base-file: "${{ inputs.report-path }}/${{ inputs.base-branch }}/${{ inputs.report-file }}"
