@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Deploy
-      uses: s0/git-publish-subdir-action@develop
+      uses: s0/git-publish-subdir-action@92faf786f11dfa44fc366ac3eb274d193ca1af7e # v.2.6.0
       env:
         REPO: self
         BRANCH: compat-checker
