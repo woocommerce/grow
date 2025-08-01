@@ -2,6 +2,7 @@ changelog:
   exclude:
     authors:
       - github-actions
+      - github-actions[bot]
     labels:
       - "changelog: none"
 
