@@ -8,14 +8,6 @@ import core from '@actions/core';
  */
 import handleActionErrors from '../../../utils/handle-action-errors.js';
 
-async function getPluginReleases( inputs ) {
-	const apiEndpoint = getAPIEndpoint( inputs.slug );
-
-	return fetch( apiEndpoint )
-		.then( ( res ) => res.json() )
-		.then( ( data ) => parsePluginVersions( data, inputs ) );
-}
-
 function getAPIEndpoint( slug ) {
 	if ( slug === 'wordpress' ) {
 		return 'https://api.wordpress.org/core/version-check/1.7/';
@@ -40,6 +32,57 @@ function getInput( key ) {
 function setOutput( key, value ) {
 	core.info( `==> Output "${ key }":\n${ value }` );
 	core.setOutput( key, value );
+}
+
+function isRC( version ) {
+	return version.toLowerCase().includes( 'rc' );
+}
+
+function isMinorAlreadyAdded( output, version ) {
+	if (
+		output.find( ( el ) => {
+			const elSegments = el.split( '.' );
+			const versionSegments = version.split( '.' );
+			return (
+				elSegments[ 0 ] === versionSegments[ 0 ] &&
+				elSegments[ 1 ] === versionSegments[ 1 ]
+			);
+		} )
+	) {
+		return true;
+	}
+}
+
+function semverCompare( a, b ) {
+	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
+
+	const aMatches = a.toLowerCase().match( regex );
+	const [ , majorA, minorA, patchA, rcA ] = aMatches;
+
+	const bMatches = b.toLowerCase().match( regex );
+	const [ , majorB, minorB, patchB, rcB ] = bMatches;
+
+	if ( majorA !== majorB ) {
+		return majorB - majorA;
+	}
+	if ( minorA !== minorB ) {
+		return minorB - minorA;
+	}
+	if ( patchA !== patchB ) {
+		return patchB - patchA;
+	}
+
+	if ( ! rcA ) {
+		return -1;
+	}
+	if ( ! rcB ) {
+		return 1;
+	}
+
+	return (
+		parseInt( rcB.replace( '-rc.', '' ), 10 ) -
+		parseInt( rcA.replace( '-rc.', '' ), 10 )
+	);
 }
 
 function parsePluginVersions( releases = {}, inputs ) {
@@ -89,45 +132,12 @@ function parsePluginVersions( releases = {}, inputs ) {
 	setOutput( 'versions', output );
 }
 
-function isRC( version ) {
-	return version.toLowerCase().includes( 'rc' );
-}
+async function getPluginReleases( inputs ) {
+	const apiEndpoint = getAPIEndpoint( inputs.slug );
 
-function isMinorAlreadyAdded( output, version ) {
-	if (
-		output.find( ( el ) => {
-			const elSegments = el.split( '.' );
-			const versionSegments = version.split( '.' );
-			return (
-				elSegments[ 0 ] === versionSegments[ 0 ] &&
-				elSegments[ 1 ] === versionSegments[ 1 ]
-			);
-		} )
-	) {
-		return true;
-	}
-}
-
-function semverCompare( a, b ) {
-	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
-
-	const aMatches = a.toLowerCase().match( regex );
-	const [ , majorA, minorA, patchA, rcA ] = aMatches;
-
-	const bMatches = b.toLowerCase().match( regex );
-	const [ , majorB, minorB, patchB, rcB ] = bMatches;
-
-	if ( majorA !== majorB ) return majorB - majorA;
-	if ( minorA !== minorB ) return minorB - minorA;
-	if ( patchA !== patchB ) return patchB - patchA;
-
-	if ( ! rcA ) return -1;
-	if ( ! rcB ) return 1;
-
-	return (
-		parseInt( rcB.replace( '-rc.', '' ), 10 ) -
-		parseInt( rcA.replace( '-rc.', '' ), 10 )
-	);
+	return fetch( apiEndpoint )
+		.then( ( res ) => res.json() )
+		.then( ( data ) => parsePluginVersions( data, inputs ) );
 }
 
 // Directly perform this action if it's running in GitHub Actions.
