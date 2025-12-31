@@ -3,8 +3,7 @@
  */
 import { default as path, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import assert from 'yeoman-assert';
-import helpers from 'yeoman-test';
+import helpers, { result } from 'yeoman-test';
 
 const __dirname = dirname( fileURLToPath( import.meta.url ) );
 const githubPath = path.join( __dirname, './index.js' );
@@ -12,17 +11,17 @@ const githubPath = path.join( __dirname, './index.js' );
 describe( ':github', function () {
 	it( 'generate `.github/*.md` files', async function () {
 		await helpers.run( githubPath ).then( function () {
-			assert.file( '.github/CODE_OF_CONDUCT.md' );
-			assert.file( '.github/CONTRIBUTING.md' );
-			assert.file( '.github/ISSUE_TEMPLATE/1-bug_report.md' );
-			assert.file( '.github/ISSUE_TEMPLATE/2-new_feature.md' );
-			assert.file( '.github/PULL_REQUEST_TEMPLATE.md' );
-			assert.file( '.github/SECURITY.md' );
+			result.assertFile( '.github/CODE_OF_CONDUCT.md' );
+			result.assertFile( '.github/CONTRIBUTING.md' );
+			result.assertFile( '.github/ISSUE_TEMPLATE/1-bug_report.md' );
+			result.assertFile( '.github/ISSUE_TEMPLATE/2-new_feature.md' );
+			result.assertFile( '.github/PULL_REQUEST_TEMPLATE.md' );
+			result.assertFile( '.github/SECURITY.md' );
 		} );
 	} );
 	it( 'generate `.github/workflows/branch-labels.yml` file', async function () {
 		await helpers.run( githubPath ).then( function () {
-			assert.file( '.github/workflows/branch-labels.yml' );
+			result.assertFile( '.github/workflows/branch-labels.yml' );
 		} );
 	} );
 	it( 'Should use given project title in CONTRIBUTING.md', async function () {
@@ -30,7 +29,7 @@ describe( ':github', function () {
 			.run( githubPath )
 			.withPrompts( { title: 'MyAwesomeProject Title' } )
 			.then( function () {
-				assert.fileContent(
+				result.assertFileContent(
 					'.github/CONTRIBUTING.md',
 					'Thanks for your interest in contributing to MyAwesomeProject Title!'
 				);
@@ -46,7 +45,7 @@ describe( ':github', function () {
 				);
 			} )
 			.then( function () {
-				assert.fileContent(
+				result.assertFileContent(
 					'.github/CONTRIBUTING.md',
 					`Thanks for your interest in contributing to Package Title!`
 				);
@@ -54,7 +53,7 @@ describe( ':github', function () {
 	} );
 	it( 'Should use folder name as the project title in CONTRIBUTING.md', async function () {
 		await helpers.run( githubPath ).then( function () {
-			assert.fileContent(
+			result.assertFileContent(
 				'.github/CONTRIBUTING.md',
 				`Thanks for your interest in contributing to ${ path.basename(
 					process.cwd()
@@ -67,7 +66,7 @@ describe( ':github', function () {
 			.run( githubPath )
 			.withPrompts( { slug: 'foo-bar' } )
 			.then( function () {
-				assert.fileContent(
+				result.assertFileContent(
 					'.github/CONTRIBUTING.md',
 					'https://woocommerce.com/feature-requests/foo-bar'
 				);
@@ -81,7 +80,7 @@ describe( ':github', function () {
 				// Appname default to the folder name.
 				const appname = runResult.generator.appname;
 
-				assert.fileContent(
+				result.assertFileContent(
 					'.github/CONTRIBUTING.md',
 					`https://woocommerce.com/feature-requests/${ appname }`
 				);

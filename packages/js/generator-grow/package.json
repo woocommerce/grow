@@ -31,7 +31,10 @@
       "jest/expect-expect": [
         "warn",
         {
-          "assertFunctionNames": ["assert"]
+          "assertFunctionNames": [
+            "result.assertFile",
+            "result.assertFileContent"
+          ]
         }
       ]
     }
