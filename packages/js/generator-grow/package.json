@@ -1,6 +1,6 @@
 {
   "name": "generator-grow",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Generate the boilerplate for a WooCommerce plugin repo by Grow Team.",
   "main": "generators/app/index.js",
   "type": "module",
