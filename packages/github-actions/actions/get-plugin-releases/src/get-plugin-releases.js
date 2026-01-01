@@ -2,6 +2,10 @@
  * External dependencies
  */
 import core from '@actions/core';
+import semverValid from 'semver/functions/valid.js';
+import semverRcompare from 'semver/functions/rcompare.js';
+import semverPrerelease from 'semver/functions/prerelease.js';
+import semverCoerce from 'semver/functions/coerce.js';
 
 /**
  * Internal dependencies
@@ -35,54 +39,25 @@ function setOutput( key, value ) {
 }
 
 function isRC( version ) {
-	return version.toLowerCase().includes( 'rc' );
+	const pre = semverPrerelease( version.toLowerCase() );
+	return pre?.[ 0 ] === 'rc';
 }
 
 function isMinorAlreadyAdded( output, version ) {
+	const currentVer = semverCoerce( version );
+
 	if (
 		output.find( ( el ) => {
-			const elSegments = el.split( '.' );
-			const versionSegments = version.split( '.' );
+			const elVer = semverCoerce( el );
+
 			return (
-				elSegments[ 0 ] === versionSegments[ 0 ] &&
-				elSegments[ 1 ] === versionSegments[ 1 ]
+				elVer.major === currentVer.major &&
+				elVer.minor === currentVer.minor
 			);
 		} )
 	) {
 		return true;
 	}
-}
-
-function semverCompare( a, b ) {
-	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
-
-	const aMatches = a.toLowerCase().match( regex );
-	const [ , majorA, minorA, patchA, rcA ] = aMatches;
-
-	const bMatches = b.toLowerCase().match( regex );
-	const [ , majorB, minorB, patchB, rcB ] = bMatches;
-
-	if ( majorA !== majorB ) {
-		return majorB - majorA;
-	}
-	if ( minorA !== minorB ) {
-		return minorB - minorA;
-	}
-	if ( patchA !== patchB ) {
-		return patchB - patchA;
-	}
-
-	if ( ! rcA ) {
-		return -1;
-	}
-	if ( ! rcB ) {
-		return 1;
-	}
-
-	return (
-		parseInt( rcB.replace( '-rc.', '' ), 10 ) -
-		parseInt( rcA.replace( '-rc.', '' ), 10 )
-	);
 }
 
 export function parsePluginVersions( releases = {}, inputs ) {
@@ -92,14 +67,15 @@ export function parsePluginVersions( releases = {}, inputs ) {
 	if ( slug !== 'wordpress' ) {
 		const latest = releases.version;
 		const versions = Object.keys( releases.versions )
-			.filter(
-				( version ) =>
-					version !== 'trunk' &&
-					version !== 'other' &&
-					! version.includes( 'beta' ) &&
-					( isRC( version ) || semverCompare( latest, version ) <= 0 )
-			)
-			.sort( semverCompare );
+			.filter( ( version ) => {
+				if ( version.includes( 'beta' ) || ! semverValid( version ) ) {
+					return false;
+				}
+				return (
+					isRC( version ) || semverRcompare( latest, version ) <= 0
+				);
+			} )
+			.sort( semverRcompare );
 
 		for ( const version of versions ) {
 			if ( output.length === numberOfReleases ) {

@@ -268,13 +268,14 @@ describe( 'get-plugin-releases', () => {
 			assert.deepStrictEqual( result, [ '10.5.0-rc.1', '10.4.3' ] );
 		} );
 
-		it( 'Should ignore "trunk", "beta" and "other"', () => {
+		it( 'Should ignore "trunk", "beta", "other", and invalid semver strings', () => {
 			const data = {
 				version: '1.0.0',
 				versions: {
 					'1.0.0': '',
 					'1.0.1-beta.1': '',
 					other: '',
+					'invalid-ver': '',
 					trunk: '',
 				},
 			};
