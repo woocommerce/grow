@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { ESLint } from 'eslint';
+import { ESLint } from 'eslint'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * Internal dependencies

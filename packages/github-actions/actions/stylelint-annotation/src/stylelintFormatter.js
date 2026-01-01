@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import stylelint from 'stylelint';
+import stylelint from 'stylelint'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * Internal dependencies
