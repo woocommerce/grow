@@ -85,7 +85,7 @@ function semverCompare( a, b ) {
 	);
 }
 
-function parsePluginVersions( releases = {}, inputs ) {
+export function parsePluginVersions( releases = {}, inputs ) {
 	const { slug, numberOfReleases, includeRC, includePatches } = inputs;
 	const output = [];
 
@@ -129,7 +129,7 @@ function parsePluginVersions( releases = {}, inputs ) {
 		}
 	}
 
-	setOutput( 'versions', output );
+	return output;
 }
 
 async function getPluginReleases( inputs ) {
@@ -150,6 +150,7 @@ if ( process.env.GITHUB_ACTIONS ) {
 	};
 
 	getPluginReleases( inputs )
+		.then( ( output ) => setOutput( 'versions', output ) )
 		.then( () => core.info( 'Finish getting the release versions.' ) )
 		.catch( handleActionErrors );
 }
