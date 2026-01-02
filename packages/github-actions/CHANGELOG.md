@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-01-02 (2.3.0)
+### New Features 🎉
+* Add support to the `get-plugin-releases` action for fetching releases from GitHub. (https://github.com/woocommerce/grow/pull/190)
+### Updated ✨
+* Bump npm dependencies for the `github-actions` package. (https://github.com/woocommerce/grow/pull/189)
+### Tweaked 🔧
+* Update the release config to exclude the github-actions bot account from GitHub release notes. (https://github.com/woocommerce/grow/pull/174)
+* Fix linting errors for the `get-plugin-releases` action. (https://github.com/woocommerce/grow/pull/186)
+
 ## 2025-06-05 (2.2.2)
 ### Tweaked 🔧
 * Recreate package-lock in the `github-actions` package to resolve some vulnerabilities of npm packages. (https://github.com/woocommerce/grow/pull/160)
