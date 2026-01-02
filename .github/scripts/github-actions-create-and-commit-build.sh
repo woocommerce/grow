@@ -35,8 +35,9 @@ git commit -q -m "Create the ${TAG_NAME} release build for the \`github-actions\
 git checkout HEAD^ -- ./packages/github-actions/actions
 git restore --staged .
 
-## 3. Avoid committing src directories to the build.
+## 3. Avoid committing src and test directories to the build.
 echo "/packages/github-actions/actions/*/src" > .gitignore
+echo "**/__tests__/" >> .gitignore
 
 ## 4. Unzip all of the PHP actions and replace them.
 for zipFile in $(find ./packages/github-actions/actions -name "*.zip" -mindepth 1 -maxdepth 1) ; do

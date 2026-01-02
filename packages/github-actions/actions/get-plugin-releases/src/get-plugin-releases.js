@@ -2,18 +2,35 @@
  * External dependencies
  */
 import core from '@actions/core';
+import semverValid from 'semver/functions/valid.js';
+import semverRcompare from 'semver/functions/rcompare.js';
+import semverPrerelease from 'semver/functions/prerelease.js';
+import semverCoerce from 'semver/functions/coerce.js';
 
 /**
  * Internal dependencies
  */
 import handleActionErrors from '../../../utils/handle-action-errors.js';
 
-function getAPIEndpoint( slug ) {
-	if ( slug === 'wordpress' ) {
-		return 'https://api.wordpress.org/core/version-check/1.7/';
+function getFetchArgs( { source, slug, githubToken } ) {
+	if ( source === 'github' ) {
+		const endpoint = `https://api.github.com/repos/${ slug }/releases?per_page=100`;
+		const headers = {
+			Accept: 'application/vnd.github+json',
+			'X-GitHub-Api-Version': '2022-11-28',
+		};
+
+		if ( githubToken ) {
+			headers.Authorization = `Bearer ${ githubToken }`;
+		}
+
+		return [ endpoint, { headers } ];
 	}
 
-	return `https://api.wordpress.org/plugins/info/1.0/${ slug }.json`;
+	if ( slug === 'wordpress' ) {
+		return [ 'https://api.wordpress.org/core/version-check/1.7/' ];
+	}
+	return [ `https://api.wordpress.org/plugins/info/1.0/${ slug }.json` ];
 }
 
 function getInput( key ) {
@@ -29,23 +46,16 @@ function getInput( key ) {
 	return input;
 }
 
-function setOutput( key, value ) {
-	core.info( `==> Output "${ key }":\n${ value }` );
-	core.setOutput( key, value );
-}
-
-function isRC( version ) {
-	return version.toLowerCase().includes( 'rc' );
-}
-
 function isMinorAlreadyAdded( output, version ) {
+	const currentVer = semverCoerce( version );
+
 	if (
 		output.find( ( el ) => {
-			const elSegments = el.split( '.' );
-			const versionSegments = version.split( '.' );
+			const elVer = semverCoerce( el );
+
 			return (
-				elSegments[ 0 ] === versionSegments[ 0 ] &&
-				elSegments[ 1 ] === versionSegments[ 1 ]
+				elVer.major === currentVer.major &&
+				elVer.minor === currentVer.minor
 			);
 		} )
 	) {
@@ -53,89 +63,80 @@ function isMinorAlreadyAdded( output, version ) {
 	}
 }
 
-function semverCompare( a, b ) {
-	const regex = /^(\d+)\.(\d+)\.(\d+)(-rc\.\d+)?$/;
+function normalizeData( data, inputs ) {
+	let latest;
+	let rawVersions;
 
-	const aMatches = a.toLowerCase().match( regex );
-	const [ , majorA, minorA, patchA, rcA ] = aMatches;
+	if ( inputs.source === 'github' ) {
+		const latestRelease = data.find( ( release ) => {
+			return (
+				! release.prerelease &&
+				! release.draft &&
+				semverValid( release.tag_name )
+			);
+		} );
 
-	const bMatches = b.toLowerCase().match( regex );
-	const [ , majorB, minorB, patchB, rcB ] = bMatches;
+		latest = latestRelease?.tag_name;
+		rawVersions = data.reduce( ( acc, release ) => {
+			if ( ! release.draft ) {
+				acc.push( release.tag_name );
+			}
+			return acc;
+		}, [] );
+	} else if ( inputs.slug === 'wordpress' ) {
+		rawVersions = data.offers.reduce( ( acc, offer ) => {
+			if ( offer.new_files ) {
+				acc.push( offer.version );
+			}
+			return acc;
+		}, [] );
+	} else {
+		latest = data.version;
+		rawVersions = Object.keys( data.versions );
+	}
 
-	if ( majorA !== majorB ) {
-		return majorB - majorA;
-	}
-	if ( minorA !== minorB ) {
-		return minorB - minorA;
-	}
-	if ( patchA !== patchB ) {
-		return patchB - patchA;
-	}
-
-	if ( ! rcA ) {
-		return -1;
-	}
-	if ( ! rcB ) {
-		return 1;
-	}
-
-	return (
-		parseInt( rcB.replace( '-rc.', '' ), 10 ) -
-		parseInt( rcA.replace( '-rc.', '' ), 10 )
-	);
+	return { latest, rawVersions };
 }
 
-function parsePluginVersions( releases = {}, inputs ) {
+export function parsePluginVersions( data, inputs ) {
+	const { latest, rawVersions } = normalizeData( data, inputs );
 	const { slug, numberOfReleases, includeRC, includePatches } = inputs;
-	const output = [];
+	const versions = [];
 
-	if ( slug !== 'wordpress' ) {
-		const latest = releases.version;
-		const versions = Object.keys( releases.versions )
-			.filter(
-				( version ) =>
-					version !== 'trunk' &&
-					version !== 'other' &&
-					! version.includes( 'beta' ) &&
-					( isRC( version ) || semverCompare( latest, version ) <= 0 )
-			)
-			.sort( semverCompare );
+	let organizedVersions = rawVersions;
 
-		for ( const version of versions ) {
-			if ( output.length === numberOfReleases ) {
-				break;
-			}
+	if ( inputs.source === 'github' || slug !== 'wordpress' ) {
+		organizedVersions = rawVersions
+			.filter( ( version ) => {
+				if ( ! semverValid( version ) ) {
+					return false;
+				}
 
-			if (
-				( includeRC || ! isRC( version ) ) &&
-				( includePatches || ! isMinorAlreadyAdded( output, version ) )
-			) {
-				output.push( version );
-			}
+				const pre = semverPrerelease( version.toLowerCase() );
+				if ( pre ) {
+					return includeRC && pre[ 0 ] === 'rc';
+				}
+
+				return semverRcompare( latest, version ) <= 0;
+			} )
+			.sort( semverRcompare );
+	}
+
+	for ( const version of organizedVersions ) {
+		if ( versions.length === numberOfReleases ) {
+			break;
 		}
-	} else {
-		for ( const release of releases.offers ) {
-			if ( output.length === numberOfReleases ) {
-				break;
-			}
 
-			if (
-				release.new_files &&
-				( includePatches ||
-					! isMinorAlreadyAdded( output, release.version ) )
-			) {
-				output.push( release.version );
-			}
+		if ( includePatches || ! isMinorAlreadyAdded( versions, version ) ) {
+			versions.push( version );
 		}
 	}
 
-	setOutput( 'versions', output );
+	return versions;
 }
 
 async function getPluginReleases( inputs ) {
-	const apiEndpoint = getAPIEndpoint( inputs.slug );
-
-	return fetch( apiEndpoint )
+	return fetch( ...getFetchArgs( inputs ) )
 		.then( ( res ) => res.json() )
 		.then( ( data ) => parsePluginVersions( data, inputs ) );
 }
@@ -144,12 +145,18 @@ async function getPluginReleases( inputs ) {
 if ( process.env.GITHUB_ACTIONS ) {
 	const inputs = {
 		slug: getInput( 'slug' ),
+		source: getInput( 'source' ),
+		githubToken: getInput( 'github-token' ),
 		numberOfReleases: parseInt( getInput( 'releases' ), 10 ),
 		includeRC: getInput( 'includeRC' ),
 		includePatches: getInput( 'includePatches' ),
 	};
 
 	getPluginReleases( inputs )
-		.then( () => core.info( 'Finish getting the release versions.' ) )
+		.then( ( versions ) => {
+			core.info( `==> Output "versions":\n${ versions }` );
+			core.setOutput( 'versions', versions );
+			core.info( 'Finish getting the release versions.' );
+		} )
 		.catch( handleActionErrors );
 }

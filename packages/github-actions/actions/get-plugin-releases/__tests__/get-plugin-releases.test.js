@@ -1,0 +1,529 @@
+/**
+ * External dependencies
+ */
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+
+/**
+ * Internal dependencies
+ */
+import { default as wcData } from './fixtures/woocommerce.json' with { type: 'json' };
+import { default as wpData } from './fixtures/wordpress.json' with { type: 'json' };
+import { default as githubData } from './fixtures/github.json' with { type: 'json' };
+import { parsePluginVersions } from '../src/get-plugin-releases.js';
+
+const wcRcData = {
+	version: '10.3.7',
+	versions: {
+		'10.3.0': '',
+		'10.3.0-rc.1': '',
+		'10.3.0-rc.2': '',
+		'10.3.1': '',
+		'10.3.2': '',
+		'10.4.0-rc.1': '',
+		'8.0.0': '',
+		'8.0.0-rc.1': '',
+		'8.0.0-rc.2': '',
+		'9.0.0': '',
+		'9.0.0-rc.1': '',
+		'9.9.0-rc.1': '',
+		'9.9.1': '',
+		trunk: '',
+	},
+};
+
+const githubRcData = [
+	{
+		tag_name: 'nightly',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: 'trunk-snapshot',
+		draft: true,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.4.0',
+		draft: true,
+		prerelease: false,
+	},
+	{
+		tag_name: '10.4.0-rc.2',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.4.0-rc.1',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.4.0-beta.2',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.3.6',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '10.4.0-beta.1',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.4.0-dev',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.3.0',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '10.3.0-rc.2',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.3.0-rc.1',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.3.0-beta.2',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.3.0-beta.1',
+		draft: false,
+		prerelease: true,
+	},
+	{
+		tag_name: '10.2.2',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '10.2.1',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '9.9.1',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '9.0.0',
+		draft: false,
+		prerelease: false,
+	},
+	{
+		tag_name: '8.0.0',
+		draft: false,
+		prerelease: false,
+	},
+];
+
+describe( 'get-plugin-releases', () => {
+	describe( 'WordPress from WPORG', () => {
+		it( 'Get latest 3 releases', () => {
+			const inputs = {
+				slug: 'wordpress',
+				numberOfReleases: 3,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wpData, inputs );
+
+			assert.deepStrictEqual( result, [ '6.9', '6.8.3', '6.7.4' ] );
+		} );
+
+		it( 'Get latest 1 release', () => {
+			const inputs = {
+				slug: 'wordpress',
+				numberOfReleases: 1,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wpData, inputs );
+
+			assert.deepStrictEqual( result, [ '6.9' ] );
+		} );
+
+		it( 'Get latest 10 releases', () => {
+			const inputs = {
+				slug: 'wordpress',
+				numberOfReleases: 10,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wpData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'6.9',
+				'6.8.3',
+				'6.7.4',
+				'6.6.4',
+				'6.5.7',
+				'6.4.7',
+				'6.3.7',
+				'6.2.8',
+				'6.1.9',
+				'6.0.11',
+			] );
+		} );
+
+		it( '`includePatches` has no effect', () => {
+			// Because the data source only provides the latest patch for each minor version
+			const inputs = {
+				slug: 'wordpress',
+				numberOfReleases: 3,
+				includeRC: false,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( wpData, inputs );
+
+			assert.deepStrictEqual( result, [ '6.9', '6.8.3', '6.7.4' ] );
+		} );
+
+		it( '`includeRC` has no effect', () => {
+			// Because the data source does not include RC versions
+			const inputs = {
+				slug: 'wordpress',
+				numberOfReleases: 3,
+				includeRC: false,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( wpData, inputs );
+
+			assert.deepStrictEqual( result, [ '6.9', '6.8.3', '6.7.4' ] );
+		} );
+	} );
+
+	describe( 'WooCommerce from WPORG', () => {
+		it( 'Get latest 3 releases without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 3,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wcData, inputs );
+
+			assert.deepStrictEqual( result, [ '10.4.3', '10.3.7', '10.2.3' ] );
+		} );
+
+		it( 'Get latest 1 release without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 1,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wcData, inputs );
+
+			assert.deepStrictEqual( result, [ '10.4.3' ] );
+		} );
+
+		it( 'Get latest 10 releases without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 10,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.3',
+				'10.3.7',
+				'10.2.3',
+				'10.1.3',
+				'10.0.5',
+				'9.9.6',
+				'9.8.6',
+				'9.7.2',
+				'9.6.3',
+				'9.5.3',
+			] );
+		} );
+
+		it( 'Get latest 10 releases including patches but without RC', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 10,
+				includeRC: false,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( wcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.3',
+				'10.4.2',
+				'10.4.1',
+				'10.4.0',
+				'10.3.7',
+				'10.3.6',
+				'10.3.5',
+				'10.3.4',
+				'10.3.3',
+				'10.3.2',
+			] );
+		} );
+
+		it( 'Get latest 5 releases including RC but without patches', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 10,
+				includeRC: true,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( wcRcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.0-rc.1',
+				'10.3.2',
+				'9.9.1',
+				'9.0.0',
+				'8.0.0',
+			] );
+		} );
+
+		it( 'Get latest 10 releases including RC and patches', () => {
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 10,
+				includeRC: true,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( wcRcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.0-rc.1',
+				'10.3.2',
+				'10.3.1',
+				'10.3.0',
+				'10.3.0-rc.2',
+				'10.3.0-rc.1',
+				'9.9.1',
+				'9.9.0-rc.1',
+				'9.0.0',
+				'9.0.0-rc.1',
+			] );
+		} );
+	} );
+
+	describe( 'WooCommerce from GitHub', () => {
+		it( 'Get latest 3 releases without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 3,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( githubData, inputs );
+
+			assert.deepStrictEqual( result, [ '10.4.3', '10.3.6', '10.2.2' ] );
+		} );
+
+		it( 'Get latest 1 release without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 1,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( githubData, inputs );
+
+			assert.deepStrictEqual( result, [ '10.4.3' ] );
+		} );
+
+		it( 'Get latest 10 releases without RC or patches', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 10,
+				includeRC: false,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( githubData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.3',
+				'10.3.6',
+				'10.2.2',
+				'10.1.2',
+				'10.0.4',
+				'9.9.5',
+				'9.8.5',
+				'9.7.1',
+				'9.6.2',
+				'9.5.2',
+			] );
+		} );
+
+		it( 'Get latest 10 releases including patches but without RC', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 10,
+				includeRC: false,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( githubData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.3',
+				'10.4.2',
+				'10.4.0',
+				'10.3.6',
+				'10.3.5',
+				'10.3.4',
+				'10.3.3',
+				'10.3.2',
+				'10.3.1',
+				'10.3.0',
+			] );
+		} );
+
+		it( 'Get latest 5 releases including RC but without patches', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 10,
+				includeRC: true,
+				includePatches: false,
+			};
+			const result = parsePluginVersions( githubRcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.0-rc.2',
+				'10.3.6',
+				'10.2.2',
+				'9.9.1',
+				'9.0.0',
+				'8.0.0',
+			] );
+		} );
+
+		it( 'Get latest 10 releases including RC and patches', () => {
+			const inputs = {
+				slug: 'woocommerce/woocommerce',
+				source: 'github',
+				numberOfReleases: 10,
+				includeRC: true,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( githubRcData, inputs );
+
+			assert.deepStrictEqual( result, [
+				'10.4.0-rc.2',
+				'10.4.0-rc.1',
+				'10.3.6',
+				'10.3.0',
+				'10.3.0-rc.2',
+				'10.3.0-rc.1',
+				'10.2.2',
+				'10.2.1',
+				'9.9.1',
+				'9.0.0',
+			] );
+		} );
+	} );
+
+	describe( 'Edge cases', () => {
+		it( 'Should ignore versions newer than the latest stable version (unless RC)', () => {
+			const data = {
+				version: '10.4.3', // Latest stable version
+				versions: {
+					'10.4.3': '',
+					'10.5.0': '',
+					'10.5.0-rc.1': '',
+				},
+			};
+
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 2,
+				includeRC: false,
+				includePatches: false,
+			};
+			let result = parsePluginVersions( data, inputs );
+
+			assert.deepStrictEqual( result, [ '10.4.3' ] );
+
+			// When including RC, 10.5.0 should still be omitted, but 10.5.0-rc.1 should appear
+			result = parsePluginVersions( data, {
+				...inputs,
+				includeRC: true,
+			} );
+
+			assert.deepStrictEqual( result, [ '10.5.0-rc.1', '10.4.3' ] );
+		} );
+
+		it( 'Should ignore GitHub draft releases even if they are older than the latest stable', () => {
+			const data = [
+				{
+					tag_name: '1.0.1', // Latest stable
+					draft: false,
+					prerelease: false,
+				},
+				{
+					tag_name: '1.0.0', // Older stable
+					draft: false,
+					prerelease: false,
+				},
+				{
+					tag_name: '0.9.9', // Old draft should be ignored
+					draft: true,
+					prerelease: false,
+				},
+			];
+			const inputs = {
+				source: 'github',
+				slug: 'test/repo',
+				numberOfReleases: 5,
+				includeRC: false,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( data, inputs );
+
+			assert.deepStrictEqual( result, [ '1.0.1', '1.0.0' ] );
+		} );
+
+		it( 'Should ignore "trunk", "beta", "other", and invalid semver strings', () => {
+			const data = {
+				version: '1.0.0',
+				versions: {
+					'1.0.0': '',
+					'1.0.1-beta.1': '',
+					other: '',
+					'invalid-ver': '',
+					'trunk-snapshot': '',
+					'1.0.0-dev': '',
+					'1.0.0-alpha.1': '',
+					'wc-beta-tester-1.0.0': '',
+					trunk: '',
+					'1.0.1-rc.1': '',
+				},
+			};
+			const inputs = {
+				slug: 'woocommerce',
+				numberOfReleases: 5,
+				includeRC: true,
+				includePatches: true,
+			};
+			const result = parsePluginVersions( data, inputs );
+
+			assert.deepStrictEqual( result, [ '1.0.1-rc.1', '1.0.0' ] );
+		} );
+	} );
+} );
