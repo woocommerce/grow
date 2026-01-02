@@ -11,6 +11,26 @@ import { default as wcData } from './fixtures/woocommerce.json' with { type: 'js
 import { default as wpData } from './fixtures/wordpress.json' with { type: 'json' };
 import { parsePluginVersions } from '../src/get-plugin-releases.js';
 
+const wcRcData = {
+	version: '10.3.7',
+	versions: {
+		'10.3.0': '',
+		'10.3.0-rc.1': '',
+		'10.3.0-rc.2': '',
+		'10.3.1': '',
+		'10.3.2': '',
+		'10.4.0-rc.1': '',
+		'8.0.0': '',
+		'8.0.0-rc.1': '',
+		'8.0.0-rc.2': '',
+		'9.0.0': '',
+		'9.0.0-rc.1': '',
+		'9.9.0-rc.1': '',
+		'9.9.1': '',
+		trunk: '',
+	},
+};
+
 describe( 'get-plugin-releases', () => {
 	describe( 'WordPress', () => {
 		it( 'Get latest 3 releases', () => {
@@ -159,32 +179,13 @@ describe( 'get-plugin-releases', () => {
 		} );
 
 		it( 'Get latest 5 releases including RC but without patches', () => {
-			const data = {
-				version: '10.3.7',
-				versions: {
-					'10.3.0': '',
-					'10.3.0-rc.1': '',
-					'10.3.0-rc.2': '',
-					'10.3.1': '',
-					'10.3.2': '',
-					'10.4.0-rc.1': '',
-					'8.0.0': '',
-					'8.0.0-rc.1': '',
-					'8.0.0-rc.2': '',
-					'9.0.0': '',
-					'9.0.0-rc.1': '',
-					'9.9.0-rc.1': '',
-					'9.9.1': '',
-					trunk: '',
-				},
-			};
 			const inputs = {
 				slug: 'woocommerce',
 				numberOfReleases: 10,
 				includeRC: true,
 				includePatches: false,
 			};
-			const result = parsePluginVersions( data, inputs );
+			const result = parsePluginVersions( wcRcData, inputs );
 
 			assert.deepStrictEqual( result, [
 				'10.4.0-rc.1',
@@ -196,32 +197,13 @@ describe( 'get-plugin-releases', () => {
 		} );
 
 		it( 'Get latest 10 releases including RC and patches', () => {
-			const data = {
-				version: '10.3.7',
-				versions: {
-					'10.3.0': '',
-					'10.3.0-rc.1': '',
-					'10.3.0-rc.2': '',
-					'10.3.1': '',
-					'10.3.2': '',
-					'10.4.0-rc.1': '',
-					'8.0.0': '',
-					'8.0.0-rc.1': '',
-					'8.0.0-rc.2': '',
-					'9.0.0': '',
-					'9.0.0-rc.1': '',
-					'9.9.0-rc.1': '',
-					'9.9.1': '',
-					trunk: '',
-				},
-			};
 			const inputs = {
 				slug: 'woocommerce',
 				numberOfReleases: 10,
 				includeRC: true,
 				includePatches: true,
 			};
-			const result = parsePluginVersions( data, inputs );
+			const result = parsePluginVersions( wcRcData, inputs );
 
 			assert.deepStrictEqual( result, [
 				'10.4.0-rc.1',
@@ -276,7 +258,12 @@ describe( 'get-plugin-releases', () => {
 					'1.0.1-beta.1': '',
 					other: '',
 					'invalid-ver': '',
+					'trunk-snapshot': '',
+					'1.0.0-dev': '',
+					'1.0.0-alpha.1': '',
+					'wc-beta-tester-1.0.0': '',
 					trunk: '',
+					'1.0.1-rc.1': '',
 				},
 			};
 			const inputs = {
@@ -287,7 +274,7 @@ describe( 'get-plugin-releases', () => {
 			};
 			const result = parsePluginVersions( data, inputs );
 
-			assert.deepStrictEqual( result, [ '1.0.0' ] );
+			assert.deepStrictEqual( result, [ '1.0.1-rc.1', '1.0.0' ] );
 		} );
 	} );
 } );

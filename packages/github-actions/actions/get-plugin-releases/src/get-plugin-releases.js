@@ -33,11 +33,6 @@ function getInput( key ) {
 	return input;
 }
 
-function isRC( version ) {
-	const pre = semverPrerelease( version.toLowerCase() );
-	return pre?.[ 0 ] === 'rc';
-}
-
 function isMinorAlreadyAdded( output, version ) {
 	const currentVer = semverCoerce( version );
 
@@ -77,45 +72,38 @@ function normalizeData( data, inputs ) {
 export function parsePluginVersions( data, inputs ) {
 	const { latest, rawVersions } = normalizeData( data, inputs );
 	const { slug, numberOfReleases, includeRC, includePatches } = inputs;
-	const output = [];
+	const versions = [];
+
+	let organizedVersions = rawVersions;
 
 	if ( slug !== 'wordpress' ) {
-		const versions = rawVersions
+		organizedVersions = rawVersions
 			.filter( ( version ) => {
-				if ( version.includes( 'beta' ) || ! semverValid( version ) ) {
+				if ( ! semverValid( version ) ) {
 					return false;
 				}
-				return (
-					isRC( version ) || semverRcompare( latest, version ) <= 0
-				);
+
+				const pre = semverPrerelease( version.toLowerCase() );
+				if ( pre ) {
+					return includeRC && pre[ 0 ] === 'rc';
+				}
+
+				return semverRcompare( latest, version ) <= 0;
 			} )
 			.sort( semverRcompare );
+	}
 
-		for ( const version of versions ) {
-			if ( output.length === numberOfReleases ) {
-				break;
-			}
-
-			if (
-				( includeRC || ! isRC( version ) ) &&
-				( includePatches || ! isMinorAlreadyAdded( output, version ) )
-			) {
-				output.push( version );
-			}
+	for ( const version of organizedVersions ) {
+		if ( versions.length === numberOfReleases ) {
+			break;
 		}
-	} else {
-		for ( const version of rawVersions ) {
-			if ( output.length === numberOfReleases ) {
-				break;
-			}
 
-			if ( includePatches || ! isMinorAlreadyAdded( output, version ) ) {
-				output.push( version );
-			}
+		if ( includePatches || ! isMinorAlreadyAdded( versions, version ) ) {
+			versions.push( version );
 		}
 	}
 
-	return output;
+	return versions;
 }
 
 async function getPluginReleases( inputs ) {
