@@ -1,8 +1,8 @@
-# Get latest releases versions from a specific WordPress.org plugin or from WordPress core
+# Get the latest release versions of a specific plugin from WordPress.org or GitHub repository
 
 This action provides the following functionality for GitHub Actions users:
 
-- Get L-x release versions via GitHub job
+- Get L-x release versions from WordPress.org or GitHub API via GitHub Actions
 
 ## Usage
 
@@ -21,11 +21,20 @@ jobs:
     name: Get Plugin Releases
     runs-on: ubuntu-latest
     steps:
-      - name: Get Release versions from WooCommerce
+      - name: Get Release versions from WooCommerce (WordPress.org)
         id: wc-versions
         uses: woocommerce/grow/get-plugin-releases@actions-v2
         with:
           slug: woocommerce
+
+      - name: Get Release versions from WooCommerce (GitHub)
+        id: wc-gh-versions
+        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        with:
+          source: github
+          slug: woocommerce/woocommerce
+          # Required if it's a private GitHub repository
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get Release versions from WordPress
         id: wp-versions
@@ -56,7 +65,8 @@ jobs:
 
       - name: Show the versions output
         run: |
-          echo "The versions WooCommerce are: ${{ steps.wc-versions.outputs.versions }}"
+          echo "The versions WooCommerce (WPORG) are: ${{ steps.wc-versions.outputs.versions }}"
+          echo "The versions WooCommerce (GitHub) are: ${{ steps.wc-gh-versions.outputs.versions }}"
           echo "The versions Wordpress are: ${{ steps.wp-versions.outputs.versions }}."
           echo "The versions GLA are: ${{ steps.gla-versions.outputs.versions }}."
           echo "The 4 versions WC RC are: ${{ steps.wc-versions-l3-rc.outputs.versions }}."

@@ -12,12 +12,25 @@ import semverCoerce from 'semver/functions/coerce.js';
  */
 import handleActionErrors from '../../../utils/handle-action-errors.js';
 
-function getAPIEndpoint( slug ) {
-	if ( slug === 'wordpress' ) {
-		return 'https://api.wordpress.org/core/version-check/1.7/';
+function getFetchArgs( { source, slug, githubToken } ) {
+	if ( source === 'github' ) {
+		const endpoint = `https://api.github.com/repos/${ slug }/releases?per_page=100`;
+		const headers = {
+			Accept: 'application/vnd.github+json',
+			'X-GitHub-Api-Version': '2022-11-28',
+		};
+
+		if ( githubToken ) {
+			headers.Authorization = `Bearer ${ githubToken }`;
+		}
+
+		return [ endpoint, { headers } ];
 	}
 
-	return `https://api.wordpress.org/plugins/info/1.0/${ slug }.json`;
+	if ( slug === 'wordpress' ) {
+		return [ 'https://api.wordpress.org/core/version-check/1.7/' ];
+	}
+	return [ `https://api.wordpress.org/plugins/info/1.0/${ slug }.json` ];
 }
 
 function getInput( key ) {
@@ -54,7 +67,23 @@ function normalizeData( data, inputs ) {
 	let latest;
 	let rawVersions;
 
-	if ( inputs.slug === 'wordpress' ) {
+	if ( inputs.source === 'github' ) {
+		const latestRelease = data.find( ( release ) => {
+			return (
+				! release.prerelease &&
+				! release.draft &&
+				semverValid( release.tag_name )
+			);
+		} );
+
+		latest = latestRelease?.tag_name;
+		rawVersions = data.reduce( ( acc, release ) => {
+			if ( ! release.draft ) {
+				acc.push( release.tag_name );
+			}
+			return acc;
+		}, [] );
+	} else if ( inputs.slug === 'wordpress' ) {
 		rawVersions = data.offers.reduce( ( acc, offer ) => {
 			if ( offer.new_files ) {
 				acc.push( offer.version );
@@ -76,7 +105,7 @@ export function parsePluginVersions( data, inputs ) {
 
 	let organizedVersions = rawVersions;
 
-	if ( slug !== 'wordpress' ) {
+	if ( inputs.source === 'github' || slug !== 'wordpress' ) {
 		organizedVersions = rawVersions
 			.filter( ( version ) => {
 				if ( ! semverValid( version ) ) {
@@ -107,9 +136,7 @@ export function parsePluginVersions( data, inputs ) {
 }
 
 async function getPluginReleases( inputs ) {
-	const apiEndpoint = getAPIEndpoint( inputs.slug );
-
-	return fetch( apiEndpoint )
+	return fetch( ...getFetchArgs( inputs ) )
 		.then( ( res ) => res.json() )
 		.then( ( data ) => parsePluginVersions( data, inputs ) );
 }
@@ -118,6 +145,8 @@ async function getPluginReleases( inputs ) {
 if ( process.env.GITHUB_ACTIONS ) {
 	const inputs = {
 		slug: getInput( 'slug' ),
+		source: getInput( 'source' ),
+		githubToken: getInput( 'github-token' ),
 		numberOfReleases: parseInt( getInput( 'releases' ), 10 ),
 		includeRC: getInput( 'includeRC' ),
 		includePatches: getInput( 'includePatches' ),

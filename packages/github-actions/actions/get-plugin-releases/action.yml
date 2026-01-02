@@ -3,8 +3,14 @@ description: Get release versions for the L-x releases from a specific Wordpress
 
 inputs:
   slug:
-    description: The plugin slug to get the versions. (It should be a WordPress.org plugin)
+    description: The plugin slug (for WordPress.org) or the repository "owner/repo" (for GitHub) to get the versions.
     required: true
+  source:
+    description: The source of the releases. Options are "wordpress.org" or "github".
+    default: "wordpress.org"
+  github-token:
+    description: The GitHub token for authentication. Required if the source is a private GitHub repository.
+    default: ${{ github.token }}
   releases:
     description: Number of releases to get. By default L-2 directive (3 releases)
     default: "3"
