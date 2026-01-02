@@ -33,11 +33,6 @@ function getInput( key ) {
 	return input;
 }
 
-function setOutput( key, value ) {
-	core.info( `==> Output "${ key }":\n${ value }` );
-	core.setOutput( key, value );
-}
-
 function isRC( version ) {
 	const pre = semverPrerelease( version.toLowerCase() );
 	return pre?.[ 0 ] === 'rc';
@@ -126,7 +121,10 @@ if ( process.env.GITHUB_ACTIONS ) {
 	};
 
 	getPluginReleases( inputs )
-		.then( ( output ) => setOutput( 'versions', output ) )
-		.then( () => core.info( 'Finish getting the release versions.' ) )
+		.then( ( versions ) => {
+			core.info( `==> Output "versions":\n${ versions }` );
+			core.setOutput( 'versions', versions );
+			core.info( 'Finish getting the release versions.' );
+		} )
 		.catch( handleActionErrors );
 }
