@@ -55,13 +55,32 @@ function isMinorAlreadyAdded( output, version ) {
 	}
 }
 
-export function parsePluginVersions( releases = {}, inputs ) {
+function normalizeData( data, inputs ) {
+	let latest;
+	let rawVersions;
+
+	if ( inputs.slug === 'wordpress' ) {
+		rawVersions = data.offers.reduce( ( acc, offer ) => {
+			if ( offer.new_files ) {
+				acc.push( offer.version );
+			}
+			return acc;
+		}, [] );
+	} else {
+		latest = data.version;
+		rawVersions = Object.keys( data.versions );
+	}
+
+	return { latest, rawVersions };
+}
+
+export function parsePluginVersions( data, inputs ) {
+	const { latest, rawVersions } = normalizeData( data, inputs );
 	const { slug, numberOfReleases, includeRC, includePatches } = inputs;
 	const output = [];
 
 	if ( slug !== 'wordpress' ) {
-		const latest = releases.version;
-		const versions = Object.keys( releases.versions )
+		const versions = rawVersions
 			.filter( ( version ) => {
 				if ( version.includes( 'beta' ) || ! semverValid( version ) ) {
 					return false;
@@ -85,17 +104,13 @@ export function parsePluginVersions( releases = {}, inputs ) {
 			}
 		}
 	} else {
-		for ( const release of releases.offers ) {
+		for ( const version of rawVersions ) {
 			if ( output.length === numberOfReleases ) {
 				break;
 			}
 
-			if (
-				release.new_files &&
-				( includePatches ||
-					! isMinorAlreadyAdded( output, release.version ) )
-			) {
-				output.push( release.version );
+			if ( includePatches || ! isMinorAlreadyAdded( output, version ) ) {
+				output.push( version );
 			}
 		}
 	}
