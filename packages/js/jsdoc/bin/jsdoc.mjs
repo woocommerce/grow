@@ -6,9 +6,6 @@ import process from 'node:process';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
-process.env.PATH +=
-	path.delimiter + path.join( process.cwd(), 'node_modules', '.bin' );
-
 const args = process.argv.slice( 2 );
 execFileSync(
 	'jsdoc',
@@ -20,5 +17,14 @@ execFileSync(
 		'woocommerce-grow-tracking-jsdoc',
 		...args,
 	],
-	{ stdio: 'inherit' }
+	{
+		stdio: 'inherit',
+		env: {
+			...process.env,
+			PATH:
+				process.env.PATH +
+				path.delimiter +
+				path.join( process.cwd(), 'node_modules', '.bin' ),
+		},
+	}
 );
