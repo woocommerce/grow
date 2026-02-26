@@ -2,14 +2,15 @@
 /**
  * External dependencies
  */
-import shell from 'shelljs';
+import { execSync } from 'node:child_process';
 import path from 'node:path';
 
 process.env.PATH +=
 	path.delimiter + path.join( process.cwd(), 'node_modules', '.bin' );
 
 const args = process.argv.slice( 2 );
-shell.exec(
+execSync(
 	'jsdoc -r -c .jsdocrc.json -t woocommerce-grow-tracking-jsdoc ' +
-		args.join( ' ' )
+		args.join( ' ' ),
+	{ stdio: 'inherit' }
 );
