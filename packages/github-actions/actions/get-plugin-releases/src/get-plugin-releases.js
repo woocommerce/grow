@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import core from '@actions/core';
+import * as core from '@actions/core';
 import semverValid from 'semver/functions/valid.js';
 import semverRcompare from 'semver/functions/rcompare.js';
 import semverPrerelease from 'semver/functions/prerelease.js';

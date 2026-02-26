@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import github from '@actions/github';
+import * as github from '@actions/github';
 
 /**
  * Class operates a GitHub repository.
