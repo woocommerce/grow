@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-26 (1.0.1)
+### Tweaked 🔧
+* Replace shelljs with native Node.js child_process (https://github.com/woocommerce/grow/pull/211)
+* Bump lodash from 4.17.21 to 4.17.23 (https://github.com/woocommerce/grow/pull/197)
+
 ## 2025-11-26 (1.0.0)
 ### New Features 🎉
 * Add `jsdoc` bundle package (https://github.com/woocommerce/grow/pull/10)
