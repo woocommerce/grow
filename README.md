@@ -9,9 +9,9 @@ The packages here are too experimental or too Grow-specific to be shared Woo-wid
 ## List of packages
 
 - [`/packages/github-actions`](packages/github-actions/README.md) - Custom GitHub actions.
-- [`/packages/js/generator-grow`](packages/js/generator-grow/README.md) - Yeoman Generator for extension repository boilerplate.
 - [`/packages/js/tracking-jsdoc`](packages/js/tracking-jsdoc/README.md) - `jsdoc` plugin to document Tracking Events in markdown
 - [`/packages/php/compat-checker`](packages/php/compat-checker/README.md) - Library to run compatibility checks for WooCommerce extensions.
+- `/packages/js/generator-grow` - **Deprecated** (removed from this repository). Citation: https://github.com/woocommerce/grow/pull/206
 
 ## List of plugins
 
