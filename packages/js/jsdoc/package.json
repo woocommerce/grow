@@ -26,7 +26,6 @@
     "jsdoc-advanced-types-plugin": "git+https://github.com/tomalec/jsdoc-advanced-types-plugin#add/return-support",
     "jsdoc-plugin-intersection": "^1.0.4",
     "jsdoc-plugin-typescript": "^2.2.1",
-    "shelljs": "^0.8.5",
     "woocommerce-grow-tracking-jsdoc": "git+https://github.com/woocommerce/grow#tracking-jsdoc-v1"
   }
 }
