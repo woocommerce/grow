@@ -26,6 +26,9 @@
   "overrides": {
     "@woocommerce/eslint-plugin": {
       "@wordpress/eslint-plugin@<23.0.0": "^23.0.0"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "9.0.9"
     }
   }
 }
