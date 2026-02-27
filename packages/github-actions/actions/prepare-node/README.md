@@ -59,7 +59,7 @@ steps:
   - name: Prepare node
     uses: woocommerce/grow/prepare-node@actions-v2
     with:
-      node-version: 18
+      node-version: 20
       cache-dependency-path: "./packages/github-actions"
 ```
 

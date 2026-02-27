@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import core from '@actions/core';
+import * as core from '@actions/core';
 
 export default function handleActionErrors( e ) {
 	let message;
