@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-02-27 (2.3.1)
+### Tweaked 🔧
+* Bump phpunit/phpunit from 9.6.7 to 9.6.34 in /packages/github-actions/actions/hook-documentation. (https://github.com/woocommerce/grow/pull/198)
+* Bump rollup from 4.54.0 to 4.59.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/208)
+* Bump dependencies for `github-actions` package and align Node.js dev version to 20. (https://github.com/woocommerce/grow/pull/213)
+
 ## 2026-01-02 (2.3.0)
 ### New Features 🎉
 * Add support to the `get-plugin-releases` action for fetching releases from GitHub. (https://github.com/woocommerce/grow/pull/190)
