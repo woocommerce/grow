@@ -9,6 +9,16 @@ REPO_URL=$1
 TAG_NAME=$2
 SOURCE_SHA=$(git rev-parse HEAD)
 
+TMP_BRANCH="tmp-gha-release-build"
+TMP_BRANCH_PUSHED=false
+
+cleanup() {
+  if [ "$TMP_BRANCH_PUSHED" = true ]; then
+    git push -d origin "$TMP_BRANCH" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+
 # To build all actions:
 
 pushd ./packages/github-actions
@@ -64,7 +74,9 @@ git add README.md
 ## 7. Complete the build for release or test.
 git commit -q --amend -C HEAD
 
-# The temporary `tmp-gha-release-build` branch is only for pushing to the remote repo.
+# The temporary branch is only for pushing to the remote repo.
 # Tagging it with a version tag will be proceeded with a separate step.
-git push origin HEAD:refs/heads/tmp-gha-release-build
-git push -d origin tmp-gha-release-build
+git push origin "HEAD:refs/heads/$TMP_BRANCH"
+TMP_BRANCH_PUSHED=true
+git push -d origin "$TMP_BRANCH"
+TMP_BRANCH_PUSHED=false
