@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # The value of TAG_NAME and the content composited from it are described in terms of
 # the official release build. When creating a test build, a branch name is passed in,
