@@ -1,0 +1,109 @@
+name: JS Packages - Prepare New Release
+
+on:
+  push:
+    branches:
+      - release/jsdoc
+      - release/tracking-jsdoc
+
+jobs:
+  CheckCreatedBranch:
+    name: Check Created Branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check created release branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if ( ! context.payload.created ) {
+              await github.rest.actions.cancelWorkflowRun( {
+                ...context.repo,
+                run_id: context.runId,
+              } );
+            }
+
+  PrepareRelease:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    needs: CheckCreatedBranch
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Derive package config
+        id: config
+        run: |
+          PACKAGE_NAME="${{ github.ref_name }}"
+          PACKAGE_NAME="${PACKAGE_NAME#release/}"
+          PACKAGE_DIR="packages/js/${PACKAGE_NAME}"
+          TAG_TEMPLATE="${PACKAGE_NAME}-v{version}"
+          CONFIG_PATH="${PACKAGE_DIR}/release-notes-config.yml"
+          HAS_LOCK_FILE="false"
+          if [ -f "${PACKAGE_DIR}/package-lock.json" ]; then
+            HAS_LOCK_FILE="true"
+          fi
+          echo "package-name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
+          echo "package-dir=${PACKAGE_DIR}" >> $GITHUB_OUTPUT
+          echo "tag-template=${TAG_TEMPLATE}" >> $GITHUB_OUTPUT
+          echo "config-path=${CONFIG_PATH}" >> $GITHUB_OUTPUT
+          echo "has-lock-file=${HAS_LOCK_FILE}" >> $GITHUB_OUTPUT
+
+      - name: Get release notes
+        id: get-notes
+        uses: woocommerce/grow/get-release-notes@actions-v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          package-dir: ${{ steps.config.outputs.package-dir }}
+          config-path: ${{ steps.config.outputs.config-path }}
+          tag-template: ${{ steps.config.outputs.tag-template }}
+          minor-keywords: feature, update, enhancement
+
+      - name: Prepare release commits
+        run: |
+          PACKAGE_DIR="${{ steps.config.outputs.package-dir }}"
+          cd "./${PACKAGE_DIR}"
+
+          TODAY=$(date '+%Y-%m-%d')
+          NEXT_VER="${{ steps.get-notes.outputs.next-version }}"
+          CHANGELOG='${{ steps.get-notes.outputs.release-changelog-shell }}'
+          CHANGELOG=$(echo "$CHANGELOG" | sed -E 's/\.? by @[^ ]+ in (https:\/\/github\.com\/.+)/. (\1)/')
+
+          sed -i "/# Changelog/r"<(
+            printf "\n## ${TODAY} (${NEXT_VER})\n${CHANGELOG}\n"
+          ) CHANGELOG.md
+
+          jq ".version=\"${NEXT_VER}\"" package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+          if [ "${{ steps.config.outputs.has-lock-file }}" = "true" ]; then
+            jq ".version=\"${NEXT_VER}\" | .packages.\"\".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
+            mv package-lock.json.tmp package-lock.json
+          fi
+
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add CHANGELOG.md
+          git add package.json
+          if [ "${{ steps.config.outputs.has-lock-file }}" = "true" ]; then
+            git add package-lock.json
+          fi
+          cd -
+          git commit -q -m "Update changelog and package version for the ${{ steps.get-notes.outputs.next-tag }} release of ${{ steps.config.outputs.package-name }}."
+          git push
+
+      - name: Create a pull request for release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workspace = '${{ github.workspace }}';
+            const { default: script } = await import( `${ workspace }/.github/scripts/create-pr-for-release.mjs` );
+            await script( {
+              github,
+              context,
+              refName: '${{ github.ref_name }}',
+              version: '${{ steps.get-notes.outputs.next-version }}',
+              packageDir: '${{ steps.config.outputs.package-dir }}',
+              packageName: '${{ steps.config.outputs.package-name }}',
+              createReleaseWorkflow: 'js-packages-create-release.yml',
+              releaseWorkflow: 'js-packages-release.yml',
+            } );
