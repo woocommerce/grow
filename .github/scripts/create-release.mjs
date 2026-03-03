@@ -8,12 +8,19 @@ import fs from 'node:fs';
  */
 import PackageTool from '../../packages/github-actions/utils/package-tool.js';
 
-export default async ( { github, context, outputJsonPath } ) => {
-	const packageTool = new PackageTool( 'packages/github-actions' );
+export default async ( {
+	github,
+	context,
+	outputJsonPath,
+	packageDir,
+	packageName,
+	tagPrefix,
+} ) => {
+	const packageTool = new PackageTool( packageDir );
 	const { version } = packageTool.getSettings();
 	const { content } = packageTool.getChangelogByVersion( version );
-	const tag = `actions-v${ version }`;
-	const name = `github-actions ${ version }`;
+	const tag = `${ tagPrefix }${ version }`;
+	const name = `${ packageName } ${ version }`;
 	const body = `## What's Changed\n${ content }`;
 	let release;
 

@@ -19,11 +19,14 @@ jobs:
         with:
           script: |
             const workspace = '${{ github.workspace }}';
-            const { default: script } = await import( `${ workspace }/.github/scripts/github-actions-create-release.mjs` );
+            const { default: script } = await import( `${ workspace }/.github/scripts/create-release.mjs` );
             await script( {
               github,
               context,
               outputJsonPath: '/tmp/release.json',
+              packageDir: 'packages/github-actions',
+              packageName: 'github-actions',
+              tagPrefix: 'actions-v',
             } );
 
       - name: Upload release artifact
