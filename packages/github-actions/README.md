@@ -165,13 +165,12 @@ Branch off from the old version, set the merge base for fixing PR to be the same
 1. :technologist: If it's all good, approve the release PR to proceed with the next workflow.
 1. :octocat: Once the release PR is approved, a workflow will create a new release with a new version tag.
    - Workflow [GitHub Actions - Create Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-create-release.yml)
-1. :octocat: After publishing the new release, a workflow will continue to create and commit the release build. And then update the references of the corresponding major and minor version tags onto the new release.
+1. :octocat: After publishing the new release, a workflow will continue to create and commit the release build, update the references of the corresponding major and minor version tags onto the new release, and merge the release PR.
    - Workflow [GitHub Actions - Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-release.yml)
    - When the new release version is `actions-v2.4.8`, it should update the references of `actions-v2` and `actions-v2.4` onto `actions-v2.4.8`.
    - When the new release version is `actions-v2.5.0`, it should update the reference of `actions-v2` and create `actions-v2.5` tag onto `actions-v2.5.0`.
    - When the new release version is `actions-v3.0.0`, it should create `actions-v3` and `actions-v3.0` tags onto `actions-v3.0.0`.
-1. :technologist: Check if both release workflows are run successfully.
-1. :technologist: Merge the release PR.
+1. :technologist: Check if the release workflow has run successfully.
 
 ### Testing the release process
 

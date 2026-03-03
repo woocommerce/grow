@@ -108,3 +108,21 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ steps.commit-build.outputs.sha }}
           release: ${{ needs.Setup.outputs.release }}
+
+  MergeReleasePR:
+    name: Merge Release PR
+    if: ${{ github.event_name == 'workflow_run' }}
+    needs: UpdateTags
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge the release PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ github.event.workflow_run.head_branch }}" \
+            --repo "${{ github.repository }}" \
+            --merge \
+            --delete-branch

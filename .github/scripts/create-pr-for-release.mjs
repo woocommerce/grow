@@ -25,7 +25,7 @@ export default async ( {
 - [ ] The changelog is correct.
 ## Next steps
 1. Approve this PR to allow [the next workflow creates a new release](${ workflowBaseUrl }/${ createReleaseWorkflow }).
-1. Merge this PR after the new release is successfully created and [the version tags are updated](${ workflowBaseUrl }/${ releaseWorkflow }).
+1. After the new release is successfully created, [the release workflow](${ workflowBaseUrl }/${ releaseWorkflow }) will update the version tags and merge this PR automatically.
 ---
 ${ heading }
 ${ content }`;
