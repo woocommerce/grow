@@ -89,3 +89,20 @@ To support
 ```js
  /* @param {SomeClass & {abc: 123}}
 ```
+
+## Release
+
+### Official release process
+
+1. Create the branch `release/jsdoc` onto the target revision on `trunk` branch.
+1. When the branch is created, [the prepare workflow](https://github.com/woocommerce/grow/actions/workflows/js-packages-prepare-release.yml) will prepend changelog, update the version in package.json and package-lock.json, and create a release PR.
+1. Check if the new changelog content and updated version are correct.
+   - If something needs to be revised, append the changes in the release PR.
+1. Approve the release PR to trigger [the create release workflow](https://github.com/woocommerce/grow/actions/workflows/js-packages-create-release.yml).
+1. After the new release is created, [the release workflow](https://github.com/woocommerce/grow/actions/workflows/js-packages-release.yml) will create the release build, update the version tags, and merge the release PR automatically.
+
+### Testing the release process
+
+1. Create a new release with a prerelease version tag. For example `jsdoc-vX.Y.Z-pre`.
+1. Check if the "JS Packages - Release" workflow runs successfully.
+1. Delete the testing releases and tags once they are no longer in use.
