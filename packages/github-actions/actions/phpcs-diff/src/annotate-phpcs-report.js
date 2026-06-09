@@ -9,27 +9,7 @@ import { argv } from 'node:process';
  */
 import annotateByWorkflowCommand from '../../../utils/annotate-by-workflow-command.js';
 import handleActionErrors from '../../../utils/handle-action-errors.js';
-
-function toAnnotations( reportFiles ) {
-	const entries = Object.entries( reportFiles );
-	const annotations = [];
-
-	entries.forEach( ( [ filePath, metadata ] ) => {
-		metadata.messages.forEach( ( { line, message } ) => {
-			// The `coverageChecker` package doesn't output warnings by default,
-			// and warnings are treated as errors in its strict mode.
-			// So all messages can only be transformed as error annotations here.
-			annotations.push( {
-				command: 'error',
-				filePath: `./${ filePath }`,
-				line,
-				message,
-			} );
-		} );
-	} );
-
-	return annotations;
-}
+import toAnnotations from './to-annotations.js';
 
 /**
  * Sets errors in the PHPCS as annotations onto GitHub Actions.
