@@ -100,9 +100,14 @@ jobs:
             install-deps: 'yes'
     steps:
       - uses: actions/checkout@v4
-      - name: Create minimal composer.json for install test
+      - name: Create minimal Composer project for install test
         if: matrix.install-deps == 'yes'
-        run: echo '{"require":{}}' > composer.json
+        run: |
+          # The repo's own project depends on the private woocommerce/woorelease
+          # repo, which composer cannot fetch here. Replace it with a minimal
+          # public dependency and drop the lock so the install test is isolated.
+          rm -f composer.lock
+          echo '{"require": {"psr/log": "^3.0"}}' > composer.json
       - uses: ./packages/github-actions/actions/prepare-php
         with:
           php-version: ${{ matrix.php-version }}
