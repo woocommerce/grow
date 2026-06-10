@@ -63,7 +63,7 @@ export default [
 		],
 	},
 	{
-		input: './actions/get-plugin-releases/src/get-plugin-releases.js',
+		input: './actions/get-plugin-releases/src/index.js',
 		output: {
 			file: './actions/get-plugin-releases/get-plugin-releases.mjs',
 		},

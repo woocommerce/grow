@@ -141,8 +141,7 @@ async function getPluginReleases( inputs ) {
 		.then( ( data ) => parsePluginVersions( data, inputs ) );
 }
 
-// Directly perform this action if it's running in GitHub Actions.
-if ( process.env.GITHUB_ACTIONS ) {
+export function runAction() {
 	const inputs = {
 		slug: getInput( 'slug' ),
 		source: getInput( 'source' ),
