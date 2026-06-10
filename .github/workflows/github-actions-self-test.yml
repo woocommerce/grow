@@ -194,13 +194,13 @@ jobs:
           mkdir /tmp/formatter-test
           cd /tmp/formatter-test
           npm init -y
-          npm install stylelint@${{ matrix.stylelint-version }} stylelint-config-standard
+          npm install stylelint@${{ matrix.stylelint-version }}
           # Prepend eslint-disable to suppress linting on the stylelint formatter
           echo '/* eslint-disable */' > stylelintFormatter.cjs
           cat "$GITHUB_WORKSPACE/packages/github-actions/actions/stylelint-annotation/stylelintFormatter.cjs" >> stylelintFormatter.cjs
           # Create a CSS file with a known lint error (duplicate property)
           echo 'a { color: red; color: blue; }' > sample.css
-          echo '{"extends": "stylelint-config-standard"}' > .stylelintrc.json
+          echo '{"rules": {"declaration-block-no-duplicate-properties": true}}' > .stylelintrc.json
       - name: Verify formatter produces annotation commands
         working-directory: /tmp/formatter-test
         run: |
