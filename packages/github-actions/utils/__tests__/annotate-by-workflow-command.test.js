@@ -58,10 +58,7 @@ describe( 'toAnnotationCommand', () => {
 			command: 'endgroup',
 		};
 
-		assert.strictEqual(
-			toAnnotationCommand( annotation ),
-			'::endgroup::'
-		);
+		assert.strictEqual( toAnnotationCommand( annotation ), '::endgroup::' );
 	} );
 
 	it( 'Should format a notice command', () => {

@@ -15,7 +15,7 @@ import {
 describe( 'parseChangelog', () => {
 	it( 'Should extract the "What\'s Changed" section', () => {
 		const notes = [
-			'## What\'s Changed',
+			"## What's Changed",
 			'* Fix bug by @user in #123',
 			'* Add feature by @user in #456',
 			'',
@@ -78,10 +78,7 @@ describe( 'escapeSingleQuote', () => {
 	} );
 
 	it( 'Should handle multiple consecutive single quotes', () => {
-		assert.strictEqual(
-			escapeSingleQuote( "a''b" ),
-			"a'\"'\"''\"'\"'b"
-		);
+		assert.strictEqual( escapeSingleQuote( "a''b" ), "a'\"'\"''\"'\"'b" );
 	} );
 
 	it( 'Should handle empty string', () => {

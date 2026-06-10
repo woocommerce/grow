@@ -94,11 +94,7 @@ describe( 'matchVersionLevel', () => {
 
 	it( 'Should return "patch" for empty content', () => {
 		assert.strictEqual(
-			matchVersionLevel(
-				'',
-				defaultMajorKeywords,
-				defaultMinorKeywords
-			),
+			matchVersionLevel( '', defaultMajorKeywords, defaultMinorKeywords ),
 			'patch'
 		);
 	} );

@@ -13,9 +13,7 @@ describe( 'phpcs-diff toAnnotations', () => {
 	it( 'Should always set command to "error"', () => {
 		const reportFiles = {
 			'src/Example.php': {
-				messages: [
-					{ line: 10, message: 'Missing docblock' },
-				],
+				messages: [ { line: 10, message: 'Missing docblock' } ],
 			},
 		};
 		const result = toAnnotations( reportFiles );
@@ -27,9 +25,7 @@ describe( 'phpcs-diff toAnnotations', () => {
 	it( 'Should prefix file path with "./"', () => {
 		const reportFiles = {
 			'src/Example.php': {
-				messages: [
-					{ line: 5, message: 'Some error' },
-				],
+				messages: [ { line: 5, message: 'Some error' } ],
 			},
 		};
 		const result = toAnnotations( reportFiles );
@@ -63,9 +59,7 @@ describe( 'phpcs-diff toAnnotations', () => {
 				],
 			},
 			'b.php': {
-				messages: [
-					{ line: 10, message: 'Error 3' },
-				],
+				messages: [ { line: 10, message: 'Error 3' } ],
 			},
 		};
 		const result = toAnnotations( reportFiles );

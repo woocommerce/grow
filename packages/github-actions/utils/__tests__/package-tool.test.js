@@ -32,9 +32,7 @@ describe( 'PackageTool', () => {
 				() => tool.getFile( 'nonexistent.txt' ),
 				( err ) => {
 					assert.ok( err instanceof Error );
-					assert.ok(
-						err.message.includes( 'nonexistent.txt' )
-					);
+					assert.ok( err.message.includes( 'nonexistent.txt' ) );
 					assert.ok( err.message.includes( 'does not exist' ) );
 					return true;
 				}
@@ -58,16 +56,11 @@ describe( 'PackageTool', () => {
 			const result = tool.getChangelogByVersion( '1.4.7' );
 
 			assert.strictEqual( result.version, '1.4.7' );
-			assert.strictEqual(
-				result.heading,
-				'## 2024-12-01 (1.4.7)'
-			);
+			assert.strictEqual( result.heading, '## 2024-12-01 (1.4.7)' );
 			assert.ok(
 				result.content.includes( 'Fixed critical bug in auth module' )
 			);
-			assert.ok(
-				result.content.includes( 'Updated dependencies' )
-			);
+			assert.ok( result.content.includes( 'Updated dependencies' ) );
 		} );
 
 		it( 'Should return empty heading and content for a nonexistent version', () => {
@@ -83,13 +76,8 @@ describe( 'PackageTool', () => {
 			const tool = new PackageTool( 'test-package', fixturesDir );
 			const result = tool.getChangelogByVersion( '1.5.0' );
 
-			assert.strictEqual(
-				result.heading,
-				'## 2025-01-15 (1.5.0)'
-			);
-			assert.ok(
-				result.content.includes( 'Added new feature X' )
-			);
+			assert.strictEqual( result.heading, '## 2025-01-15 (1.5.0)' );
+			assert.ok( result.content.includes( 'Added new feature X' ) );
 		} );
 	} );
 } );
