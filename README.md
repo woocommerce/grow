@@ -1,28 +1,3 @@
-# Grow Packages
-
-[![JavaScript Linting](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml)
-[![PHP Coding Standards](https://github.com/woocommerce/grow/actions/workflows/php-coding-standards.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/php-coding-standards.yml)
-[![GitHub Actions Self-Test](https://github.com/woocommerce/grow/actions/workflows/github-actions-self-test.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/github-actions-self-test.yml)
-
-This repository is a container for packages, mostly dev tools to serve the Grow Team.
-The packages here are too experimental or too Grow-specific to be shared Woo-wide.
-
-## List of packages
-
-- [`/packages/github-actions`](packages/github-actions/README.md) - Custom GitHub actions.
-- [`/packages/js/tracking-jsdoc`](packages/js/tracking-jsdoc/README.md) - `jsdoc` plugin to document Tracking Events in markdown
-- [`/packages/php/compat-checker`](packages/php/compat-checker/README.md) - Library to run compatibility checks for WooCommerce extensions.
-- `/packages/js/generator-grow` - **Deprecated** (removed from this repository). Citation: https://github.com/woocommerce/grow/pull/206
-
-## List of plugins
-
-- [`/plugins/grow-smooth-generator`](plugins/grow-smooth-generator/README.md) - A smooth generator for Grow extension data
-
-## List of configs
-- [`/configs/woocommerce-github-sync-labels`](configs/woocommerce-github-sync-labels/README.md) - Config to add extra labels to Grow's repositories.
-
-<p align="center">
-	<br/><br/>
-	Made with 💜 by <a href="https://woocommerce.com/">Woo</a>.<br/>
-	<a href="https://woocommerce.com/careers/">We're hiring</a>! Come work with us!
-</p>
+# tracking-jsdoc
+### This is the release build of version `tracking-jsdoc-v1.0.1`.
+### Please visit [here to view the source code of this version](https://github.com/woocommerce/grow/tree/2f0ea6f5ee275303a3e5b3c527371e735a87e0e8/packages/js/tracking-jsdoc).
