@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-11 (1.0.1)
+### Documentation 📚
+* Add automated release workflows for the `jsdoc` and `tracking-jsdoc` packages. (https://github.com/woocommerce/grow/pull/232)
+
 ## 2025-11-26 (1.0.0)
 ### New Features 🎉
 * Add tracking JSDoc template and plugins. (https://github.com/woocommerce/grow/pull/6)

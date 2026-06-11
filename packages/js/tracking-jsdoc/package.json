@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-grow-tracking-jsdoc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JSDoc template to report Tracking events to markdown file",
   "repository": {
     "type": "git",
