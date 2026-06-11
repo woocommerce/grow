@@ -89,10 +89,14 @@ jobs:
         with:
           script: |
             const workspace = '${{ github.workspace }}';
-            const { default: script } = await import( `${ workspace }/.github/scripts/github-actions-create-pr-for-release.mjs` );
+            const { default: script } = await import( `${ workspace }/.github/scripts/create-pr-for-release.mjs` );
             await script( {
               github,
               context,
               refName: '${{ github.ref_name }}',
               version: '${{ steps.get-notes.outputs.next-version }}',
+              packageDir: 'packages/github-actions',
+              packageName: 'github-actions',
+              createReleaseWorkflow: 'github-actions-create-release.yml',
+              releaseWorkflow: 'github-actions-release.yml',
             } );
