@@ -78,5 +78,9 @@ git commit -q --amend -C HEAD
 # Tagging it with a version tag will be proceeded with a separate step.
 git push origin "HEAD:refs/heads/$TMP_BRANCH"
 TMP_BRANCH_PUSHED=true
-git push -d origin "$TMP_BRANCH"
-TMP_BRANCH_PUSHED=false
+
+# Deleting the temporary branch is cleanup, so a failure here should not fail an
+# otherwise successful release. Leave it best-effort and let the EXIT trap retry.
+if git push -d origin "$TMP_BRANCH"; then
+  TMP_BRANCH_PUSHED=false
+fi
