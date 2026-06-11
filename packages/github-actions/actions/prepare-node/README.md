@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Prepare node
-        uses: woocommerce/grow/prepare-node@actions-v2
+        uses: woocommerce/grow/prepare-node@actions-v3
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Build bundle
         run: npm run build
@@ -34,17 +34,17 @@ jobs:
 
 Must specify either `node-version` or `node-version-file` option to set the version.
 
-[Supported version syntax](https://github.com/actions/setup-node/blob/v3/README.md#supported-version-syntax)
+[Supported version syntax](https://github.com/actions/setup-node/blob/v6/README.md#supported-version-syntax)
 
 #### Specify the node version via a file:
 
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v2
+    uses: woocommerce/grow/prepare-node@actions-v3
     with:
       node-version-file: ".nvmrc"
 ```
@@ -54,12 +54,12 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-  - uses: actions/checkout@v4
+  - uses: actions/checkout@v6
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v2
+    uses: woocommerce/grow/prepare-node@actions-v3
     with:
-      node-version: 20
+      node-version: 24
       cache-dependency-path: "./packages/github-actions"
 ```
 
@@ -68,10 +68,10 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v2
+    uses: woocommerce/grow/prepare-node@actions-v3
     with:
       node-version: "lts/*"
       install-deps: "no"
@@ -85,10 +85,10 @@ steps:
 ```yaml
 steps:
   - name: Checkout repository
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
 
   - name: Prepare node
-    uses: woocommerce/grow/prepare-node@actions-v2
+    uses: woocommerce/grow/prepare-node@actions-v3
     with:
       node-version: "latest"
       ignore-scripts: "no"
