@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # The value of TAG_NAME and the content composited from it are described in terms of
 # the official release build. When creating a test build, a branch name is passed in,
@@ -7,6 +8,16 @@
 REPO_URL=$1
 TAG_NAME=$2
 SOURCE_SHA=$(git rev-parse HEAD)
+
+TMP_BRANCH="tmp-gha-release-build"
+TMP_BRANCH_PUSHED=false
+
+cleanup() {
+  if [ "$TMP_BRANCH_PUSHED" = true ]; then
+    git push -d origin "$TMP_BRANCH" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
 
 # To build all actions:
 
@@ -63,7 +74,13 @@ git add README.md
 ## 7. Complete the build for release or test.
 git commit -q --amend -C HEAD
 
-# The temporary `tmp-gha-release-build` branch is only for pushing to the remote repo.
+# The temporary branch is only for pushing to the remote repo.
 # Tagging it with a version tag will be proceeded with a separate step.
-git push origin HEAD:refs/heads/tmp-gha-release-build
-git push -d origin tmp-gha-release-build
+git push origin "HEAD:refs/heads/$TMP_BRANCH"
+TMP_BRANCH_PUSHED=true
+
+# Deleting the temporary branch is cleanup, so a failure here should not fail an
+# otherwise successful release. Leave it best-effort and let the EXIT trap retry.
+if git push -d origin "$TMP_BRANCH"; then
+  TMP_BRANCH_PUSHED=false
+fi

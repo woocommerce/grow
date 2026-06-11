@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Loop through all directories, building the package for each one if it has composer.json.
 for d in $(find ./actions -mindepth 1 -maxdepth 1 -type d) ; do
