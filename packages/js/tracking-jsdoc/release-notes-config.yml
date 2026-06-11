@@ -1,0 +1,35 @@
+changelog:
+  exclude:
+    authors:
+      - github-actions
+      - github-actions[bot]
+    labels:
+      - "changelog: none"
+
+  categories:
+    # Major level
+    - title: Breaking Changes 🚨
+      labels:
+        - "[tracking-jsdoc] changelog: breaking"
+
+    # Minor level
+    - title: New Features 🎉
+      labels:
+        - "[tracking-jsdoc] changelog: add"
+
+    - title: Updated ✨
+      labels:
+        - "[tracking-jsdoc] changelog: update"
+
+    # Patch level
+    - title: Bug Fixes 🐛
+      labels:
+        - "[tracking-jsdoc] changelog: fix"
+
+    - title: Tweaked 🔧
+      labels:
+        - "[tracking-jsdoc] changelog: tweak"
+
+    - title: Documentation 📚
+      labels:
+        - "[tracking-jsdoc] changelog: docs"
