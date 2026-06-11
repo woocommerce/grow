@@ -54,7 +54,7 @@ If you would like to add some descriptions to `@fires` or `@emits` tags, for exa
 
 ### Official release process
 
-1. Create the branch `release/tracking-jsdoc` onto the target revision on `trunk` branch.
+1. Create the branch `release/tracking-jsdoc` from the target revision on `trunk` branch.
 1. When the branch is created, [the prepare workflow](https://github.com/woocommerce/grow/actions/workflows/js-packages-prepare-release.yml) will prepend changelog, update the version in package.json, and create a release PR.
 1. Check if the new changelog content and updated version are correct.
    - If something needs to be revised, append the changes in the release PR.
