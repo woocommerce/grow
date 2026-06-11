@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-11 (1.0.2)
+### Tweaked 🔧
+* Bump underscore from 1.13.6 to 1.13.8 in /packages/js/jsdoc. (https://github.com/woocommerce/grow/pull/217)
+* Bump lodash from 4.17.23 to 4.18.1 in /packages/js/jsdoc. (https://github.com/woocommerce/grow/pull/223)
+### Documentation 📚
+* Add automated release workflows for the `jsdoc` and `tracking-jsdoc` packages. (https://github.com/woocommerce/grow/pull/232)
+
 ## 2026-02-26 (1.0.1)
 ### Tweaked 🔧
 * Replace shelljs with native Node.js child_process (https://github.com/woocommerce/grow/pull/211)
