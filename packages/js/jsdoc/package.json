@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-grow-jsdoc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Grow's JSDoc bundle to document tracking events",
   "repository": {
     "type": "git",
