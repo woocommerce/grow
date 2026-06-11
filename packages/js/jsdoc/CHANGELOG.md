@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-11 (1.0.3)
+### Tweaked 🔧
+* Rebuild `jsdoc` package-lock.json under Node.js v24. (https://github.com/woocommerce/grow/pull/235)
+
 ## 2026-06-11 (1.0.2)
 ### Tweaked 🔧
 * Bump underscore from 1.13.6 to 1.13.8 in /packages/js/jsdoc. (https://github.com/woocommerce/grow/pull/217)
