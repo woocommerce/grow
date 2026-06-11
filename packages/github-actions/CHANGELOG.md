@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-11 (2.3.3)
+### Bug Fixes 🐛
+* Improve release build error handling and auto-merge the release PR. (https://github.com/woocommerce/grow/pull/230)
+
 ## 2026-06-11 (2.3.2)
 ### Tweaked 🔧
 * Add unit tests and a self-test CI workflow for the `github-actions` package. (https://github.com/woocommerce/grow/pull/225)
