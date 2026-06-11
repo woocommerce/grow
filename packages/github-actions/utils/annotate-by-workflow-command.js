@@ -9,7 +9,7 @@
  * @property {string} [endColumn] End column number of the associated file.
  */
 
-function toAnnotationCommand( annotation ) {
+export function toAnnotationCommand( annotation ) {
 	const regex = /([ ,]?\w+=)?\{(\w+)\}/g;
 	const template =
 		'::{command} file={filePath},line={line},endLine={endLine},col={column},endColumn={endColumn}::{message}';

@@ -7,29 +7,7 @@ import stylelint from 'stylelint'; // eslint-disable-line import/no-extraneous-d
  * Internal dependencies
  */
 import annotateByWorkflowCommand from '../../../utils/annotate-by-workflow-command.js';
-
-function toAnnotations( failedFiles ) {
-	const truncationPath = process.cwd();
-	const annotations = [];
-
-	failedFiles.forEach( ( file ) => {
-		const filePath = file.source.replace( truncationPath, '.' );
-
-		file.warnings.forEach( ( lintError ) => {
-			const { severity, line, column, text } = lintError;
-
-			annotations.push( {
-				command: severity,
-				filePath,
-				line,
-				column,
-				message: text,
-			} );
-		} );
-	} );
-
-	return annotations;
-}
+import toAnnotations from './to-annotations.js';
 
 // Ref: https://stylelint.io/developer-guide/formatters/
 export default function ( results, returnValue ) {

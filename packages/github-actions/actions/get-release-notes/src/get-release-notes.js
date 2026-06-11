@@ -12,26 +12,13 @@ import PackageTool from '../../../utils/package-tool.js';
 import RepoTool from '../../../utils/repo-tool.js';
 import handleActionErrors from '../../../utils/handle-action-errors.js';
 import matchVersionLevel from './match-version-level.js';
+import { parseChangelog, escapeSingleQuote } from './release-notes-utils.js';
 
 const TMP_TAG = 'tmp--github-action-get-release-notes';
 
 function compositeVersionTag( version ) {
 	const template = core.getInput( 'tag-template' );
 	return template.replace( '{version}', version );
-}
-
-function parseChangelog( notesContent ) {
-	const matched = notesContent.match(
-		/## What's Changed\n([\d\D]+?)(?=\n\n)/i
-	);
-	if ( matched ) {
-		return matched[ 1 ];
-	}
-	return '';
-}
-
-function escapeSingleQuote( text ) {
-	return text.replace( /'/g, `'"'"'` );
 }
 
 function setOutput( key, value ) {

@@ -7,29 +7,7 @@ import { ESLint } from 'eslint'; // eslint-disable-line import/no-extraneous-dep
  * Internal dependencies
  */
 import annotateByWorkflowCommand from '../../../utils/annotate-by-workflow-command.js';
-
-function toAnnotations( failedFiles ) {
-	const truncationPath = process.cwd();
-	const annotations = [];
-
-	failedFiles.forEach( ( file ) => {
-		const filePath = file.filePath.replace( truncationPath, '.' );
-
-		file.messages.forEach( ( lintError ) => {
-			const { severity, ruleId, message } = lintError;
-
-			// About the `severity` value: https://eslint.org/docs/user-guide/formatters/#json
-			annotations.push( {
-				...lintError,
-				command: severity === 2 ? 'error' : 'warning',
-				filePath,
-				message: `[${ ruleId }] ${ message }`,
-			} );
-		} );
-	} );
-
-	return annotations;
-}
+import toAnnotations from './to-annotations.js';
 
 // Ref: https://eslint.org/docs/developer-guide/working-with-custom-formatters
 export default function ( results, context ) {

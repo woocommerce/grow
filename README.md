@@ -2,6 +2,7 @@
 
 [![JavaScript Linting](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/js-linting.yml)
 [![PHP Coding Standards](https://github.com/woocommerce/grow/actions/workflows/php-coding-standards.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/php-coding-standards.yml)
+[![GitHub Actions Self-Test](https://github.com/woocommerce/grow/actions/workflows/github-actions-self-test.yml/badge.svg)](https://github.com/woocommerce/grow/actions/workflows/github-actions-self-test.yml)
 
 This repository is a container for packages, mostly dev tools to serve the Grow Team.
 The packages here are too experimental or too Grow-specific to be shared Woo-wide.
