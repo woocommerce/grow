@@ -21,10 +21,14 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version-file: .nvmrc
+          # Temporarily pinned to Node.js v24: the test script relies on the
+          # `node --test` glob, which needs Node.js v21+. Restore the
+          # node-version-file line once the repo root .nvmrc is set to v24.
+          node-version: '24'
+          # node-version-file: .nvmrc
       - name: Install dependencies
         working-directory: packages/github-actions
         run: npm ci --ignore-scripts
@@ -36,10 +40,14 @@ jobs:
     name: Build Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version-file: .nvmrc
+          # Temporarily pinned to Node.js v24 to match the package engines
+          # while the repo root .nvmrc is still v20. Restore the
+          # node-version-file line once the repo root .nvmrc is set to v24.
+          node-version: '24'
+          # node-version-file: .nvmrc
       - name: Install dependencies
         working-directory: packages/github-actions
         run: npm ci --ignore-scripts
