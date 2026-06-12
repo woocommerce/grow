@@ -61,15 +61,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20', '22']
+        node-version: ['24', '22', '20']
         install-deps: ['yes', 'no']
         ignore-scripts: ['yes']
         include:
-          - node-version: '20'
+          - node-version: '24'
             install-deps: 'yes'
             ignore-scripts: 'no'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: ${{ matrix.node-version }}
@@ -107,7 +107,7 @@ jobs:
           - php-version: '8.2'
             install-deps: 'yes'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Create minimal Composer project for install test
         if: matrix.install-deps == 'yes'
         run: |
@@ -139,7 +139,7 @@ jobs:
     name: prepare-mysql
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./packages/github-actions/actions/prepare-mysql
       - name: Verify MySQL connection
         run: mysql -u root -proot -e "SELECT 1;"
@@ -152,10 +152,10 @@ jobs:
       matrix:
         eslint-version: ['8', '9']
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Build the formatter
         working-directory: packages/github-actions
         run: |
@@ -193,10 +193,10 @@ jobs:
       matrix:
         stylelint-version: ['15', '16']
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Build the formatter
         working-directory: packages/github-actions
         run: |
