@@ -27,15 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Prepare node
-        uses: woocommerce/grow/prepare-node@actions-v2
+        uses: woocommerce/grow/prepare-node@actions-v3
         with:
           node-version-file: .nvmrc
 
       - name: Prepare annotation formatter
-        uses: woocommerce/grow/eslint-annotation@actions-v2
+        uses: woocommerce/grow/eslint-annotation@actions-v3
 
       # Turn off import/no-unresolved rule since this check doesn't install packages for all sub-packages.
       - name: Lint JavaScript and annotate linting errors
