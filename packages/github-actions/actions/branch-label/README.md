@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set Labels
-        uses: woocommerce/grow/branch-label@actions-v2
+        uses: woocommerce/grow/branch-label@actions-v3
 ```
 
 #### Permissions:
@@ -37,8 +37,8 @@ In order to add labels to pull requests, this action requires write permissions 
 
 Ref:
 - https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target
-- https://github.com/actions/labeler/tree/v5#usage
-- https://github.com/actions/labeler/tree/v5#permissions
+- https://github.com/actions/labeler/tree/v6#usage
+- https://github.com/actions/labeler/tree/v6#recommended-permissions
 
 ## Migration from v1 to v2:
 
