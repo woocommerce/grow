@@ -16,7 +16,7 @@ runs:
         fetch-depth: 2
 
     # Set up PHP.
-    - uses: woocommerce/grow/prepare-php@upgrade/nodejs-v24-test-build
+    - uses: woocommerce/grow/prepare-php@actions-v3
       with:
         php-version: ${{ inputs.php-version }}
 
