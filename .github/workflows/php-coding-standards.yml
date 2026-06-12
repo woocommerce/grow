@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Prepare PHP
-        uses: woocommerce/grow/prepare-php@actions-v2
+        uses: woocommerce/grow/prepare-php@actions-v3
         with:
           php-version: 7.4
           tools: cs2pr
