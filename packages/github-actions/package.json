@@ -4,14 +4,14 @@
   "description": "GitHub JavaScript actions for a WooCommerce plugin repo by Grow Team.",
   "type": "module",
   "scripts": {
-    "test": "node --test ./actions/**/__tests__/*.test.js ./utils/__tests__/*.test.js",
-    "test:watch": "node --test --watch ./actions/**/__tests__/*.test.js ./utils/__tests__/*.test.js",
+    "test": "node --test './actions/**/__tests__/*.test.js' './utils/__tests__/*.test.js'",
+    "test:watch": "node --test --watch './actions/**/__tests__/*.test.js' './utils/__tests__/*.test.js'",
     "build": "rollup -c"
   },
   "author": "WooCommerce",
   "license": "GPL-3.0-or-later",
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   },
   "dependencies": {
     "@actions/core": "^3.0.0",

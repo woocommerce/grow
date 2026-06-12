@@ -23,13 +23,13 @@ jobs:
     steps:
       - name: Get Release versions from WooCommerce (WordPress.org)
         id: wc-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           slug: woocommerce
 
       - name: Get Release versions from WooCommerce (GitHub)
         id: wc-gh-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           source: github
           slug: woocommerce/woocommerce
@@ -38,19 +38,19 @@ jobs:
 
       - name: Get Release versions from WordPress
         id: wp-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           slug: wordpress
 
       - name: Get Release versions from GLA
         id: gla-versions
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           slug: google-listings-and-ads
 
       - name: Get L-3 Release versions from WC including RC
         id: wc-versions-l3-rc
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           slug: woocommerce
           releases: 4
@@ -58,7 +58,7 @@ jobs:
 
       - name: Get L-2 Release versions from WC including patches
         id: wc-versions-patches
-        uses: woocommerce/grow/get-plugin-releases@actions-v2
+        uses: woocommerce/grow/get-plugin-releases@actions-v3
         with:
           slug: woocommerce
           includePatches: true

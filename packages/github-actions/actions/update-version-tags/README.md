@@ -35,12 +35,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.release.tag_name }}
 
       - name: Update version tags
-        uses: woocommerce/grow/update-version-tags@actions-v2
+        uses: woocommerce/grow/update-version-tags@actions-v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```

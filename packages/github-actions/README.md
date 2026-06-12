@@ -6,7 +6,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
-All actions involving Node.js are run in v20.
+All actions involving Node.js are run in v24.
 
 - [`automerge-released-trunk`](actions/automerge-released-trunk) - Merge `trunk` to `develop` after an extension release
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name
@@ -22,16 +22,16 @@ All actions involving Node.js are run in v20.
 - [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
 - [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
-- [`run-qit-annotate`](actions/run-qit-annotate) - Runs QIT test and annotates the results
-- [`run-qit-extension`](actions/run-qit-extension) - Run QIT tests for a given extension
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter
 - [`update-version-tags`](actions/update-version-tags) - Update version tags
+- `run-qit-annotate` - Runs QIT test and annotates the results. **Removed in v3.**
+- `run-qit-extension` - Run QIT tests for a given extension. **Removed in v3.**
 
 ## Development
 
 ### JavaScript actions
 
-1. Install `node` with version v20
+1. Install `node` with version v24
 1. Install node modules `npm i`
 
 ### PHP actions
