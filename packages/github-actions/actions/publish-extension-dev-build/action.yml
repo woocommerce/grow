@@ -23,7 +23,7 @@ runs:
   steps:
     # Get unreleased notes
     - id: unreleased-notes
-      uses: woocommerce/grow/get-release-notes@actions-v3
+      uses: woocommerce/grow/get-release-notes@upgrade/nodejs-v24-test-build
       with:
         repo-token: ${{ github.token }}
         tag-template: "{version}"
