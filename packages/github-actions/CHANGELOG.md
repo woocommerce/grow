@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-12 (3.0.0)
+### Breaking Changes 🚨
+* Upgrade the `github-actions` package and its actions to Node.js v24. (https://github.com/woocommerce/grow/pull/238)
+* Remove the unused QIT actions and workflow. (https://github.com/woocommerce/grow/pull/239)
+### Updated ✨
+* Upgrade `github-actions` package development environment to Node.js v24. (https://github.com/woocommerce/grow/pull/237)
+
 ## 2026-06-11 (2.3.3)
 ### Bug Fixes 🐛
 * Improve release build error handling and auto-merge the release PR. (https://github.com/woocommerce/grow/pull/230)
