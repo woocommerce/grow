@@ -24,12 +24,12 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
       - run: npm ci
-      - uses: woocommerce/grow/eslint-annotation@actions-v2
+      - uses: woocommerce/grow/eslint-annotation@actions-v3
         with:
           formatter-dest: "./my-formatter.cjs"
       - run: eslint --format ./my-formatter.cjs src

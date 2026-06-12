@@ -6,7 +6,7 @@ Custom GitHub actions that help to composite GitHub workflows across the repos m
 
 ## Actions list
 
-All actions involving Node.js are run in v20.
+All actions involving Node.js are run in v24.
 
 - [`automerge-released-trunk`](actions/automerge-released-trunk) - Merge `trunk` to `develop` after an extension release
 - [`branch-label`](actions/branch-label) - Set PR labels according to the branch name

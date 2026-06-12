@@ -11,4 +11,4 @@ runs:
         mkdir -p "$CONFIG_DIR"
         cp "${{ github.action_path }}/labeler.yml" "$CONFIG_DIR"
 
-    - uses: actions/labeler@v5
+    - uses: actions/labeler@v6
