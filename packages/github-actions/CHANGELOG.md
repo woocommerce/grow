@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-16 (3.0.1)
+### Documentation 📚
+* Upgrade `github-actions` release workflows to Node.js v24 and refresh release-process in README. (https://github.com/woocommerce/grow/pull/244)
+
 ## 2026-06-12 (3.0.0)
 ### Breaking Changes 🚨
 * Upgrade the `github-actions` package and its actions to Node.js v24. (https://github.com/woocommerce/grow/pull/238)
