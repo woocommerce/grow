@@ -145,8 +145,6 @@ gitGraph
 
 Branch off from the old version, set the merge base for fixing PR to be the same as the old version, and run the release process for that version after merging.
 
-- [v1 source branch](https://github.com/woocommerce/grow/tree/source/actions-v1/packages/github-actions)
-
 ## Release
 
 ### Official release process
