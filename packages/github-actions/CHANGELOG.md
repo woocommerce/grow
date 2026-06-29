@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-06-29 (3.0.2)
+### Tweaked 🔧
+* Bump undici from 6.26.0 to 6.27.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/249)
+### Documentation 📚
+* Remove dead link to deleted `source/actions-v1` branch. (https://github.com/woocommerce/grow/pull/248)
+
 ## 2026-06-16 (3.0.1)
 ### Documentation 📚
 * Upgrade `github-actions` release workflows to Node.js v24 and refresh release-process in README. (https://github.com/woocommerce/grow/pull/244)
