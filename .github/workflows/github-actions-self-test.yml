@@ -164,7 +164,7 @@ jobs:
           cat "$GITHUB_WORKSPACE/packages/github-actions/actions/eslint-annotation/eslintFormatter.cjs" >> eslintFormatter.cjs
           # Create a file with a known lint error
           echo 'var unused = 1;' > sample.js
-      - name: Verify formatter produces annotation commands
+      - name: Verify formatter annotates and fails on lint errors
         working-directory: /tmp/formatter-test
         run: |
           MAJOR=$(./node_modules/.bin/eslint --version | cut -d. -f1 | tr -d 'v')
@@ -173,9 +173,16 @@ jobs:
           else
             CONFIG_FLAG="--no-eslintrc"
           fi
-          OUTPUT=$(./node_modules/.bin/eslint sample.js $CONFIG_FLAG --rule 'no-unused-vars: error' --format ./eslintFormatter.cjs 2>&1 || true)
+          OUTPUT=$(./node_modules/.bin/eslint sample.js $CONFIG_FLAG --rule 'no-unused-vars: error' --format ./eslintFormatter.cjs 2>&1) && STATUS=0 || STATUS=$?
           echo "$OUTPUT"
+          echo "eslint exit status: $STATUS"
+          # The formatter must emit annotation commands.
           echo "$OUTPUT" | grep -qE '^::(error|warning) '
+          # Lint errors must make eslint exit non-zero so failures fail CI.
+          if [ "$STATUS" -eq 0 ]; then
+            echo "Expected eslint to exit non-zero for lint errors, but it exited 0."
+            exit 1
+          fi
 
   test-stylelint-formatter:
     name: "stylelint-annotation (stylelint v${{ matrix.stylelint-version }})"
@@ -183,7 +190,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        stylelint-version: ['15', '16']
+        stylelint-version: ['15', '16', '17']
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -206,9 +213,18 @@ jobs:
           # Create a CSS file with a known lint error (duplicate property)
           echo 'a { color: red; color: blue; }' > sample.css
           echo '{"rules": {"declaration-block-no-duplicate-properties": true}}' > .stylelintrc.json
-      - name: Verify formatter produces annotation commands
+      - name: Verify formatter annotates and fails on lint errors
         working-directory: /tmp/formatter-test
         run: |
-          OUTPUT=$(./node_modules/.bin/stylelint sample.css --custom-formatter ./stylelintFormatter.cjs 2>&1 || true)
+          OUTPUT=$(./node_modules/.bin/stylelint sample.css --custom-formatter ./stylelintFormatter.cjs 2>&1) && STATUS=0 || STATUS=$?
           echo "$OUTPUT"
+          echo "stylelint exit status: $STATUS"
+          # The formatter must emit annotation commands.
           echo "$OUTPUT" | grep -qE '^::(error|warning) '
+          # Lint errors must make stylelint exit non-zero. A formatter that returns an
+          # empty report makes stylelint's CLI skip its exit-code assignment, which
+          # would let lint errors pass CI with a green check.
+          if [ "$STATUS" -eq 0 ]; then
+            echo "Expected stylelint to exit non-zero for lint errors, but it exited 0."
+            exit 1
+          fi
