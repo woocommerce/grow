@@ -65,10 +65,7 @@ describe( 'stylelint-annotation toAnnotations', () => {
 		];
 		const result = toAnnotations( failedFiles );
 
-		assert.strictEqual(
-			result[ 0 ].filePath,
-			'./src/components/button.css'
-		);
+		assert.strictEqual( result[ 0 ].filePath, 'src/components/button.css' );
 	} );
 
 	it( 'Should pass through message text', () => {
@@ -127,7 +124,7 @@ describe( 'stylelint-annotation toAnnotations', () => {
 		assert.strictEqual( result.length, 3 );
 		assert.strictEqual( result[ 0 ].command, 'error' );
 		assert.strictEqual( result[ 1 ].command, 'warning' );
-		assert.strictEqual( result[ 2 ].filePath, './b.css' );
+		assert.strictEqual( result[ 2 ].filePath, 'b.css' );
 	} );
 
 	it( 'Should return an empty array when given no failed files', () => {
