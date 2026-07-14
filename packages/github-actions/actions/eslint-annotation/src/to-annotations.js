@@ -9,7 +9,10 @@ export default function toAnnotations( failedFiles ) {
 	const annotations = [];
 
 	failedFiles.forEach( ( file ) => {
-		const filePath = file.filePath.replace( truncationPath, '.' );
+		// Strip the cwd to a repo-root-relative path with no `./` prefix. GitHub only
+		// links annotations to a pull request's changed files when the path matches
+		// the diff exactly, and a leading `./` prevents that match.
+		const filePath = file.filePath.replace( `${ truncationPath }/`, '' );
 
 		file.messages.forEach( ( lintError ) => {
 			const { severity, ruleId, message } = lintError;

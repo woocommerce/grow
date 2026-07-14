@@ -89,7 +89,7 @@ describe( 'eslint-annotation toAnnotations', () => {
 		];
 		const result = toAnnotations( failedFiles );
 
-		assert.strictEqual( result[ 0 ].filePath, './src/utils/helper.js' );
+		assert.strictEqual( result[ 0 ].filePath, 'src/utils/helper.js' );
 	} );
 
 	it( 'Should handle multiple files with multiple messages', () => {
@@ -131,7 +131,7 @@ describe( 'eslint-annotation toAnnotations', () => {
 		assert.strictEqual( result.length, 3 );
 		assert.strictEqual( result[ 0 ].command, 'error' );
 		assert.strictEqual( result[ 1 ].command, 'warning' );
-		assert.strictEqual( result[ 2 ].filePath, './b.js' );
+		assert.strictEqual( result[ 2 ].filePath, 'b.js' );
 	} );
 
 	it( 'Should return an empty array when given no failed files', () => {
