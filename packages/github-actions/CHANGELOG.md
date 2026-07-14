@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-07-14 (3.0.3)
+### Bug Fixes 🐛
+* Fix `stylelint-annotation` silently passing CI and not showing inline annotations. (https://github.com/woocommerce/grow/pull/251)
+
 ## 2026-06-29 (3.0.2)
 ### Tweaked 🔧
 * Bump undici from 6.26.0 to 6.27.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/249)
