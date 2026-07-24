@@ -24,20 +24,8 @@ _Replace this with a good description of your changes & reasoning._
 
 <!--
 Optional.
-Enter a summary of all changes in this Pull Request, which will be added to the changelog if accepted.
-Each line should start with change type prefix`(Fix|Add|…) - `, for example:
-> Break - A change breaking previous API or functionality.
-> Add - A new feature, function or functionality was added.
-> Update - Big changes to something that wasn't broken.
-> Fix - Took care of something that wasn't working.
-> Tweak - Small change, that isn't actually very important.
-> Dev - Developer-facing only change.
-> Doc - Updated customer or developer facing documentation
 
-For changes related to the `github-actions` package, please use `[actions] changelog: *` labels.
+For changes related to a releasable package, please use the corresponding changelog labels, for example, `[actions] changelog: *` for the `github-actions` package, and likewise for the `jsdoc` and `tracking-jsdoc` packages.
 
 Add the `changelog: none` label if no changelog entry is needed.
 -->
-### Changelog entry
-
->
