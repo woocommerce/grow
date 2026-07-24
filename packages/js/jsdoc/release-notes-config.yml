@@ -33,3 +33,7 @@ changelog:
     - title: Documentation 📚
       labels:
         - "[jsdoc] changelog: docs"
+
+    - title: Chores 🧹
+      labels:
+        - "[jsdoc] changelog: chore"
