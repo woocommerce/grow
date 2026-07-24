@@ -25,7 +25,7 @@ _Replace this with a good description of your changes & reasoning._
 <!--
 Optional.
 
-For changes related to a releasable package, please use the corresponding changelog labels, for example, `[actions] changelog: *` labels for the `github-actions` package, and likewise for the `jsdoc` and `tracking-jsdoc` packages.
+For changes related to a releasable package, please use the corresponding changelog labels, for example, `[actions] changelog: *` for the `github-actions` package, and likewise for the `jsdoc` and `tracking-jsdoc` packages.
 
 Add the `changelog: none` label if no changelog entry is needed.
 -->
