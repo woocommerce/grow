@@ -8,12 +8,18 @@ on:
       - "**.php"
       - composer.json
       - composer.lock
+      - "**/composer.json"
+      - "**/composer.lock"
+      - phpcs.xml.dist
       - .github/workflows/php-coding-standards.yml
   pull_request:
     paths:
       - "**.php"
       - composer.json
       - composer.lock
+      - "**/composer.json"
+      - "**/composer.lock"
+      - phpcs.xml.dist
       - .github/workflows/php-coding-standards.yml
 
 concurrency:
