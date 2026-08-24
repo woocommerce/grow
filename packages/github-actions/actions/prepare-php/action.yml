@@ -32,7 +32,7 @@ runs:
   using: composite
   steps:
     # Set up PHP and tools.
-    - uses: shivammathur/setup-php@v2
+    - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
       with:
         php-version: ${{ inputs.php-version }}
         coverage: ${{ inputs.coverage }}
@@ -50,7 +50,7 @@ runs:
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     # Set up Composer caching.
-    - uses: actions/cache@v5
+    - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
       with:
         path: ${{ steps.composer-cache-config.outputs.dir }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
