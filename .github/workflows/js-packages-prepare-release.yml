@@ -10,6 +10,7 @@ jobs:
   CheckCreatedBranch:
     name: Check Created Branch
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Check created release branch
         uses: actions/github-script@v9
@@ -25,6 +26,7 @@ jobs:
   PrepareRelease:
     name: Prepare Release
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: CheckCreatedBranch
     steps:
       - name: Checkout repository
