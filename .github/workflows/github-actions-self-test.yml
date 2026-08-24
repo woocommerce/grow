@@ -20,7 +20,6 @@ jobs:
   unit-test:
     name: Unit Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -36,7 +35,6 @@ jobs:
   build-check:
     name: Build Check
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -52,7 +50,6 @@ jobs:
   test-prepare-node:
     name: "prepare-node (Node ${{ matrix.node-version }}, deps: ${{ matrix.install-deps }})"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -93,7 +90,6 @@ jobs:
   test-prepare-php:
     name: "prepare-php (PHP ${{ matrix.php-version }}, deps: ${{ matrix.install-deps }})"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -134,7 +130,6 @@ jobs:
   test-prepare-mysql:
     name: prepare-mysql
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
       - uses: ./packages/github-actions/actions/prepare-mysql
@@ -144,7 +139,6 @@ jobs:
   test-eslint-formatter:
     name: "eslint-annotation (eslint v${{ matrix.eslint-version }})"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -188,7 +182,6 @@ jobs:
   test-stylelint-formatter:
     name: "stylelint-annotation (stylelint v${{ matrix.stylelint-version }})"
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:

@@ -9,7 +9,6 @@ jobs:
   CreateRelease:
     name: Create release for JS package
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     if: ${{ (github.event.pull_request.head.ref == 'release/jsdoc' || github.event.pull_request.head.ref == 'release/tracking-jsdoc') && github.event.review.state == 'approved' }}
     steps:
       - name: Derive package config
