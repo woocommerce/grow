@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check created release branch
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             if ( ! context.payload.created ) {
@@ -29,7 +29,7 @@ jobs:
     needs: CheckCreatedBranch
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
@@ -87,7 +87,7 @@ jobs:
           git push
 
       - name: Create a pull request for release
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const workspace = '${{ github.workspace }}';
