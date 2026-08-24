@@ -18,6 +18,7 @@ jobs:
   Setup:
     name: Setup and Checks
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       release: ${{ steps.set-result.outputs.release }}
     steps:
@@ -65,6 +66,7 @@ jobs:
   UpdateTags:
     name: Create Release Build and Update Version Tags
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: Setup
     steps:
       - name: Resolve tag name
@@ -114,6 +116,7 @@ jobs:
     if: ${{ github.event_name == 'workflow_run' }}
     needs: UpdateTags
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: write
       pull-requests: write

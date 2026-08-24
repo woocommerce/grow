@@ -9,6 +9,7 @@ jobs:
   CreateRelease:
     name: Create release for github-actions package
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: ${{ github.event.pull_request.head.ref == 'release/actions' && github.event.review.state == 'approved' }}
     steps:
       - name: Checkout repository
