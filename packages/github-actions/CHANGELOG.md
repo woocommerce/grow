@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-26 (3.0.5)
+### Bug Fixes 🐛
+* Pin nested GitHub Action dependencies to full SHAs. (https://github.com/woocommerce/grow/pull/265)
+
 ## 2026-08-06 (3.0.4)
 ### Tweaked 🔧
 * Bump undici from 6.27.0 to 6.28.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/259)
