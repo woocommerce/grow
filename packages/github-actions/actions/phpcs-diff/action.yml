@@ -15,10 +15,35 @@ runs:
       with:
         fetch-depth: 2
 
-    # Set up PHP.
-    - uses: woocommerce/grow/prepare-php@3a4249a1fc7e39a987d213e578cbcf32abd55980 # actions-v3
+    # Deliberately mirrors prepare-php because a build cannot reference its own not-yet-published SHA.
+    - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
       with:
         php-version: ${{ inputs.php-version }}
+        coverage: none
+
+    # Log PHP and Composer information.
+    - shell: bash
+      run: |
+        php --version
+        composer --version
+
+    # Cache Composer packages.
+    - shell: bash
+      id: composer-cache-config
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+    - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+      with:
+        path: ${{ steps.composer-cache-config.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    # Install Composer dependencies.
+    - shell: bash
+      run: |
+        COMPOSER_VER=$(composer --version | awk '{ print $3 }')
+        composer install --prefer-dist --no-interaction `if [[ $COMPOSER_VER == 1.* ]]; then printf %s "--no-suggest"; fi`
+        echo "${PWD}/vendor/bin" >> "$GITHUB_PATH"
 
     #Log information
     - shell: bash
