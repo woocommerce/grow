@@ -58,7 +58,7 @@ runs:
         git push --set-upstream origin "${BRANCH_NAME}"
     - name: Create a pull request for the release
       id: prepare-release-pr
-      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           const action_path = '${{ github.action_path }}';
