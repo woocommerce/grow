@@ -4,6 +4,10 @@ This action provides the following functionality for GitHub Actions users:
 
 - Publish or update the extension development build via a pre-release on GitHub.
 
+## Prerequisites
+
+This action references a sibling action through GitHub's self repository syntax (`$/`), which is not available on GitHub Enterprise Server.
+
 ## Usage
 
 See [action.yml](action.yml)
