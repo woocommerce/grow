@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-27 (3.0.6)
+### Tweaked 🔧
+* Tweak the action references in the `github-actions` package. (https://github.com/woocommerce/grow/pull/268)
+* Support building a single action in the `github-actions` package. (https://github.com/woocommerce/grow/pull/269)
+### Documentation 📚
+* Add the missing 3.0.5 changelog entry to the `github-actions` package. (https://github.com/woocommerce/grow/pull/267)
+
 ## 2026-08-26 (3.0.5)
 ### Bug Fixes 🐛
 * Pin nested GitHub Action dependencies to full SHAs. (https://github.com/woocommerce/grow/pull/265)
