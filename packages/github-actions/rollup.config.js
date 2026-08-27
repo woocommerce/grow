@@ -4,7 +4,7 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
-export default [
+const configs = [
 	{
 		input: './actions/eslint-annotation/src/eslintFormatter.js',
 		output: {
@@ -101,3 +101,28 @@ export default [
 		],
 	},
 ];
+
+const actionName = ( { input } ) => input.split( '/' )[ 2 ];
+
+// `--configAction` narrows the build to one action, so a workflow that needs a
+// single bundle does not write the others into paths that a later step reads.
+// Example: npm run build -- --configAction=eslint-annotation
+export default ( cliArgs ) => {
+	if ( ! ( 'configAction' in cliArgs ) ) {
+		return configs;
+	}
+
+	const selected = configs.filter(
+		( config ) => actionName( config ) === cliArgs.configAction
+	);
+
+	if ( ! selected.length ) {
+		const names = [ ...new Set( configs.map( actionName ) ) ];
+		throw new Error(
+			`No rollup configuration matches the action "${ cliArgs.configAction }". ` +
+				`Available: ${ names.join( ', ' ) }.`
+		);
+	}
+
+	return selected;
+};
