@@ -3,6 +3,8 @@
 ## 2026-08-26 (3.0.5)
 ### Bug Fixes 🐛
 * Pin nested GitHub Action dependencies to full SHAs. (https://github.com/woocommerce/grow/pull/265)
+### Tweaked 🔧
+* Pin remote GitHub Action references in composite actions to full commit SHAs. (https://github.com/woocommerce/grow/pull/263)
 
 ## 2026-08-06 (3.0.4)
 ### Tweaked 🔧
