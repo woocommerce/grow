@@ -92,6 +92,13 @@ jobs:
         with:
           ref: ${{ steps.resolve-tag.outputs.tag_name }}
 
+      - name: Prepare node
+        uses: ./packages/github-actions/actions/prepare-node
+        with:
+          node-version: 24
+          cache-dependency-path: ./packages/github-actions/package-lock.json
+          install-deps: "no"
+
       - name: Create and commit release build
         id: commit-build
         run: |
@@ -103,8 +110,20 @@ jobs:
 
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
+      # The build above leaves the flattened package in place of the checkout. The
+      # whole package comes back, not just the action, because building it needs
+      # the package manifest and the rollup config.
+      - name: Restore the package
+        run: git checkout HEAD^ -- ./packages/github-actions
+
+      - name: Build the version tags action
+        working-directory: packages/github-actions
+        run: |
+          npm ci --ignore-scripts
+          npm run build -- --configAction=update-version-tags
+
       - name: Update version tags
-        uses: woocommerce/grow/update-version-tags@3a4249a1fc7e39a987d213e578cbcf32abd55980 # actions-v3
+        uses: ./packages/github-actions/actions/update-version-tags
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sha: ${{ steps.commit-build.outputs.sha }}
