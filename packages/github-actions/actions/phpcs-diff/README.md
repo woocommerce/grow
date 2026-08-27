@@ -11,6 +11,8 @@ Install required packages: `dealerdirect/phpcodesniffer-composer-installer` and 
 
 - `composer require --dev dealerdirect/phpcodesniffer-composer-installer:^v0.7 exussum12/coverage-checker:^1.0`
 
+This action references a sibling action through GitHub's self repository syntax (`$/`), which is not available on GitHub Enterprise Server.
+
 ## Usage
 
 See [action.yml](action.yml)
