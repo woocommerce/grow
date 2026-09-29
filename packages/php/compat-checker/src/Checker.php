@@ -60,6 +60,14 @@ class Checker {
 		if ( false === $plugin_data ) {
 			$plugin_data         = get_file_data( $plugin_file, $default_headers, 'plugin' );
 			$plugin_data['File'] = $plugin_file;
+
+			// WordPress reads "Tested up to" from readme.txt, and Plugin Check rejects it in the main file header.
+			$readme = dirname( $plugin_file ) . '/readme.txt';
+			if ( '' === $plugin_data['TestedWP'] && is_readable( $readme ) ) {
+				$readme_data             = get_file_data( $readme, [ 'TestedWP' => 'Tested up to' ] );
+				$plugin_data['TestedWP'] = $readme_data['TestedWP'];
+			}
+
 			set_transient( $transient_key, $plugin_data, MONTH_IN_SECONDS );
 		}
 
