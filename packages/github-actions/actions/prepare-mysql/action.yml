@@ -10,11 +10,29 @@ runs:
       # So here adds default_authentication_plugin=mysql_native_password to my.conf for PHP 7.0.x,
       # and alters password with `mysql_native_password` authentication method
       # to make PHP 7.3.x mysql client be able to create database connections.
+      # MySQL 8.4 removed `default_authentication_plugin` and turned `mysql_native_password` off,
+      # and MySQL 9.0 removed that plugin.
       run: |
+        # An unknown version falls back to the MySQL 8.0 setup.
+        MYSQL_VERSION=$(mysqld --version 2>/dev/null | grep -m 1 -oE 'Ver [0-9]+\.[0-9]+' | cut -d ' ' -f 2 || true)
+        MYSQL_VERSION=${MYSQL_VERSION:-8.0}
+        echo "MySQL version: ${MYSQL_VERSION}"
+        MYSQL_MAJOR=${MYSQL_VERSION%%.*}
+        MYSQL_MINOR=${MYSQL_VERSION#*.}
+
         echo "[mysqld]" | sudo tee -a /etc/mysql/my.cnf
-        echo "default_authentication_plugin=mysql_native_password" | sudo tee -a /etc/mysql/my.cnf
+        if (( MYSQL_MAJOR < 8 || ( MYSQL_MAJOR == 8 && MYSQL_MINOR < 4 ) )); then
+          echo "default_authentication_plugin=mysql_native_password" | sudo tee -a /etc/mysql/my.cnf
+        elif (( MYSQL_MAJOR == 8 )); then
+          echo "mysql_native_password=ON" | sudo tee -a /etc/mysql/my.cnf
+          echo "authentication_policy=*:mysql_native_password,," | sudo tee -a /etc/mysql/my.cnf
+        fi
+
         sudo systemctl start mysql.service
-        mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+
+        if (( MYSQL_MAJOR < 9 )); then
+          mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+        fi
 
     # Log information.
     - shell: bash
