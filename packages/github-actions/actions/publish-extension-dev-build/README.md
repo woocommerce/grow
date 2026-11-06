@@ -28,7 +28,7 @@ jobs:
       # build extension
       - run: npm run build
 
-      - uses: woocommerce/grow/publish-extension-dev-build@actions-v3
+      - uses: woocommerce/grow/publish-extension-dev-build@actions-v4
         with:
           extension-asset-path: my-extension.zip
 

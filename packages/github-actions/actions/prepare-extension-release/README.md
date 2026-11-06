@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - uses: woocommerce/grow/prepare-extension-release@actions-v3
+      - uses: woocommerce/grow/prepare-extension-release@actions-v4
         with:
           version: ${{ github.event.inputs.version }}
           type: ${{ github.event.inputs.type }}

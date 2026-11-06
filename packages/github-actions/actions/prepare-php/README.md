@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Prepare PHP
-        uses: woocommerce/grow/prepare-php@actions-v3
+        uses: woocommerce/grow/prepare-php@actions-v4
 
       - name: Run unit tests
         run: vendor/bin/phpunit
@@ -40,7 +40,7 @@ steps:
   - uses: actions/checkout@v6
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v3
+    uses: woocommerce/grow/prepare-php@actions-v4
     with:
       php-version: 8.1
 ```
@@ -53,7 +53,7 @@ steps:
     uses: actions/checkout@v6
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v3
+    uses: woocommerce/grow/prepare-php@actions-v4
     with:
       tools: cs2pr
 
@@ -73,7 +73,7 @@ steps:
     uses: actions/checkout@v6
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v3
+    uses: woocommerce/grow/prepare-php@actions-v4
     with:
       coverage: xdebug
 ```
@@ -90,7 +90,7 @@ steps:
     uses: actions/checkout@v6
 
   - name: Prepare PHP
-    uses: woocommerce/grow/prepare-php@actions-v3
+    uses: woocommerce/grow/prepare-php@actions-v4
     with:
       install-deps: "no"
 
