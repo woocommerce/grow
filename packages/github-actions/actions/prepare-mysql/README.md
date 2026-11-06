@@ -3,11 +3,15 @@
 This action provides the following functionality for GitHub Actions users:
 
 - Enable MySQL service
-- Handle the authentication compatibility for PHP 7.0-7.3
-  - MySQL 8.0 (for example `ubuntu-24.04`): sets `default_authentication_plugin=mysql_native_password`.
-  - MySQL 8.4 (for example `ubuntu-26.04`): turns on `mysql_native_password` and makes it the default with `authentication_policy`.
-  - MySQL 9.0 and newer: skipped, as MySQL removed `mysql_native_password`. Users keep `caching_sha2_password`.
 - Log the version information
+
+The `root` user (password `root`) keeps MySQL's default authentication method, `caching_sha2_password`. PHP 7.4 and newer support it.
+
+### Upgrading from v3
+
+v3 switched `root` to `mysql_native_password` so PHP 7.0-7.3 could connect. MySQL 8.4 turned that method off by default and MySQL 9.0 removed it, so v4 no longer does this.
+
+If your workflow tests PHP 7.3 or older against this MySQL, stay on `actions-v3`, which still works on `ubuntu-24.04` and `ubuntu-26.04`.
 
 ## Usage
 
