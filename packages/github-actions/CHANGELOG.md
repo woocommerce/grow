@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-06 (3.0.7)
+### Bug Fixes 🐛
+* Support MySQL 8.4 in the `prepare-mysql` action (Ubuntu 26.04 runners). (https://github.com/woocommerce/grow/pull/284)
+### Tweaked 🔧
+* Bump undici from 6.28.0 to 6.29.0 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/276)
+* Bump undici from 6.29.0 to 6.29.1 in /packages/github-actions. (https://github.com/woocommerce/grow/pull/281)
+
 ## 2026-08-27 (3.0.6)
 ### Tweaked 🔧
 * Tweak the action references in the `github-actions` package. (https://github.com/woocommerce/grow/pull/268)
