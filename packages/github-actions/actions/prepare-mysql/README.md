@@ -11,7 +11,7 @@ The `root` user (password `root`) keeps MySQL's default authentication method, `
 
 v3 switched `root` to `mysql_native_password` so PHP 7.0-7.3 could connect. MySQL 8.4 turned that method off by default and MySQL 9.0 removed it, so v4 no longer does this.
 
-If your workflow tests PHP 7.3 or older against this MySQL, stay on `actions-v3`, which still works on `ubuntu-24.04` and `ubuntu-26.04`.
+If your workflow tests PHP 7.3 or older against this MySQL, keep this one action on `woocommerce/grow/prepare-mysql@actions-v3`. That tag points to 3.0.7, which works on `ubuntu-24.04` and `ubuntu-26.04`. Your other grow actions can still move to v4.
 
 ## Usage
 
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Prepare MySQL
-        uses: woocommerce/grow/prepare-mysql@actions-v3
+        uses: woocommerce/grow/prepare-mysql@actions-v4
 
       - name: Create database
         run: mysql -e 'CREATE DATABASE IF NOT EXISTS wordpress_test;' -u root -proot
