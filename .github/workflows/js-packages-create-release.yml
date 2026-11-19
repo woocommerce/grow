@@ -20,6 +20,19 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # author_association can read CONTRIBUTOR for private org members, so ask for the repo permission.
+      - name: Check the reviewer can write to this repo
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { data } = await github.rest.repos.getCollaboratorPermissionLevel( {
+              ...context.repo,
+              username: context.payload.review.user.login,
+            } );
+            if ( ! [ 'admin', 'write' ].includes( data.permission ) ) {
+              core.setFailed( `${ context.payload.review.user.login } cannot approve a release.` );
+            }
+
       - name: Derive package config
         id: config
         env:
