@@ -5,12 +5,21 @@ on:
     types:
       - submitted
 
+permissions: {}
+
 jobs:
   CreateRelease:
     name: Create release for github-actions package
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    if: ${{ github.event.pull_request.head.ref == 'release/actions' && github.event.review.state == 'approved' }}
+    if: >-
+      github.event.pull_request.head.ref == 'release/actions'
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.event.review.state == 'approved'
+      && contains( fromJSON( '["OWNER", "MEMBER", "COLLABORATOR"]' ), github.event.review.author_association )
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0

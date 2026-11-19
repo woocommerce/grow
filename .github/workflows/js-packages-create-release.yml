@@ -5,18 +5,28 @@ on:
     types:
       - submitted
 
+permissions: {}
+
 jobs:
   CreateRelease:
     name: Create release for JS package
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    if: ${{ (github.event.pull_request.head.ref == 'release/jsdoc' || github.event.pull_request.head.ref == 'release/tracking-jsdoc') && github.event.review.state == 'approved' }}
+    if: >-
+      ( github.event.pull_request.head.ref == 'release/jsdoc' || github.event.pull_request.head.ref == 'release/tracking-jsdoc' )
+      && github.event.pull_request.head.repo.full_name == github.repository
+      && github.event.review.state == 'approved'
+      && contains( fromJSON( '["OWNER", "MEMBER", "COLLABORATOR"]' ), github.event.review.author_association )
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Derive package config
         id: config
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
-          PACKAGE_NAME="${{ github.event.pull_request.head.ref }}"
-          PACKAGE_NAME="${PACKAGE_NAME#release/}"
+          PACKAGE_NAME="${HEAD_REF#release/}"
           PACKAGE_DIR="packages/js/${PACKAGE_NAME}"
           TAG_PREFIX="${PACKAGE_NAME}-v"
           echo "package-name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
