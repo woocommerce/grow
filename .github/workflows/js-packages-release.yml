@@ -14,11 +14,17 @@ on:
       - release/jsdoc
       - release/tracking-jsdoc
 
+permissions: {}
+
 jobs:
   Setup:
     name: Setup and Checks
+    # Only a release branch of this repo may publish, not one from a fork.
+    if: ${{ github.event_name == 'release' || github.event.workflow_run.head_repository.full_name == github.repository }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      actions: write
     outputs:
       release: ${{ steps.set-result.outputs.release }}
     steps:
@@ -68,13 +74,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: Setup
+    permissions:
+      contents: write
     steps:
       - name: Resolve tag name
         id: resolve-tag
+        env:
+          RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
+          ARTIFACT_TAG_NAME: ${{ fromJSON(needs.Setup.outputs.release || '{}').tag_name }}
         run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          if [ "$TAG_NAME" = '' ]; then
-            TAG_NAME="${{ fromJSON(needs.Setup.outputs.release || '{}').tag_name }}"
+          TAG_NAME="${RELEASE_TAG_NAME:-$ARTIFACT_TAG_NAME}"
+          if ! [[ "$TAG_NAME" =~ ^(jsdoc|tracking-jsdoc)-v(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){2}(-pre)?$ ]]; then
+            echo "::error::Unexpected tag name: ${TAG_NAME}"
+            exit 1
           fi
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
 
@@ -142,8 +154,9 @@ jobs:
       - name: Merge the release PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
-          gh pr merge "${{ github.event.workflow_run.head_branch }}" \
+          gh pr merge "$HEAD_BRANCH" \
             --repo "${{ github.repository }}" \
             --merge \
             --delete-branch
