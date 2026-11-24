@@ -11,8 +11,8 @@ const configs = [
 			file: './actions/eslint-annotation/eslintFormatter.cjs',
 			format: 'cjs',
 		},
-		// This action imports 'eslint' from the caller repo.
-		external: [ 'eslint' ],
+		// This action loads 'eslint' from the caller repo.
+		external: [ 'node:module' ],
 	},
 	{
 		input: './actions/get-release-notes/src/get-release-notes.js',
@@ -46,8 +46,8 @@ const configs = [
 			file: './actions/stylelint-annotation/stylelintFormatter.cjs',
 			format: 'cjs',
 		},
-		// This action imports 'stylelint' from the caller repo.
-		external: [ 'stylelint' ],
+		// This action loads 'stylelint' from the caller repo.
+		external: [ 'node:module' ],
 	},
 	{
 		input: './actions/update-version-tags/src/update-version-tags.js',

@@ -209,11 +209,18 @@ jobs:
           else
             CONFIG_FLAG="--no-eslintrc"
           fi
-          # eslint's exit code comes from its own error count, not the formatter, so a
-          # non-zero-exit assertion would add nothing. The annotation grep is the guard.
-          OUTPUT=$(./node_modules/.bin/eslint sample.js $CONFIG_FLAG --rule 'no-unused-vars: error' --format ./eslintFormatter.cjs 2>&1 || true)
-          echo "$OUTPUT"
-          echo "$OUTPUT" | grep -qE '^::(error|warning) '
+          # The second path is out of reach of any node_modules, like a repo root where
+          # pnpm does not link a transitive eslint. The formatter must then load eslint
+          # through the running eslint CLI.
+          mkdir /tmp/formatter-elsewhere
+          cp eslintFormatter.cjs /tmp/formatter-elsewhere/
+          for FORMATTER in ./eslintFormatter.cjs /tmp/formatter-elsewhere/eslintFormatter.cjs; do
+            # eslint's exit code comes from its own error count, not the formatter, so a
+            # non-zero-exit assertion would add nothing. The annotation grep is the guard.
+            OUTPUT=$(./node_modules/.bin/eslint sample.js $CONFIG_FLAG --rule 'no-unused-vars: error' --format "$FORMATTER" 2>&1 || true)
+            echo "$OUTPUT"
+            echo "$OUTPUT" | grep -qE '^::(error|warning) '
+          done
 
   test-stylelint-formatter:
     name: "stylelint-annotation (stylelint v${{ matrix.stylelint-version }})"
@@ -248,15 +255,22 @@ jobs:
       - name: Verify formatter annotates and fails on lint errors
         working-directory: /tmp/formatter-test
         run: |
-          OUTPUT=$(./node_modules/.bin/stylelint sample.css --custom-formatter ./stylelintFormatter.cjs 2>&1) && STATUS=0 || STATUS=$?
-          echo "$OUTPUT"
-          echo "stylelint exit status: $STATUS"
-          # The formatter must emit annotation commands.
-          echo "$OUTPUT" | grep -qE '^::(error|warning) '
-          # Lint errors must make stylelint exit non-zero. A formatter that returns an
-          # empty report makes stylelint's CLI skip its exit-code assignment, which
-          # would let lint errors pass CI with a green check.
-          if [ "$STATUS" -eq 0 ]; then
-            echo "Expected stylelint to exit non-zero for lint errors, but it exited 0."
-            exit 1
-          fi
+          # The second path is out of reach of any node_modules, like a repo root where
+          # pnpm does not link a transitive stylelint. The formatter must then load
+          # stylelint through the running stylelint CLI.
+          mkdir /tmp/formatter-elsewhere
+          cp stylelintFormatter.cjs /tmp/formatter-elsewhere/
+          for FORMATTER in ./stylelintFormatter.cjs /tmp/formatter-elsewhere/stylelintFormatter.cjs; do
+            OUTPUT=$(./node_modules/.bin/stylelint sample.css --custom-formatter "$FORMATTER" 2>&1) && STATUS=0 || STATUS=$?
+            echo "$OUTPUT"
+            echo "stylelint exit status: $STATUS"
+            # The formatter must emit annotation commands.
+            echo "$OUTPUT" | grep -qE '^::(error|warning) '
+            # Lint errors must make stylelint exit non-zero. A formatter that returns an
+            # empty report makes stylelint's CLI skip its exit-code assignment, which
+            # would let lint errors pass CI with a green check.
+            if [ "$STATUS" -eq 0 ]; then
+              echo "Expected stylelint to exit non-zero for lint errors, but it exited 0."
+              exit 1
+            fi
+          done

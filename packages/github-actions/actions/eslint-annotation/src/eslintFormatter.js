@@ -1,13 +1,11 @@
 /**
- * External dependencies
- */
-import { ESLint } from 'eslint'; // eslint-disable-line import/no-extraneous-dependencies
-
-/**
  * Internal dependencies
  */
+import requireFromCaller from '../../../utils/require-from-caller.js';
 import annotateByWorkflowCommand from '../../../utils/annotate-by-workflow-command.js';
 import toAnnotations from './to-annotations.js';
+
+const { ESLint } = requireFromCaller( 'eslint', import.meta.url );
 
 // Ref: https://eslint.org/docs/developer-guide/working-with-custom-formatters
 export default function ( results, context ) {
