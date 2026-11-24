@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-24 (3.1.0)
+### New Features 🎉
+* Add pnpm support to prepare-node and use pnpm 11. (https://github.com/woocommerce/grow/pull/289)
+
 ## 2026-11-06 (3.0.7)
 ### Bug Fixes 🐛
 * Support MySQL 8.4 in the `prepare-mysql` action (Ubuntu 26.04 runners). (https://github.com/woocommerce/grow/pull/284)
