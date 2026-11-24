@@ -32,7 +32,8 @@ All actions involving Node.js are run in v24.
 ### JavaScript actions
 
 1. Install `node` with version v24
-1. Install node modules `npm i`
+1. Enable Corepack (`corepack enable`) or install pnpm 11
+1. Install node modules `pnpm install` in the repo root
 
 ### PHP actions
 
@@ -68,7 +69,7 @@ All actions involving Node.js are run in v24.
 ```
 
 - The `src` directories of JavaScript actions will be skipped in the release build.
-- When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `npm run build`.
+- When adding a new script that needs to be built, add its build script to package.json and make sure it will be called in `pnpm run build`.
 
 ### Create a test build
 
@@ -153,7 +154,7 @@ Branch off from the old version, set the merge base for fixing PR to be the same
 1. :octocat: When the branch `release/actions` is created, will continue to commit the release content to `release/actions` branch.
    - Workflow [GitHub Actions - Prepare New Release](https://github.com/woocommerce/grow/actions/workflows/github-actions-prepare-release.yml)
    - Prepend changelog to [CHANGELOG.md](CHANGELOG.md).
-   - Update versions to [package.json](package.json) and [package-lock.json](package-lock.json).
+   - Update the version in [package.json](package.json).
    - Creates a release PR from `release/actions` branch with `trunk` as the base branch.
 1. :technologist: Check if the new changelog content and updated version are correct. Let's assume the current version is `actions-v3.4.7`.
    - For a patch version like fixing bugs, increases the patch number. For example, `actions-v3.4.8`.

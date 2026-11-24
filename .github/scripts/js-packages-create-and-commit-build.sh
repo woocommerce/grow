@@ -32,7 +32,7 @@ git checkout HEAD^ -- "./${PACKAGE_DIR}"
 git restore --staged .
 
 ## 3. Remove files not needed in the release build.
-##    This includes release-notes-config.yml and all dotfiles (e.g., .jsdocrc.dev.json, .npmrc).
+##    This includes release-notes-config.yml and all dotfiles (e.g., .jsdocrc.dev.json).
 rm -f "./${PACKAGE_DIR}/release-notes-config.yml"
 find "./${PACKAGE_DIR}" -maxdepth 1 -name ".*" -not -name "." -exec rm -rf {} +
 

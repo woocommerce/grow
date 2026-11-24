@@ -108,7 +108,6 @@ jobs:
         uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: 24
-          cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
       - name: Create and commit release build
@@ -124,15 +123,16 @@ jobs:
 
       # The build above leaves the flattened package in place of the checkout. The
       # whole package comes back, not just the action, because building it needs
-      # the package manifest and the rollup config.
+      # the package manifest and the rollup config. The root pnpm workspace files
+      # come back too, because the install needs the lockfile.
       - name: Restore the package
-        run: git checkout HEAD^ -- ./packages/github-actions
+        run: git checkout HEAD^ -- package.json pnpm-lock.yaml pnpm-workspace.yaml ./packages/github-actions
 
       - name: Build the version tags action
         working-directory: packages/github-actions
         run: |
-          npm ci --ignore-scripts
-          npm run build -- --configAction=update-version-tags
+          pnpm install --frozen-lockfile --ignore-scripts --filter .
+          pnpm run build --configAction=update-version-tags
 
       - name: Update version tags
         uses: ./packages/github-actions/actions/update-version-tags

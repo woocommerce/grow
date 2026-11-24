@@ -21,7 +21,7 @@ export default async ( {
 
 	const title = `Release version ${ version } of the \`${ packageName }\` package`;
 	const body = `## Checks
-- [ ] The updated version in the package.json and package-lock.json (if present) is correct.
+- [ ] The updated version in the package.json is correct.
 - [ ] The changelog is correct.
 ## Next steps
 1. Approve this PR to allow [the next workflow creates a new release](${ workflowBaseUrl }/${ createReleaseWorkflow }).

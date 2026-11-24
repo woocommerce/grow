@@ -106,7 +106,7 @@ const actionName = ( { input } ) => input.split( '/' )[ 2 ];
 
 // `--configAction` narrows the build to one action, so a workflow that needs a
 // single bundle does not write the others into paths that a later step reads.
-// Example: npm run build -- --configAction=eslint-annotation
+// Example: pnpm run build --configAction=eslint-annotation
 export default ( cliArgs ) => {
 	if ( ! ( 'configAction' in cliArgs ) ) {
 		return configs;

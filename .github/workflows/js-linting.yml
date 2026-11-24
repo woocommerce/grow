@@ -34,17 +34,12 @@ jobs:
         uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version-file: .nvmrc
-          cache-dependency-path: |
-            ./package-lock.json
-            ./packages/github-actions/package-lock.json
 
       # Bundled entry points are not in the checkout. Only the formatter is built
       # because the other bundles are large and the lint below would parse them.
       - name: Build the annotation formatter
         working-directory: packages/github-actions
-        run: |
-          npm ci --ignore-scripts
-          npm run build -- --configAction=eslint-annotation
+        run: pnpm run build --configAction=eslint-annotation
 
       - name: Prepare annotation formatter
         uses: ./packages/github-actions/actions/eslint-annotation
@@ -52,4 +47,4 @@ jobs:
       # Turn off import/no-unresolved rule since this check doesn't install packages for all sub-packages.
       - name: Lint JavaScript and annotate linting errors
         run: |
-          npm run lint:js -- --rule 'import/no-unresolved: 0' --format ./eslintFormatter.cjs
+          pnpm run lint:js --rule 'import/no-unresolved: 0' --format ./eslintFormatter.cjs
