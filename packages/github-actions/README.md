@@ -19,7 +19,7 @@ All actions involving Node.js are run in v24.
 - [`phpcs-diff`](actions/phpcs-diff) - Run PHPCS to the changed lines of code, set error annotations to a pull request
 - [`prepare-extension-release`](actions/prepare-extension-release) - Create the release branch & PR with checklist
 - [`prepare-mysql`](actions/prepare-mysql) - Enable MySQL, handle authentication compatibility
-- [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm cache, install Node dependencies
+- [`prepare-node`](actions/prepare-node) - Set up Node.js with a specific version, load npm or pnpm cache, install Node dependencies
 - [`prepare-php`](actions/prepare-php) - Set up PHP with a specific version and tools, load Composer cache, install Composer dependencies
 - [`publish-extension-dev-build`](actions/publish-extension-dev-build) - Publish extension development build
 - [`stylelint-annotation`](actions/stylelint-annotation) - Annotate stylelint results via stylelint formatter

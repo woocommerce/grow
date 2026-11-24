@@ -18,24 +18,55 @@ concurrency:
 
 jobs:
   test-prepare-node:
-    name: "prepare-node (Node ${{ matrix.node-version }}, deps: ${{ matrix.install-deps }})"
+    name: "prepare-node (${{ matrix.project }}${{ matrix.package-manager && format(', package-manager: {0}', matrix.package-manager) || '' }}, Node ${{ matrix.node-version }}, deps: ${{ matrix.install-deps }}, ignore-scripts: ${{ matrix.ignore-scripts }})"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
+        project: ['npm']
         node-version: ['24', '22', '20']
         install-deps: ['yes', 'no']
         ignore-scripts: ['yes']
         include:
-          - node-version: '24'
+          - project: 'npm'
+            node-version: '24'
             install-deps: 'yes'
             ignore-scripts: 'no'
+          # pnpm 11 needs Node.js 22.13 or later.
+          - project: 'pnpm'
+            node-version: '24'
+            install-deps: 'yes'
+            ignore-scripts: 'yes'
+          - project: 'pnpm'
+            node-version: '22'
+            install-deps: 'yes'
+            ignore-scripts: 'yes'
+          - project: 'pnpm'
+            node-version: '24'
+            install-deps: 'no'
+            ignore-scripts: 'yes'
+          - project: 'pnpm'
+            node-version: '24'
+            install-deps: 'yes'
+            ignore-scripts: 'no'
+          - project: 'pnpm'
+            package-manager: 'pnpm'
+            node-version: '24'
+            install-deps: 'yes'
+            ignore-scripts: 'yes'
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      # prepare-node works in the workspace root, so the fixture project replaces
+      # this repo's own package files there.
+      - name: Use the ${{ matrix.project }} fixture project
+        run: |
+          rm -f package.json package-lock.json pnpm-lock.yaml pnpm-workspace.yaml
+          cp -R packages/github-actions/actions/prepare-node/__tests__/fixtures/${{ matrix.project }}/. .
       - uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: ${{ matrix.node-version }}
+          package-manager: ${{ matrix.package-manager || 'auto' }}
           install-deps: ${{ matrix.install-deps }}
           ignore-scripts: ${{ matrix.ignore-scripts }}
       - name: Verify Node.js major version
@@ -47,16 +78,37 @@ jobs:
             echo "Expected Node $EXPECTED_VERSION but got $ACTUAL"
             exit 1
           fi
-      # prepare-node runs `npm ci` from the workspace root, so the installed
-      # node_modules lives there. Pin the verification to the same directory.
-      - name: Verify node_modules exists
+      - name: Verify the pnpm version comes from package.json
+        if: matrix.project == 'pnpm'
+        run: |
+          EXPECTED=$(jq -r '.packageManager' package.json | sed -E 's/^pnpm@([^+]+).*/\1/')
+          ACTUAL=$(pnpm --version)
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "Expected pnpm $EXPECTED but got $ACTUAL"
+            exit 1
+          fi
+      - name: Verify node_modules was installed by ${{ matrix.project }}
         if: matrix.install-deps == 'yes'
-        working-directory: ${{ github.workspace }}
-        run: test -d node_modules
+        env:
+          PROJECT: ${{ matrix.project }}
+        run: |
+          test -f node_modules/is-number/package.json
+          if [ "$PROJECT" = "pnpm" ]; then
+            test -d node_modules/.pnpm
+          else
+            test -f node_modules/.package-lock.json
+            test ! -d node_modules/.pnpm
+          fi
       - name: Verify node_modules does not exist
         if: matrix.install-deps == 'no'
-        working-directory: ${{ github.workspace }}
         run: test ! -d node_modules
+      # The fixture's postinstall script creates the postinstall-ran file.
+      - name: Verify install scripts ran
+        if: matrix.install-deps == 'yes' && matrix.ignore-scripts == 'no'
+        run: test -f postinstall-ran
+      - name: Verify install scripts were skipped
+        if: matrix.ignore-scripts == 'yes'
+        run: test ! -f postinstall-ran
 
   test-prepare-php:
     name: "prepare-php (PHP ${{ matrix.php-version }}, deps: ${{ matrix.install-deps }})"
