@@ -28,21 +28,12 @@ jobs:
         uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version-file: .nvmrc
-          cache-dependency-path: |
-            ./package-lock.json
-            ./packages/github-actions/package-lock.json
-            ./packages/js/jsdoc/package-lock.json
-
-      - name: Install npm dependencies of the packages
-        run: |
-          npm ci --ignore-scripts --prefix packages/github-actions
-          npm ci --ignore-scripts --prefix packages/js/jsdoc
 
       - name: Build and test the github-actions package
         working-directory: packages/github-actions
         run: |
-          npm run build
-          npm test
+          pnpm run build
+          pnpm test
 
       - name: Prepare PHP
         uses: ./packages/github-actions/actions/prepare-php

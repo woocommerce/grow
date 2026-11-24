@@ -10,6 +10,8 @@ See [action.yml](action.yml)
 
 ## Compatibility
 
+The formatter loads `stylelint` from the caller repo. It first looks next to the formatter file. When `stylelint` isn’t there, for example when pnpm installs it only as a dependency of another package such as `@wordpress/scripts`, it loads `stylelint` from the running `stylelint` command.
+
 - `stylelint` >= 13
 
 #### Basic:

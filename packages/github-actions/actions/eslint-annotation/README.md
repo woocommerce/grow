@@ -10,6 +10,8 @@ See [action.yml](action.yml)
 
 ## Compatibility
 
+The formatter loads `eslint` from the caller repo. It first looks next to the formatter file. When `eslint` isn’t there, for example when pnpm installs it only as a dependency of another package such as `@wordpress/scripts`, it loads `eslint` from the running `eslint` command.
+
 - `eslint` >= 7
 
 #### Basic:

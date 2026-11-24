@@ -17,7 +17,6 @@ jobs:
         uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: 24
-          cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
       - name: Create and commit test build

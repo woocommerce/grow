@@ -1,14 +1,12 @@
 /**
- * External dependencies
- */
-import stylelint from 'stylelint'; // eslint-disable-line import/no-extraneous-dependencies, import/no-unresolved
-
-/**
  * Internal dependencies
  */
+import requireFromCaller from '../../../utils/require-from-caller.js';
 import annotateByWorkflowCommand from '../../../utils/annotate-by-workflow-command.js';
 import toAnnotations from './to-annotations.js';
 import toReport from './to-report.js';
+
+const stylelint = requireFromCaller( 'stylelint', import.meta.url );
 
 // Ref: https://stylelint.io/developer-guide/formatters/
 export default function ( results, returnValue ) {

@@ -11,8 +11,8 @@ const configs = [
 			file: './actions/eslint-annotation/eslintFormatter.cjs',
 			format: 'cjs',
 		},
-		// This action imports 'eslint' from the caller repo.
-		external: [ 'eslint' ],
+		// This action loads 'eslint' from the caller repo.
+		external: [ 'node:module' ],
 	},
 	{
 		input: './actions/get-release-notes/src/get-release-notes.js',
@@ -46,8 +46,8 @@ const configs = [
 			file: './actions/stylelint-annotation/stylelintFormatter.cjs',
 			format: 'cjs',
 		},
-		// This action imports 'stylelint' from the caller repo.
-		external: [ 'stylelint' ],
+		// This action loads 'stylelint' from the caller repo.
+		external: [ 'node:module' ],
 	},
 	{
 		input: './actions/update-version-tags/src/update-version-tags.js',
@@ -106,7 +106,7 @@ const actionName = ( { input } ) => input.split( '/' )[ 2 ];
 
 // `--configAction` narrows the build to one action, so a workflow that needs a
 // single bundle does not write the others into paths that a later step reads.
-// Example: npm run build -- --configAction=eslint-annotation
+// Example: pnpm run build --configAction=eslint-annotation
 export default ( cliArgs ) => {
 	if ( ! ( 'configAction' in cliArgs ) ) {
 		return configs;

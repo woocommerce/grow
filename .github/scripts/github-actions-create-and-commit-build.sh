@@ -24,8 +24,8 @@ trap cleanup EXIT
 pushd ./packages/github-actions
 
 ## 1. Build the JavaScript actions.
-npm ci --ignore-scripts
-npm run build
+pnpm install --frozen-lockfile --ignore-scripts --filter .
+pnpm run build
 
 ## 2. Build the PHP actions into .zip files.
 ./build-php-actions.sh

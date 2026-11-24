@@ -1,0 +1,10 @@
+{
+  "name": "prepare-node-npm-fixture",
+  "private": true,
+  "scripts": {
+    "postinstall": "node -e \"require('fs').writeFileSync('postinstall-ran', '')\""
+  },
+  "dependencies": {
+    "is-number": "7.0.0"
+  }
+}

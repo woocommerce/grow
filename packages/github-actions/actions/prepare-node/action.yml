@@ -1,5 +1,5 @@
 name: Prepare Node.js
-description: Set up Node.js with a specific version, load npm cache, install Node dependencies.
+description: Set up Node.js with a specific version, load npm or pnpm cache, install Node dependencies.
 
 inputs:
   node-version:
@@ -11,49 +11,116 @@ inputs:
     default: ""
 
   cache-dependency-path:
-    description: "Specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies."
+    description: "Specify the path to a dependency file: package-lock.json, pnpm-lock.yaml, etc. Supports wildcards or a list of file names for caching multiple dependencies."
     required: false
     default: ""
 
+  package-manager:
+    description: 'The package manager to use: "auto", "npm" or "pnpm". "auto" by default. It picks pnpm when the `packageManager` field in package.json names pnpm, or when there is a pnpm-lock.yaml and no package-lock.json. Otherwise it picks npm.'
+    required: false
+    default: "auto"
+
   install-deps:
-    description: Whether to run `npm ci`. "yes" by default. Set "no" to skip.
+    description: Whether to run `npm ci` or `pnpm install --frozen-lockfile`. "yes" by default. Set "no" to skip.
     required: false
     default: "yes"
 
   ignore-scripts:
-    description: Whether to run `npm ci` with --ignore-scripts. "yes" by default.
+    description: Whether to install the dependencies with --ignore-scripts. "yes" by default.
     required: false
     default: "yes"
 
 runs:
   using: composite
   steps:
+    # Detect the package manager.
+    - id: detect
+      shell: bash
+      env:
+        PACKAGE_MANAGER: ${{ inputs.package-manager }}
+        INSTALL_DEPS: ${{ inputs.install-deps }}
+      run: |
+        HAS_PNPM_FIELD="no"
+        if [ -f package.json ] && grep -Eq '"packageManager"[[:space:]]*:[[:space:]]*"pnpm@' package.json; then
+          HAS_PNPM_FIELD="yes"
+        fi
+
+        case "$PACKAGE_MANAGER" in
+          auto)
+            if [[ "$HAS_PNPM_FIELD" == "yes" || ( -f pnpm-lock.yaml && ! -f package-lock.json ) ]]; then
+              PACKAGE_MANAGER="pnpm"
+            else
+              PACKAGE_MANAGER="npm"
+            fi
+            ;;
+          npm | pnpm) ;;
+          *)
+            echo "::error::Unknown package-manager \"${PACKAGE_MANAGER}\". Use \"auto\", \"npm\" or \"pnpm\"."
+            exit 1
+            ;;
+        esac
+
+        # pnpm/action-setup reads the pnpm version from the `packageManager` field.
+        if [[ "$PACKAGE_MANAGER" == "pnpm" && "$HAS_PNPM_FIELD" != "yes" ]]; then
+          echo "::error::pnpm needs the \`packageManager\` field in package.json, for example \"pnpm@11.29.0\"."
+          exit 1
+        fi
+
+        # Without an install, the pnpm store may not exist and saving the cache would fail.
+        CACHE="$PACKAGE_MANAGER"
+        if [[ "$PACKAGE_MANAGER" == "pnpm" && "$INSTALL_DEPS" != "yes" ]]; then
+          CACHE=""
+        fi
+
+        echo "package-manager=${PACKAGE_MANAGER}" >> $GITHUB_OUTPUT
+        echo "cache=${CACHE}" >> $GITHUB_OUTPUT
+
+    # Install pnpm before Node.js, so `actions/setup-node` can find the pnpm store to cache.
+    - if: steps.detect.outputs.package-manager == 'pnpm'
+      uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
     # Setup node version and caching.
     - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
       with:
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
-        cache: "npm"
+        cache: ${{ steps.detect.outputs.cache }}
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     # Log information.
     - shell: bash
+      env:
+        PACKAGE_MANAGER: ${{ steps.detect.outputs.package-manager }}
       run: |
         node --version
         npm --version
+        if [ "$PACKAGE_MANAGER" = "pnpm" ]; then
+          pnpm --version
+        fi
 
     # Install node dependencies.
     - shell: bash
       env:
+        PACKAGE_MANAGER: ${{ steps.detect.outputs.package-manager }}
         INSTALL_DEPS: ${{ inputs.install-deps }}
         IGNORE_SCRIPTS: ${{ inputs.ignore-scripts }}
-      # `actions/setup-node` should update npm cache directory if `package-lock` has changed.
+      # `actions/setup-node` should update the cache if the lockfile has changed.
       run: |
         COLOR_INFO="\033[38;5;39m"
         COLOR_END="\033[0m"
 
-        if [ $INSTALL_DEPS = "yes" ]; then
-          npm ci `if [ $IGNORE_SCRIPTS = "yes" ]; then printf %s "--ignore-scripts"; fi`
+        if [ "$PACKAGE_MANAGER" = "pnpm" ]; then
+          INSTALL_CMD=(pnpm install --frozen-lockfile)
         else
-          echo -e "${COLOR_INFO}Skip npm ci${COLOR_END}"
+          INSTALL_CMD=(npm ci)
+        fi
+
+        if [ "$IGNORE_SCRIPTS" = "yes" ]; then
+          INSTALL_CMD+=(--ignore-scripts)
+        fi
+
+        if [ "$INSTALL_DEPS" = "yes" ]; then
+          "${INSTALL_CMD[@]}"
+        else
+          echo -e "${COLOR_INFO}Skip ${INSTALL_CMD[*]}${COLOR_END}"
         fi

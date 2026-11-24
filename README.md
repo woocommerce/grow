@@ -7,6 +7,10 @@
 This repository is a container for packages, mostly dev tools to serve the Grow Team.
 The packages here are too experimental or too Grow-specific to be shared Woo-wide.
 
+## Development
+
+Enable Corepack (`corepack enable`) or install pnpm 11, then run `pnpm install` in the repo root. It installs the JavaScript packages under `packages/` too.
+
 ## List of packages
 
 - [`/packages/github-actions`](packages/github-actions/README.md) - Custom GitHub actions.

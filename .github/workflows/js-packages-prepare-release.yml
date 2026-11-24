@@ -40,21 +40,15 @@ jobs:
           PACKAGE_DIR="packages/js/${PACKAGE_NAME}"
           TAG_TEMPLATE="${PACKAGE_NAME}-v{version}"
           CONFIG_PATH="${PACKAGE_DIR}/release-notes-config.yml"
-          HAS_LOCK_FILE="false"
-          if [ -f "${PACKAGE_DIR}/package-lock.json" ]; then
-            HAS_LOCK_FILE="true"
-          fi
           echo "package-name=${PACKAGE_NAME}" >> $GITHUB_OUTPUT
           echo "package-dir=${PACKAGE_DIR}" >> $GITHUB_OUTPUT
           echo "tag-template=${TAG_TEMPLATE}" >> $GITHUB_OUTPUT
           echo "config-path=${CONFIG_PATH}" >> $GITHUB_OUTPUT
-          echo "has-lock-file=${HAS_LOCK_FILE}" >> $GITHUB_OUTPUT
 
       - name: Prepare node
         uses: ./packages/github-actions/actions/prepare-node
         with:
           node-version: 24
-          cache-dependency-path: ./packages/github-actions/package-lock.json
           install-deps: "no"
 
       # The checkout carries no bundled entry points, so this action has to be
@@ -62,8 +56,8 @@ jobs:
       - name: Build the release notes action
         working-directory: packages/github-actions
         run: |
-          npm ci --ignore-scripts
-          npm run build -- --configAction=get-release-notes
+          pnpm install --frozen-lockfile --ignore-scripts --filter .
+          pnpm run build --configAction=get-release-notes
 
       - name: Get release notes
         id: get-notes
@@ -92,18 +86,10 @@ jobs:
           jq ".version=\"${NEXT_VER}\"" package.json > package.json.tmp
           mv package.json.tmp package.json
 
-          if [ "${{ steps.config.outputs.has-lock-file }}" = "true" ]; then
-            jq ".version=\"${NEXT_VER}\" | .packages.\"\".version=\"${NEXT_VER}\"" package-lock.json > package-lock.json.tmp
-            mv package-lock.json.tmp package-lock.json
-          fi
-
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add CHANGELOG.md
           git add package.json
-          if [ "${{ steps.config.outputs.has-lock-file }}" = "true" ]; then
-            git add package-lock.json
-          fi
           cd -
           git commit -q -m "Update changelog and package version for the ${{ steps.get-notes.outputs.next-tag }} release of ${{ steps.config.outputs.package-name }}."
           git push
