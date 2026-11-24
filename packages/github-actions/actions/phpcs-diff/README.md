@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run PHPCS to changed lines of code
-        uses: woocommerce/grow/phpcs-diff@actions-v3
+        uses: woocommerce/grow/phpcs-diff@actions-v4
 ```
 
 #### Specify the PHP version:
@@ -43,7 +43,7 @@ jobs:
 ```yaml
 steps:
   - name: Run PHPCS to changed lines of code
-    uses: woocommerce/grow/phpcs-diff@actions-v3
+    uses: woocommerce/grow/phpcs-diff@actions-v4
     with:
       php-version: 8.1
 ```

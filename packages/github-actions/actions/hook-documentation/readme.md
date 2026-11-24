@@ -50,7 +50,7 @@ jobs:
         # This generates the documentation string. The `id` property is used to reference the output in the next step.
       - name: Generate hook documentation
         id: generate-hook-docs
-        uses: woocommerce/grow/hook-documentation@actions-v3
+        uses: woocommerce/grow/hook-documentation@actions-v4
         with:
           debug-output: yes
           source-directories: src/,templates/

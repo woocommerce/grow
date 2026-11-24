@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
-      - uses: woocommerce/grow/stylelint-annotation@actions-v3
+      - uses: woocommerce/grow/stylelint-annotation@actions-v4
         with:
           formatter-dest: "./my-formatter.cjs"
       - run: stylelint --custom-formatter ./my-formatter.cjs "**/*.css"
