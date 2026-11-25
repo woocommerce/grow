@@ -5,7 +5,7 @@ packages:
 overrides:
   '@wordpress/eslint-plugin@<23.0.0': ^23.0.0
   prettier: npm:wp-prettier@3.0.3
-  'minimatch@>=9.0.0 <9.0.9': 9.0.9
+  'minimatch@>=7.0.0 <11.0.1': ^11.0.1
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
